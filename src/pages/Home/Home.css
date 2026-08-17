@@ -1,4 +1,4 @@
-﻿
+
       :root {
         --navy: #08304f;
         --navy-2: #0c4068;
@@ -107,13 +107,12 @@
         box-shadow: none;
         border: 0;
         background: transparent;
-        width: 100vw;
-        margin-left: calc(50% - 50vw);
+        width: 100%;
       }
       .hero-carousel {
         position: relative;
-        height: clamp(600px, 43vw, 800px);
-        min-height: 600px;
+        height: auto;
+        aspect-ratio: 1916 / 821;
         background: transparent;
       }
       .hero-banner img {

@@ -646,28 +646,26 @@ export default function Home() {
   return (
     <main id="home">
       <section className="hero">
-        <div className="container">
-          <div className="hero-banner hero-carousel">
+        <div className="hero-banner hero-carousel">
+          {HERO_BANNERS.map((banner, index) => (
+            <img
+              key={banner.src}
+              src={banner.src}
+              alt={banner.alt}
+              className={index === activeHeroBanner ? 'active' : ''}
+              onLoad={() => ScrollTrigger.refresh()}
+            />
+          ))}
+          <div className="hero-carousel-dots" aria-label="Banner slides">
             {HERO_BANNERS.map((banner, index) => (
-              <img
+              <button
                 key={banner.src}
-                src={banner.src}
-                alt={banner.alt}
+                type="button"
                 className={index === activeHeroBanner ? 'active' : ''}
-                onLoad={() => ScrollTrigger.refresh()}
+                aria-label={`Show banner ${index + 1}`}
+                onClick={() => setActiveHeroBanner(index)}
               />
             ))}
-            <div className="hero-carousel-dots" aria-label="Banner slides">
-              {HERO_BANNERS.map((banner, index) => (
-                <button
-                  key={banner.src}
-                  type="button"
-                  className={index === activeHeroBanner ? 'active' : ''}
-                  aria-label={`Show banner ${index + 1}`}
-                  onClick={() => setActiveHeroBanner(index)}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -683,7 +681,7 @@ export default function Home() {
           </div>
           
           <div className="categories-grid">
-            <article className="category-card" data-grid="industrial" onClick={navigateToContact}>
+            <Link className="category-card" data-grid="industrial" to="/category/industrial-water-filtration">
               <div className="category-card-bg">
                 <img src="/images/industrial_filtration.png" alt="Industrial Water Filtration" />
               </div>
@@ -700,9 +698,9 @@ export default function Home() {
                 </span>
               </div>
               <div className="category-card-border"></div>
-            </article>
+            </Link>
 
-            <article className="category-card" data-grid="agriculture" onClick={navigateToContact}>
+            <Link className="category-card" data-grid="agriculture" to="/category/agriculture-farming-water-filtration">
               <div className="category-card-bg">
                 <img src="/images/agriculture_filtration.png" alt="Agriculture Water Filtration" />
               </div>
@@ -719,9 +717,9 @@ export default function Home() {
                 </span>
               </div>
               <div className="category-card-border"></div>
-            </article>
+            </Link>
 
-            <article className="category-card" data-grid="animal-farming" onClick={navigateToContact}>
+            <Link className="category-card" data-grid="animal-farming" to="/category/animal-farming-water-filtration">
               <div className="category-card-bg">
                 <img src="/images/animal_farming_filtration.png" alt="Animal Farming Water Filtration" />
               </div>
@@ -738,9 +736,9 @@ export default function Home() {
                 </span>
               </div>
               <div className="category-card-border"></div>
-            </article>
+            </Link>
 
-            <article className="category-card" data-grid="commercial" onClick={navigateToContact}>
+            <Link className="category-card" data-grid="commercial" to="/category/commercial-water-filters">
               <div className="category-card-bg">
                 <img src="/images/commercial_filtration.png" alt="Commercial Water Filters" />
               </div>
@@ -757,9 +755,9 @@ export default function Home() {
                 </span>
               </div>
               <div className="category-card-border"></div>
-            </article>
+            </Link>
 
-            <article className="category-card" data-grid="domestic" onClick={navigateToContact}>
+            <Link className="category-card" data-grid="domestic" to="/category/domestic-water-filtration-system">
               <div className="category-card-bg">
                 <img src="/images/domestic_filtration.png" alt="Domestic Water Filtration System" />
               </div>
@@ -776,7 +774,7 @@ export default function Home() {
                 </span>
               </div>
               <div className="category-card-border"></div>
-            </article>
+            </Link>
           </div>
         </div>
       </section>
