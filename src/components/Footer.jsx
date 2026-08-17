@@ -67,6 +67,8 @@ export default function Footer() {
             <Link to="/" onClick={(e) => handleLinkClick(e, '/', '#applications')}>Industries</Link>
             <Link to="/blog">Blogs</Link>
             <Link to="/contact">Contact Us</Link>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+            <Link to="/terms-conditions">Terms & Conditions</Link>
           </div>
           <div>
             <h4>Contact</h4>

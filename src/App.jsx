@@ -9,6 +9,8 @@ import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Category from './pages/Category/Category';
 import Contact from './pages/Contact/Contact';
 import Blog from './pages/Blog/Blog';
+import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
+import TermsConditions from './pages/TermsConditions/TermsConditions';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -44,6 +46,10 @@ export default function App() {
         <Route path="/blog.html" element={<Blog />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/contact.html" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/terms-conditions.html" element={<TermsConditions />} />
       </Routes>
       <Footer />
       <div className="floating-actions" aria-label="Quick contact actions">

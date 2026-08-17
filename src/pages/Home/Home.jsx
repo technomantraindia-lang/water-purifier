@@ -62,8 +62,8 @@ const TESTIMONIALS_DATA = [
 ];
 
 const HERO_BANNERS = [
-  { src: "/images/NEW BANNER.png", alt: "Water Filter Africa banner" },
-  { src: "/images/NEW HOME BANNER 2.png", alt: "Water Filter Africa water-treatment solutions banner" }
+  { src: "/images/banner .png", alt: "Water Filter Africa banner 1" },
+  { src: "/images/2 banner.png", alt: "Water Filter Africa banner 2" }
 ];
 
 export default function Home() {
@@ -1124,7 +1124,6 @@ export default function Home() {
         <div className="bg-radial-glow bg-glow-1"></div>
         <div className="bg-radial-glow bg-glow-2"></div>
         <div className="moving-grid-bg"></div>
-        <div className="topo-wave-bg"></div>
         <div className="translucent-ripple ripple-1"></div>
         <div className="translucent-ripple ripple-2"></div>
         

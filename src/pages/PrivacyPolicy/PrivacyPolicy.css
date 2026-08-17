@@ -1,0 +1,147 @@
+.policy-page {
+  background: #f4fafe;
+  color: #061D3D;
+  min-height: 100vh;
+}
+
+.policy-hero {
+  background: linear-gradient(135deg, #031D31 0%, #052F4D 60%, #074E78 100%);
+  color: #ffffff;
+  padding: 80px 0 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.policy-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  pointer-events: none;
+}
+
+.policy-hero .eyebrow {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #7EDBFF;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.policy-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  margin: 0 0 16px;
+  line-height: 1.1;
+}
+
+.policy-hero .subtitle {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-weight: 500;
+}
+
+.policy-content-section {
+  padding: 80px 0;
+}
+
+.content-container {
+  max-width: 900px !important;
+  margin: 0 auto;
+}
+
+.policy-card-large {
+  background: #ffffff;
+  border: 1px solid rgba(6, 46, 82, 0.08);
+  border-radius: 24px;
+  padding: 50px;
+  box-shadow: 0 20px 50px rgba(6, 46, 82, 0.05);
+}
+
+@media (max-width: 768px) {
+  .policy-card-large {
+    padding: 30px 20px;
+  }
+  .policy-content-section {
+    padding: 40px 0;
+  }
+}
+
+.lead-text {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #072C4C;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 40px;
+  border-left: 4px solid #0789F9;
+  padding-left: 20px;
+}
+
+.content-block {
+  margin-bottom: 40px;
+}
+
+.content-block:last-child {
+  margin-bottom: 0;
+}
+
+.content-block h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #031D31;
+  margin: 0 0 18px;
+  letter-spacing: -0.02em;
+}
+
+.content-block p {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #526A82;
+  margin: 0 0 16px;
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  display: grid;
+  gap: 20px;
+}
+
+.info-list li {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.bullet-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(7, 137, 249, 0.1);
+  color: #0789F9;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+.info-list li div {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #526A82;
+}
+
+.info-list li strong {
+  color: #061D3D;
+}

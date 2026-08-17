@@ -109,34 +109,35 @@
         background: transparent;
         width: 100%;
       }
-      .hero-carousel {
+      #home .hero-carousel {
         position: relative;
-        height: clamp(650px, 45vw, 820px);
-        min-height: 600px;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1916 / 821;
         background: transparent;
         overflow: hidden;
       }
       .hero-banner img {
         width: 100%;
-        height: 180% !important;
+        height: 100% !important;
         aspect-ratio: auto;
-        object-fit: cover;
-        object-position: center 8% !important;
+        object-fit: contain !important;
+        object-position: center !important;
       }
-      .hero-carousel img {
+      #home .hero-carousel img {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 180% !important;
+        height: 100% !important;
         aspect-ratio: auto;
         opacity: 0 !important;
-        object-fit: cover;
-        object-position: center 8% !important;
+        object-fit: contain !important;
+        object-position: center !important;
         transform: none;
         transition: opacity 700ms ease;
       }
-      .hero-carousel img.active {
+      #home .hero-carousel img.active {
         opacity: 1 !important;
       }
       .hero-carousel-dots {
@@ -209,7 +210,7 @@
       /* Premium Products & Categories Layout */
       .products-section {
         position: relative;
-        background: linear-gradient(180deg, #ffffff 0%, var(--brand-bg-light) 50%, var(--brand-bg-accent) 100%);
+        background: #ffffff;
         padding: 100px 0 80px;
         overflow: hidden;
       }
@@ -788,15 +789,7 @@
         pointer-events: none;
         z-index: 0;
       }
-      .topo-wave-bg {
-        position: absolute;
-        inset: 0;
-        opacity: 0.012;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'%3E%3Cpath d='M100 200 C300 250, 400 100, 600 300 C800 500, 900 400, 950 600 M50 400 C250 450, 350 300, 550 500 C750 700, 850 600, 900 800' fill='none' stroke='%230789F9' stroke-width='2.5' stroke-dasharray='5 5'/%3E%3Cpath d='M200 100 C350 180, 500 50, 700 200 C900 350, 950 250, 1000 450' fill='none' stroke='%230789F9' stroke-width='1.5'/%3E%3C/svg%3E");
-        background-size: cover;
-        pointer-events: none;
-        z-index: 0;
-      }
+
       .translucent-ripple {
         position: absolute;
         border: 1px dashed rgba(7, 137, 249, 0.02);
