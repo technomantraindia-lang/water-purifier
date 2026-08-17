@@ -111,28 +111,28 @@
       }
       .hero-carousel {
         position: relative;
-        height: clamp(550px, 38vw, 700px);
-        min-height: 500px;
+        height: clamp(650px, 45vw, 820px);
+        min-height: 600px;
         background: transparent;
         overflow: hidden;
       }
       .hero-banner img {
         width: 100%;
-        height: 155% !important;
+        height: 180% !important;
         aspect-ratio: auto;
         object-fit: cover;
-        object-position: center 12% !important;
+        object-position: center 8% !important;
       }
       .hero-carousel img {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 155% !important;
+        height: 180% !important;
         aspect-ratio: auto;
         opacity: 0;
         object-fit: cover;
-        object-position: center 12% !important;
+        object-position: center 8% !important;
         transform: none;
         transition: opacity 700ms ease;
       }

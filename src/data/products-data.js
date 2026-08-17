@@ -218,6 +218,36 @@ export const WFA_PRODUCTS = {
       image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png",
       shortDescription: "Ozone generation equipment for oxidation, disinfection and advanced water-treatment needs.",
       productUrl: "https://www.waterfilterafrica.com/"
+    },
+    {
+      id: "serusuv-60a-uv",
+      slug: "ultraviolet-disinfectant-sterilizer-serusuv-60a-uv",
+      name: "Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV",
+      category: "industrial",
+      technology: "UV Disinfection",
+      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
+      shortDescription: "High-capacity industrial ultraviolet water sterilizer and disinfectant for heavy duty water purification applications.",
+      productUrl: "https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-60a-uv"
+    },
+    {
+      id: "serusuv-100a-uv",
+      slug: "ultraviolet-disinfectant-sterilizer-serusuv-100a-uv",
+      name: "Ultraviolet disinfectant-sterilizer - SERUSUV-100A UV",
+      category: "industrial",
+      technology: "UV Disinfection",
+      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
+      shortDescription: "Premium scale industrial UV water disinfection system designed for large volume municipal and processing requirements.",
+      productUrl: "https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-100a-uv"
+    },
+    {
+      id: "serusuv-300a-uv",
+      slug: "ultraviolet-disinfectant-sterilizer-serusuv-300a-uv",
+      name: "Ultraviolet disinfectant-sterilizer - SERUSUV-300A UV",
+      category: "industrial",
+      technology: "UV Disinfection",
+      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
+      shortDescription: "Super-capacity industrial UV sterilizer engineered to handle maximum flow rates for advanced plant and utility systems.",
+      productUrl: "https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-300a-uv"
     }
   ]
 };
