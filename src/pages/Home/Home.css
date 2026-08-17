@@ -112,7 +112,7 @@
       .hero-carousel {
         position: relative;
         height: auto;
-        aspect-ratio: 1916 / 821;
+        aspect-ratio: 1916 / 530;
         background: transparent;
       }
       .hero-banner img {
@@ -3035,8 +3035,8 @@
         }
 
         .hero-carousel {
-          height: clamp(300px, 54vw, 440px);
-          min-height: 300px;
+          height: clamp(240px, 38vw, 340px);
+          min-height: 240px;
         }
 
         .hero-carousel img,
@@ -3110,8 +3110,8 @@
           width: min(100% - 28px, 480px);
         }
         .hero-carousel {
-          height: 250px;
-          min-height: 250px;
+          height: 180px;
+          min-height: 180px;
         }
 
         .hero-banner img {
