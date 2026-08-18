@@ -52,10 +52,34 @@ const ICONS = {
     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 3a5 5 0 0 0-5 5c0 5 5 13 5 13s5-8 5-13a5 5 0 0 0-5-5Zm0 7h.01M4 18c2-2 4-3 8-3s6 1 8 3"/>
     </svg>
+  ),
+  default: (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 11 12 4l9 7M5 10v11h14V10M9 21v-6h6v6M12 9c2 2 3 4 3 6a3 3 0 0 1-6 0c0-2 1-4 3-6Z" />
+    </svg>
   )
 };
 
 export default function Product() {
+  const categories = WFA_PRODUCTS.categories;
+
+  // Helper to get icon by category slug (backend returns numeric IDs)
+  const getIconKey = (category) => {
+    const slug = category.slug || '';
+    // Map slug patterns to icon keys
+    if (slug.includes('industrial')) return 'industrial';
+    if (slug.includes('agriculture')) return 'agriculture';
+    if (slug.includes('animal')) return 'animal-farming';
+    if (slug.includes('commercial')) return 'commercial';
+    if (slug.includes('domestic')) return 'domestic';
+    if (slug.includes('ro-machine')) return 'ro-machine';
+    if (slug.includes('pressure')) return 'pressure-tank-accessories';
+    if (slug.includes('filter') || slug.includes('valve')) return 'filter-softener-valves';
+    if (slug.includes('ozone')) return 'ozone-generator';
+    // Fallback to raw slug if it matches directly
+    return slug || 'default';
+  };
+
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     
@@ -121,28 +145,28 @@ export default function Product() {
           <p className="lead reveal">Browse our water-treatment technologies by category to find solutions suited to industrial, agricultural, commercial, livestock and domestic applications.</p>
           
           <div className="category-grid" id="categoryGrid">
-            {WFA_PRODUCTS.categories.map((category) => (
-              <Link 
-                key={category.id} 
-                className="category-card reveal" 
-                to={`/category/${category.slug}`}
-              >
-                <div className="category-image">
-                  <img src={category.image} alt={category.name} />
-                </div>
-                <div className="category-content">
-                  <div className="category-meta">
-                    <span className="category-icon">{ICONS[category.id]}</span>
-                    <span className="category-num">{category.number} / {category.label}</span>
+            {categories.map((category) => (
+                <Link 
+                  key={category.id} 
+                  className="category-card reveal" 
+                  to={`/category/${category.slug}`}
+                >
+                  <div className="category-image">
+                    <img src={category.image || '/images/logo.png'} alt={category.name} />
                   </div>
-                  <h3>{category.name}</h3>
-                  <p>{category.description}</p>
-                  <span className="category-cta">
-                    Explore Category <span>&rarr;</span>
-                  </span>
-                </div>
-              </Link>
-            ))}
+                  <div className="category-content">
+                    <div className="category-meta">
+                      <span className="category-icon">{ICONS[getIconKey(category)] || ICONS['default']}</span>
+                      <span className="category-num">{category.number || '0'} / {category.label || category.name}</span>
+                    </div>
+                    <h3>{category.name}</h3>
+                    <p>{category.description}</p>
+                    <span className="category-cta">
+                      Explore Category <span>&rarr;</span>
+                    </span>
+                  </div>
+                </Link>
+              ))}
           </div>
         </div>
       </section>

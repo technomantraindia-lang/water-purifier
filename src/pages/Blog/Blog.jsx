@@ -8,10 +8,13 @@ import './Blog.css';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Blog() {
+  const blogs = BLOG_POSTS;
+
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    
     const ctx = gsap.context(() => {
-      gsap.set(".reveal-blog, .blog-feature-card, .blog-list-card", {
+      gsap.set(".blog-list-card", {
         autoAlpha: 1,
         y: 0,
         scale: 1,
@@ -19,19 +22,6 @@ export default function Blog() {
       });
 
       if (!reduced) {
-        gsap.fromTo(".blog-page-hero .reveal-blog",
-          { autoAlpha: 0, y: 22, filter: "blur(4px)" },
-          {
-            autoAlpha: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.68,
-            stagger: 0.07,
-            ease: "power3.out",
-            clearProps: "opacity,visibility,transform,filter"
-          }
-        );
-
         gsap.fromTo(".blog-list-card",
           { autoAlpha: 0, y: 24 },
           {
@@ -40,8 +30,7 @@ export default function Blog() {
             y: 0,
             duration: 0.62,
             stagger: 0.06,
-            ease: "power3.out",
-            clearProps: "opacity,visibility,transform"
+            ease: "power3.out"
           }
         );
       }
@@ -53,46 +42,39 @@ export default function Blog() {
       clearTimeout(timer);
       ctx.revert();
     };
-  }, []);
+  }, [blogs.length]);
 
   return (
     <main className="blog-page">
-      <section className="blog-page-hero">
-        <div className="blog-hero-grid" aria-hidden="true"></div>
-        <div className="blog-hero-glow blog-hero-glow-one" aria-hidden="true"></div>
-        <div className="blog-hero-glow blog-hero-glow-two" aria-hidden="true"></div>
-        <div className="container">
-          <nav className="blog-breadcrumb reveal-blog" aria-label="Breadcrumb">
-            <Link to="/">Home</Link>
-            <span>/</span>
-            <span>Blogs</span>
-          </nav>
-          <span className="blog-eyebrow reveal-blog">Water Filter Africa Knowledge Hub</span>
-          <h1 className="reveal-blog">Blogs</h1>
-          <p className="reveal-blog">Practical water-treatment insights for homes, farms, commercial facilities and industrial operations across Africa.</p>
-        </div>
+      <section className="hero-banner" aria-label="Blog banner">
+        <img 
+          src="/images/abou us banner.png" 
+          alt="Water Filter Africa blog banner" 
+          onLoad={() => ScrollTrigger.refresh()}
+        />
       </section>
 
-      <section className="blog-list-section">
+      <section className="blog-section">
         <div className="container">
-          <div className="blog-list-header">
-            <span className="blog-eyebrow">All Blogs</span>
-            <h2>Explore Water Treatment Topics</h2>
+          <div className="blog-grid-header">
+            <span className="eyebrow">Insights &amp; Case Studies</span>
+            <h2>Our Blog &amp; Updates</h2>
+            <p className="lead">Technical guides, water-quality insights, and field installation updates from our engineering teams.</p>
           </div>
+
           <div className="blog-list-grid">
-            {BLOG_POSTS.map((post, index) => (
-              <article className="blog-list-card" key={post.title}>
-                <div className="blog-list-copy">
-                  <div className="blog-card-meta">
-                    <span>{post.category}</span>
-                  </div>
-                  <h3>{post.title}</h3>
-                  <p>{post.excerpt}</p>
-                  <div className="blog-tags">
-                    {post.points.map((point) => <span key={point}>{point}</span>)}
-                  </div>
+            {blogs.map((blog) => (
+              <Link to={`/blog/${blog.slug}`} key={blog.id} className="blog-list-card">
+                <div className="blog-card-image">
+                  <img src={blog.image || '/images/logo.png'} alt={blog.title} />
                 </div>
-              </article>
+                <div className="blog-card-content">
+                  <span className="blog-card-date">{blog.date}</span>
+                  <h3>{blog.title}</h3>
+                  <p>{blog.excerpt}</p>
+                  <span className="blog-card-cta">Read Article &rarr;</span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

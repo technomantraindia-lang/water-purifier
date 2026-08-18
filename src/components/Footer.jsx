@@ -28,6 +28,23 @@ export default function Footer() {
   return (
     <footer id="footer">
       <div className="container">
+        
+        {/* Country Subdomains Navigation Bar */}
+        <div className="footer-country-bar">
+          <a href="https://www.angola.waterfilterafrica.com/" target="_blank" rel="noreferrer">ANGOLA</a>
+          <span className="bar-separator">||</span>
+          <a href="https://www.southafrica.waterfilterafrica.com/" target="_blank" rel="noreferrer">SOUTHAFRICA</a>
+          <span className="bar-separator">||</span>
+          <a href="https://www.zimbabwe.waterfilterafrica.com/" target="_blank" rel="noreferrer">ZIMBABWE</a>
+          <span className="bar-separator">||</span>
+          <a href="https://www.namibia.waterfilterafrica.com/" target="_blank" rel="noreferrer">NAMIBIA</a>
+          <span className="bar-separator">||</span>
+          <a href="https://www.congo.waterfilterafrica.com/" target="_blank" rel="noreferrer">CONGO</a>
+          <span className="bar-separator">||</span>
+          <a href="https://www.botswana.waterfilterafrica.com/" target="_blank" rel="noreferrer">BOTSWANA</a>
+          <span className="bar-separator">||</span>
+        </div>
+
         <div className="footer-grid">
           <div>
             <div className="brand" style={{ marginBottom: '12px' }}>

@@ -82,6 +82,32 @@ export default function Home() {
   const [activeTestimonial, setActiveTestimonial] = useState(1);
   const [isHoveringTestimonials, setIsHoveringTestimonials] = useState(false);
 
+  // Contact Form States
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    application: '',
+    message: ''
+  });
+  const [formStatus, setFormStatus] = useState({
+    show: false,
+    message: ''
+  });
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    setFormStatus({
+      show: true,
+      message: 'Thank you for your message! Our team will get back to you shortly.'
+    });
+  };
+
   const cellsGlowRefs = useRef([]);
   const featuredTrackRef = useRef(null);
 
@@ -656,6 +682,26 @@ export default function Home() {
               onLoad={() => ScrollTrigger.refresh()}
             />
           ))}
+          <button
+            className="hero-carousel-arrow hero-carousel-prev"
+            type="button"
+            aria-label="Previous banner"
+            onClick={() => setActiveHeroBanner((current) => (current - 1 + HERO_BANNERS.length) % HERO_BANNERS.length)}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button
+            className="hero-carousel-arrow hero-carousel-next"
+            type="button"
+            aria-label="Next banner"
+            onClick={() => setActiveHeroBanner((current) => (current + 1) % HERO_BANNERS.length)}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
           <div className="hero-carousel-dots" aria-label="Banner slides">
             {HERO_BANNERS.map((banner, index) => (
               <button
@@ -1310,60 +1356,6 @@ export default function Home() {
         
         <div className="container">
           <div className="contact-left">
-            <span className="eyebrow-premium">Let’s Talk Water Solutions</span>
-            <h2 className="title-premium">Let’s Build the Right Water Solution for Your Application.</h2>
-            <p className="desc-premium">Tell us about your water source, application and treatment requirements. Our team can help you identify the right filtration or water-treatment approach for your project.</p>
-            
-            <div className="contact-info-panel">
-              <div className="contact-info-row">
-                <div className="contact-info-icon-box">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-                </div>
-                <div className="contact-info-text-box">
-                  <span className="contact-info-label">Head Office</span>
-                  <span className="contact-info-value">P.O Box 32014,<br/>Lusaka, Zambia, Africa</span>
-                </div>
-              </div>
-
-              <div className="contact-info-row">
-                <div className="contact-info-icon-box">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4l8 5 8-5"/></svg>
-                </div>
-                <div className="contact-info-text-box">
-                  <span className="contact-info-label">Email Us</span>
-                  <span className="contact-info-value">
-                    <a href="mailto:office@waterfilterafrica.com">office@waterfilterafrica.com</a><br/>
-                    <a href="mailto:joshiionexchangeltd@gmail.com">joshiionexchangeltd@gmail.com</a>
-                  </span>
-                </div>
-              </div>
-
-              <div className="contact-info-row">
-                <div className="contact-info-icon-box">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                </div>
-                <div className="contact-info-text-box">
-                  <span className="contact-info-label">Call Us</span>
-                  <span className="contact-info-value">
-                    <a href="tel:+260969113323">+260969113323</a>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="contact-quick-actions">
-              <a href="tel:+260969113323" className="contact-btn contact-btn-primary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                <span>Call Now</span>
-              </a>
-              <a href="mailto:office@waterfilterafrica.com" className="contact-btn contact-btn-secondary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4l8 5 8-5"/></svg>
-                <span>Email Us</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="contact-form-container" id="contact-form-box">
             <div className="map-card">
               <div className="map-card-head">
                 <span className="form-label-tag">Find Us</span>
@@ -1377,6 +1369,98 @@ export default function Home() {
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>
+          </div>
+
+          <div className="contact-form-container" id="contact-form-box">
+            {!formStatus.show ? (
+              <>
+                <div className="form-head-premium">
+                  <span className="form-label-tag">Enquiry Form</span>
+                  <h3>Contact Us</h3>
+                  <p>Send us a message and our team will get in touch with you shortly.</p>
+                </div>
+                
+                <form onSubmit={handleFormSubmit} className="contact-form" noValidate>
+                  <div className="contact-form-grid">
+                    <div className="form-field-group">
+                      <label htmlFor="home-name">Full Name *</label>
+                      <input
+                        id="home-name"
+                        type="text"
+                        className="form-field-input"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      />
+                    </div>
+                    <div className="form-field-group">
+                      <label htmlFor="home-email">Email Address *</label>
+                      <input
+                        id="home-email"
+                        type="email"
+                        className="form-field-input"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      />
+                    </div>
+                    <div className="form-field-group">
+                      <label htmlFor="home-phone">Phone Number *</label>
+                      <input
+                        id="home-phone"
+                        type="tel"
+                        className="form-field-input"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      />
+                    </div>
+                    <div className="form-field-group">
+                      <label htmlFor="home-application">Application / Industry *</label>
+                      <select
+                        id="home-application"
+                        className="form-field-input"
+                        required
+                        value={formData.application}
+                        onChange={(e) => setFormData({ ...formData, application: e.target.value })}
+                      >
+                        <option value="">Select Application</option>
+                        <option>Agriculture</option>
+                        <option>Industrial</option>
+                        <option>Commercial</option>
+                        <option>Domestic</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                    <div className="form-field-group form-field-group-full">
+                      <label htmlFor="home-message">Message / Project Details *</label>
+                      <textarea
+                        id="home-message"
+                        className="form-field-input"
+                        required
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  
+                  <button type="submit" className="form-submit-btn">
+                    <span>Send Message</span>
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="form-success-state">
+                <div className="success-checkmark-box">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <h3>Message Sent Successfully!</h3>
+                <p>Thank you for reaching out. We have received your inquiry and our team will get back to you shortly.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

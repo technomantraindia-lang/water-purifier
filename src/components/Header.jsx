@@ -105,16 +105,18 @@ export default function Header() {
           <Link to="/" onClick={(e) => handleLinkClick(e, '/', '#home')}>Home</Link>
           <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
           <div className="nav-dropdown">
-            <Link to="/product" onClick={() => setMenuOpen(false)}>Product</Link>
+            <a href="#" onClick={(e) => e.preventDefault()}>
+              Product
+              <svg className="dropdown-arrow-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '6px', transition: 'transform 0.2s ease' }}><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
             <div className="nav-dropdown-menu" aria-label="Product categories">
-              <Link to="/product" onClick={() => setMenuOpen(false)}>All Products</Link>
               {WFA_PRODUCTS.categories.map((category) => (
                 <Link
                   key={category.id}
                   to={`/category/${category.slug}`}
                   onClick={() => setMenuOpen(false)}
                 >
-                  {category.label}
+                  {category.name}
                 </Link>
               ))}
             </div>

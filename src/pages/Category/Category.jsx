@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSearchParams, Link, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,13 +10,35 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Category() {
   const [searchParams] = useSearchParams();
   const params = useParams();
-  const slug = params.slug || searchParams.get("slug") || WFA_PRODUCTS.categories[0].slug;
+  const slug = params.slug || searchParams.get("slug") || '';
 
-  const displayCategory = WFA_PRODUCTS.categories.find(c => c.slug === slug) || WFA_PRODUCTS.categories[0];
-  const displayProducts = WFA_PRODUCTS.products.filter(p => p.category === displayCategory.id);
+  // Get categories and products from static data
+  const categories = useMemo(() => WFA_PRODUCTS.categories, []);
+  const allProducts = useMemo(() => WFA_PRODUCTS.products, []);
+
+  // Find category by slug first, then fallback to ID/category matching
+  const displayCategory = useMemo(() => {
+    const bySlug = categories.find(c => c.slug === slug);
+    if (bySlug) return bySlug;
+    const byId = categories.find(c => c.id === slug);
+    if (byId) return byId;
+    return categories[0] || {};
+  }, [categories, slug]);
+
+  // Filter products for this category
+  const products = useMemo(() => {
+    return allProducts.filter(p => {
+      if (displayCategory && (displayCategory.id || displayCategory.slug)) {
+        return p.category === displayCategory.id || p.category === displayCategory.slug;
+      }
+      return false;
+    });
+  }, [allProducts, displayCategory]);
 
   useEffect(() => {
-    document.title = `${displayCategory.name} | Water Filter Africa`;
+    if (displayCategory.name) {
+      document.title = `${displayCategory.name} | Water Filter Africa`;
+    }
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealEls = document.querySelectorAll(".reveal");
@@ -77,44 +99,44 @@ export default function Category() {
             <span>/</span>
             <Link to="/product">Products</Link>
             <span>/</span>
-            <span id="crumbCategory">{displayCategory.name}</span>
+            <span id="crumbCategory">{displayCategory.name || 'Category'}</span>
           </nav>
           <span className="eyebrow reveal" id="categoryEyebrow">
-            Product Category / {displayCategory.number}
+            Product Category / {displayCategory.number || ''}
           </span>
-          <h1 className="reveal" id="categoryTitle">{displayCategory.name}</h1>
-          <p className="cat-desc reveal" id="categoryDesc">{displayCategory.description}</p>
+          <h1 className="reveal" id="categoryTitle">{displayCategory.name || 'Loading...'}</h1>
+          <p className="cat-desc reveal" id="categoryDesc">{displayCategory.description || ''}</p>
         </div>
       </header>
       
       <section className="section">
         <div className="container">
           <div className="product-grid" id="productGrid">
-            {displayProducts.map((p) => (
-              <Link 
-                key={p.id}
-                className="product-card reveal" 
-                to={`/product/${p.slug}`}
-              >
-                <div className="product-stage">
-                  <img src={p.image} alt={p.name} />
-                </div>
-                <span className="product-label">{p.technology}</span>
-                <h2>{p.name}</h2>
-                <p>{p.shortDescription}</p>
-                <span className="product-cta">
-                  View Product <span>&rarr;</span>
-                </span>
-              </Link>
-            ))}
+            {products.length > 0 ? (
+              products.map((p) => (
+                <Link 
+                  key={p.id}
+                  className="product-card reveal" 
+                  to={`/product/${p.slug}`}
+                >
+                  <div className="product-stage">
+                    <img src={p.image || '/images/logo.png'} alt={p.name} />
+                  </div>
+                  <span className="product-label">{p.technology || displayCategory.label}</span>
+                  <h2>{p.name}</h2>
+                  <p>{p.shortDescription || ''}</p>
+                  <span className="product-cta">
+                    View Product <span>&rarr;</span>
+                  </span>
+                </Link>
+              ))
+            ) : (
+              <div className="empty" id="emptyState">
+                No products are currently available in this category.<br />
+                <Link to="/product">Back to Products &rarr;</Link>
+              </div>
+            )}
           </div>
-
-          {displayProducts.length === 0 && (
-            <div className="empty" id="emptyState">
-              No products are currently available in this category.<br />
-              <Link to="/product">Back to Products &rarr;</Link>
-            </div>
-          )}
         </div>
       </section>
     </main>

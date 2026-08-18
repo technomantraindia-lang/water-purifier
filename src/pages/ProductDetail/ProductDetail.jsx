@@ -9,31 +9,54 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const product = useMemo(
-    () => WFA_PRODUCTS.products.find((item) => item.slug === slug) || WFA_PRODUCTS.products[0],
-    [slug]
-  );
-  const category = WFA_PRODUCTS.categories.find((item) => item.id === product.category);
-  const galleryImages = useMemo(() => {
-    const fallbackImages = [product.heroImage, product.image, category?.image].filter(Boolean);
-    return Array.from(new Set(product.gallery?.length ? product.gallery : fallbackImages)).slice(0, 3);
-  }, [product, category]);
   const [activeImage, setActiveImage] = useState(0);
 
-  useEffect(() => {
-    setActiveImage(0);
+  // Find product from static data
+  const product = useMemo(() => {
+    if (!slug) return null;
+    return WFA_PRODUCTS.products.find(p => 
+      p.slug === slug || p.id === slug
+    ) || null;
+  }, [slug]);
+
+  const galleryImages = useMemo(() => {
+    if (!product) return [];
+    const fallbackImages = [product.image, product.heroImage].filter(Boolean);
+    let gallery = [];
+    if (product.gallery && Array.isArray(product.gallery)) {
+      gallery = product.gallery;
+    } else if (typeof product.gallery === 'string') {
+      try {
+        const parsed = JSON.parse(product.gallery);
+        gallery = Array.isArray(parsed) ? parsed : [];
+      } catch {
+        gallery = [];
+      }
+    }
+    return Array.from(new Set([...gallery, ...fallbackImages])).filter(Boolean).slice(0, 3);
+  }, [product]);
+
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    return WFA_PRODUCTS.products
+      .filter(p => p.category === product.category && p.id !== product.id)
+      .slice(0, 3);
   }, [product]);
 
   const showPreviousImage = () => {
+    if (!galleryImages.length) return;
     setActiveImage((current) => (current - 1 + galleryImages.length) % galleryImages.length);
   };
 
   const showNextImage = () => {
+    if (!galleryImages.length) return;
     setActiveImage((current) => (current + 1) % galleryImages.length);
   };
 
   useEffect(() => {
-    document.title = `${product.name} | Water Filter Africa`;
+    if (!product) return;
+    document.title = product.name ? `${product.name} | Water Filter Africa` : 'Water Filter Africa';
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealEls = document.querySelectorAll(".detail-reveal");
     const observer = new IntersectionObserver((entries) => {
@@ -105,6 +128,26 @@ export default function ProductDetail() {
     };
   }, [product]);
 
+  if (!product) {
+    return (
+      <main className="product-detail-page">
+        <section className="detail-hero">
+          <div className="container">
+            <nav className="breadcrumb detail-reveal" aria-label="Breadcrumb">
+              <Link to="/">Home</Link>
+              <span>/</span>
+              <Link to="/product">Products</Link>
+            </nav>
+            <h1>Product not found</h1>
+            <p><Link to="/product">Back to Products &rarr;</Link></p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  const categorySlug = product.category || 'categories';
+
   return (
     <main className="product-detail-page">
       <section className="detail-hero">
@@ -114,15 +157,15 @@ export default function ProductDetail() {
             <div className="product-orbit" aria-hidden="true" />
             <div className="product-carousel">
               <div className="hero-product-image">
-                <img src={galleryImages[activeImage] || product.heroImage || product.image} alt={`${product.name} view ${activeImage + 1}`} />
+                <img src={(galleryImages.length ? galleryImages[activeImage] : null) || product.image || '/images/logo.png'} alt={`${product.name} view ${activeImage + 1}`} />
               </div>
               {galleryImages.length > 1 && (
                 <>
                   <button className="carousel-arrow carousel-arrow-prev" type="button" onClick={showPreviousImage} aria-label="Show previous product image">
-                    <span aria-hidden="true">&lt;</span>
+                    <span aria-hidden="true">{'\u003C'}</span>
                   </button>
                   <button className="carousel-arrow carousel-arrow-next" type="button" onClick={showNextImage} aria-label="Show next product image">
-                    <span aria-hidden="true">&gt;</span>
+                    <span aria-hidden="true">{'\u003E'}</span>
                   </button>
                   <div className="carousel-thumbs" aria-label="Product image thumbnails">
                     {galleryImages.map((image, index) => (
@@ -148,11 +191,11 @@ export default function ProductDetail() {
               <span>/</span>
               <Link to="/product">Products</Link>
               <span>/</span>
-              <Link to={`/category/${category?.slug || WFA_PRODUCTS.categories[0].slug}`}>{category?.name || "Product Category"}</Link>
+              <Link to={`/category/${categorySlug}`}>{product.category || "Product Category"}</Link>
             </nav>
             <span className="eyebrow detail-reveal">{product.technology}</span>
             <h1 className="detail-reveal">{product.name}</h1>
-            <p className="detail-lead detail-reveal">{product.shortDescription}</p>
+            <p className="detail-lead detail-reveal">{product.shortDescription || product.description}</p>
             <div className="hero-facts detail-reveal">
               <div><span>Brand</span><strong>{product.brand}</strong></div>
               <div><span>Type</span><strong>{product.type}</strong></div>
@@ -186,7 +229,7 @@ export default function ProductDetail() {
               <h2>Ultraviolet water disinfection built for reliable operation.</h2>
               <p>{product.description}</p>
               <div className="highlight-grid">
-                {product.highlights?.map((item) => (
+                {(product.highlights || []).map((item) => (
                   <div className="highlight-card" key={item}>
                     <span aria-hidden="true" />
                     <p>{item}</p>
@@ -203,7 +246,7 @@ export default function ProductDetail() {
               <div className="product-table-wrap">
                 <table className="product-spec-table">
                   <tbody>
-                    {product.specs?.map(([label, value]) => (
+                    {(product.specs || []).map(([label, value]) => (
                       <tr key={label}>
                         <th scope="row">{label}</th>
                         <td>{value}</td>
@@ -215,13 +258,36 @@ export default function ProductDetail() {
             </section>
 
             <section className="tech-strip detail-reveal">
-              {product.technicalDetails?.map((item) => (
+              {(product.technicalDetails || []).map((item) => (
                 <span key={item}>{item}</span>
               ))}
             </section>
           </div>
         </div>
       </section>
+
+      {relatedProducts.length > 0 && (
+        <section className="section related-products-section detail-reveal">
+          <div className="container">
+            <span className="eyebrow">Related Solutions</span>
+            <h2>Products in the Same Category</h2>
+            <div className="related-products-grid">
+              {relatedProducts.map((p) => (
+                <Link to={`/product/${p.slug}`} key={p.id} className="related-product-card">
+                  <div className="related-product-image">
+                    <img src={p.image || '/images/logo.png'} alt={p.name} />
+                  </div>
+                  <div className="related-product-content">
+                    <span className="related-tech">{p.technology}</span>
+                    <h3>{p.name}</h3>
+                    <span className="related-link">View Details &rarr;</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

@@ -202,19 +202,30 @@
 
 .nav-dropdown-menu {
   position: absolute;
-  top: calc(100% + 14px);
+  top: calc(100% - 2px);
   left: 50%;
-  width: 300px;
+  width: 340px;
   padding: 12px;
   border: 1px solid rgba(77,216,245,0.18);
   border-radius: 14px;
   background: rgba(3,29,49,0.98);
   box-shadow: 0 26px 70px rgba(3,29,49,0.28);
-  transform: translate(-50%, 8px);
+  transform: translate(-50%, 10px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
+}
+
+.nav-dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: transparent;
+  pointer-events: auto;
 }
 
 .nav-dropdown:hover .nav-dropdown-menu,
@@ -223,6 +234,10 @@
   visibility: visible;
   pointer-events: auto;
   transform: translate(-50%, 0);
+}
+
+.nav-dropdown:hover .dropdown-arrow-icon {
+  transform: rotate(180deg);
 }
 
 .nav-dropdown-menu a {
@@ -325,6 +340,38 @@ footer {
 footer > .container {
   width: min(1320px, calc(100% - 64px));
   margin: 0 auto;
+}
+
+.footer-country-bar {
+  background: #0789F9;
+  border-radius: 12px;
+  padding: 14px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  box-shadow: 0 10px 25px rgba(7, 137, 249, 0.18);
+}
+
+.footer-country-bar a {
+  color: #ffffff;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  transition: all 0.3s ease;
+}
+
+.footer-country-bar a:hover {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.85);
+  transform: scale(1.03);
+}
+
+.footer-country-bar .bar-separator {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 800;
 }
 
 .footer-grid {
@@ -479,8 +526,15 @@ footer > .container {
   background: #25D366;
 }
 
-.floating-action.call {
-  background: linear-gradient(135deg, var(--navy), var(--blue));
+.floating-action.chat {
+  background: #079c55;
+  border: none;
+  cursor: pointer;
+}
+
+.floating-action.chat svg {
+  fill: none;
+  stroke: currentColor;
 }
 
 .floating-action svg {
@@ -822,5 +876,55 @@ footer > .container {
 
   .copyright {
     font-size: 0.86rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .dropdown-arrow-icon {
+    display: none !important;
+  }
+}
+
+/* Full-Width Banners and Crop Utilities */
+.hero-banner, .hero {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: clamp(280px, 30vw, 400px) !important;
+  background: #031D31 !important;
+  overflow: hidden !important;
+  position: relative !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Ensure banner images fill screen and scale up to crop baked-in margins */
+.hero-banner img, .hero img {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: scale(1.38) !important; /* Scale to crop baked-in side borders */
+  transform-origin: center center !important;
+}
+
+/* Responsive adjustments for scaled banners */
+@media (max-width: 900px) {
+  .hero-banner, .hero {
+    height: clamp(200px, 25vw, 280px) !important;
+  }
+  .hero-banner img, .hero img {
+    transform: scale(1.28) !important;
+  }
+}
+@media (max-width: 580px) {
+  .hero-banner, .hero {
+    height: 160px !important;
+  }
+  .hero-banner img, .hero img {
+    transform: scale(1.22) !important;
   }
 }
