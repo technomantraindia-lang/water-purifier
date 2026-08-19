@@ -63,7 +63,7 @@ const TESTIMONIALS_DATA = [
 
 const HERO_BANNERS = [
   { src: "/images/short banner 1.png", alt: "Water Filter Africa banner 1" },
-  { src: "/images/short banner 2.png", alt: "Water Filter Africa banner 2" }
+  { src: "/images/image.png", alt: "Water Filter Africa banner 2" }
 ];
 
 export default function Home() {
