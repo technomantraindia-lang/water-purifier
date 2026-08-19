@@ -83,7 +83,7 @@ export const BLOG_POSTS = [
     category: "Case Studies",
     readTime: "5 min read",
     date: "20 January, 2022",
-    image: "/images/Serus LLC Desalter Water Desalination.png",
+    image: "/images/Serus LLC Desalter Water Desalinationt.png",
     excerpt: "Self Cleaning Inline Water Filter System In Mongu Zambia AfricaHard Water Treatment System In Mongu ZambiaHard Water Filter System Zambia | Calcium Removal Water Filter System | Limescale Removal Water Filter | Water Softener & Conditioner System ZambiaAnti Scaling Water Filter | Anti Clog Filter | Pipe Corrosion ProtectionType: Self Cleaning Inline Water FilterCartridge: Change not...",
     content: `
       <p>Mongu, Zambia experiences unique groundwater conditions with fluctuating iron levels and elevated hardness. We deployed our specialized Self-Cleaning Inline Filter System to address these challenges, ensuring high-capacity filtration for irrigation and municipal use.</p>

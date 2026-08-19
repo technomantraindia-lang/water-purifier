@@ -16,6 +16,8 @@ export default function Header() {
         const el = document.querySelector(hash);
         if (el) {
           el.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } else {
         navigate(path);
@@ -24,6 +26,8 @@ export default function Header() {
           const el = document.querySelector(hash);
           if (el) {
             el.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         }, 100);
       }
@@ -103,7 +107,7 @@ export default function Header() {
         </button>
         <nav className="nav-links" aria-label="Primary">
           <Link to="/" onClick={(e) => handleLinkClick(e, '/', '#home')}>Home</Link>
-          <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
+          <Link to="/about" onClick={(e) => handleLinkClick(e, '/about', '#top')}>About</Link>
           <div className="nav-dropdown">
             <a href="#" onClick={(e) => e.preventDefault()}>
               Product
@@ -114,15 +118,15 @@ export default function Header() {
                 <Link
                   key={category.id}
                   to={`/category/${category.slug}`}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={(e) => handleLinkClick(e, `/category/${category.slug}`, '#top')}
                 >
                   {category.name}
                 </Link>
               ))}
             </div>
           </div>
-          <Link to="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
-          <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
+          <Link to="/blog" onClick={(e) => handleLinkClick(e, '/blog', '#top')}>Blog</Link>
+          <Link to="/contact" onClick={(e) => handleLinkClick(e, '/contact', '#top')}>Contact</Link>
         </nav>
         <Link 
           className="nav-cta" 
@@ -136,3 +140,6 @@ export default function Header() {
     </header>
   );
 }
+
+
+

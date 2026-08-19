@@ -105,7 +105,7 @@ export default function Contact() {
   }, []);
 
   return (
-    <main id="top">
+    <main id="top" className="contact-page">
       <section className="hero-banner clip-reveal" aria-label="Contact Water Filter Africa banner">
         <img 
           src="/images/contact banner.png" 

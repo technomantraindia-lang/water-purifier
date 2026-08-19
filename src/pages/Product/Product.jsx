@@ -130,7 +130,7 @@ export default function Product() {
   }, []);
 
   return (
-    <main>
+    <main id="top" className="product-page">
       <section className="hero-banner clip-reveal" aria-label="Products banner">
         <img 
           src="/images/product banner .png" 

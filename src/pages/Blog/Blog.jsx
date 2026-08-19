@@ -48,7 +48,7 @@ export default function Blog() {
     <main className="blog-page">
       <section className="hero-banner" aria-label="Blog banner">
         <img 
-          src="/images/abou us banner.png" 
+          src="/images/blogs.png" 
           alt="Water Filter Africa blog banner" 
           onLoad={() => ScrollTrigger.refresh()}
         />

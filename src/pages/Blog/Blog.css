@@ -141,3 +141,32 @@
     margin-bottom: 32px;
   }
 }
+
+/* Hero Banner Full-Width Styling like About Page */
+.blog-page .hero-banner {
+  height: clamp(260px, 30vw, 430px) !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: #031D31 !important;
+}
+
+.blog-page .hero-banner img {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
+}
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .blog-page .hero-banner {
+    height: clamp(280px, 27vw, 370px) !important;
+  }
+}
+
+@media (min-width: 1441px) {
+  .blog-page .hero-banner {
+    height: clamp(360px, 29vw, 500px) !important;
+  }
+}

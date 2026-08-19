@@ -17,10 +17,13 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Scroll to top on route change unless hash is present
-    if (!window.location.hash) {
-      window.scrollTo(0, 0);
-    }
+    if (window.location.hash) return undefined;
+
+    const scrollToPageTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    scrollToPageTop();
+    const timer = window.setTimeout(scrollToPageTop, 80);
+
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   return null;
@@ -79,8 +82,10 @@ export default function App() {
         <button 
           className="floating-action chat" 
           onClick={() => {
-            if (window.Tawk_API && window.Tawk_API.toggle) {
-              window.Tawk_API.toggle();
+            if (window.Tawk_API) {
+              if (window.Tawk_API.showWidget) window.Tawk_API.showWidget();
+              if (window.Tawk_API.maximize) window.Tawk_API.maximize();
+              else if (window.Tawk_API.toggle) window.Tawk_API.toggle();
             }
           }}
           aria-label="Open support chat"
@@ -93,3 +98,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+

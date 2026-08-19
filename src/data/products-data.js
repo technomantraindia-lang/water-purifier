@@ -51,7 +51,7 @@ export const WFA_PRODUCTS = {
       name: "Reverse Osmosis (RO) Machines",
       label: "RO Machines",
       number: "06",
-      image: "/images/Serus LLC Desalter Water Desalination.png",
+      image: "/images/Serus LLC Desalter Water Desalinationt.png",
       description: "High-rejection membrane systems for absolute removal of dissolved solids, brackish water treatment, and desalination."
     },
     {
@@ -89,12 +89,12 @@ export const WFA_PRODUCTS = {
       name: "Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV",
       category: "industrial",
       technology: "UV Disinfection",
-      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
+      image: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       shortDescription: "Advanced ultraviolet water disinfectant and sterilizer for virus, bacteria, molds, algae and other microorganisms.",
       productUrl: "https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-1a-uv",
-      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       gallery: [
-        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png"
       ],
@@ -145,14 +145,14 @@ export const WFA_PRODUCTS = {
       name: "Serus LLC Desalter Water Desalination",
       category: "agriculture",
       technology: "Desalination",
-      image: "/images/Serus LLC Desalter Water Desalination.png",
+      image: "/images/Serus LLC Desalter Water Desalinationt.png",
       shortDescription: "Desalination and treatment support for demanding farming and source-water conditions.",
       productUrl: "https://www.waterfilterafrica.com/serus-llc-desalter-water-desalination",
-      heroImage: "/images/Serus LLC Desalter Water Desalination.png",
+      heroImage: "/images/Serus LLC Desalter Water Desalinationt.png",
       gallery: [
-        "/images/Serus LLC Desalter Water Desalination.png",
-        "/images/Serus LLC Desalter Water Desalination.png",
-        "/images/Serus LLC Desalter Water Desalination.png"
+        "/images/Serus LLC Desalter Water Desalinationt.png",
+        "/images/Serus LLC Desalter Water Desalinationt.png",
+        "/images/Serus LLC Desalter Water Desalinationt.png"
       ],
       brand: "Serus",
       type: "Desalination Unit",
@@ -293,13 +293,13 @@ export const WFA_PRODUCTS = {
       name: "Magnetic Structured Water Device For 100,000 LPH",
       category: "domestic",
       technology: "Water Conditioning",
-      image: "/images/Magnetic Structured Water Device For 100,000 LPH.png",
+      image: "/images/Magnetic Structured Water Device For 100,000 LPH .png",
       shortDescription: "Engineered water-conditioning technology for advanced domestic filtration requirements.",
       productUrl: "https://www.waterfilterafrica.com/magnetic-structured-water-device-for-100000-lph",
-      heroImage: "/images/Magnetic Structured Water Device For 100,000 LPH.png",
+      heroImage: "/images/Magnetic Structured Water Device For 100,000 LPH .png",
       gallery: [
-        "/images/Magnetic Structured Water Device For 100,000 LPH.png",
-        "/images/Magnetic Structured Water Device For 100,000 LPH.png"
+        "/images/Magnetic Structured Water Device For 100,000 LPH .png",
+        "/images/Magnetic Structured Water Device For 100,000 LPH .png"
       ],
       brand: "Joshi",
       type: "Magnetic Structured Water Conditioner",
@@ -532,12 +532,12 @@ export const WFA_PRODUCTS = {
       name: "Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV",
       category: "industrial",
       technology: "UV Disinfection",
-      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
+      image: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       shortDescription: "High-capacity industrial ultraviolet water sterilizer and disinfectant for heavy duty water purification applications.",
       productUrl: "https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-60a-uv",
-      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       gallery: [
-        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png"
       ],
@@ -582,12 +582,12 @@ export const WFA_PRODUCTS = {
       name: "Ultraviolet disinfectant-sterilizer - SERUSUV-100A UV",
       category: "industrial",
       technology: "UV Disinfection",
-      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
+      image: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       shortDescription: "Premium scale industrial UV water disinfection system designed for large volume municipal and processing requirements.",
       productUrl: "https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-100a-uv",
-      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       gallery: [
-        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png"
       ],
@@ -630,12 +630,12 @@ export const WFA_PRODUCTS = {
       name: "Ultraviolet disinfectant-sterilizer - SERUSUV-300A UV",
       category: "industrial",
       technology: "UV Disinfection",
-      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
+      image: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       shortDescription: "Super-capacity industrial UV sterilizer engineered to handle maximum flow rates for advanced plant and utility systems.",
       productUrl: "https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-300a-uv",
-      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+      heroImage: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
       gallery: [
-        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV.png",
+        "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png",
         "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png"
       ],

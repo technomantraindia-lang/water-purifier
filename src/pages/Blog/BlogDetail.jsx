@@ -53,14 +53,7 @@ export default function BlogDetail() {
 
   return (
     <main className="blog-detail-page">
-      {/* Banner */}
-      <section className="hero-banner" aria-label="Blog post banner">
-        <img 
-          src={blog.image || '/images/abou us banner.png'} 
-          alt={blog.title} 
-          onLoad={() => ScrollTrigger.refresh()}
-        />
-      </section>
+
 
       {/* Content Grid */}
       <section className="blog-detail-section">

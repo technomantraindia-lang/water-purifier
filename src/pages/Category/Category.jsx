@@ -91,7 +91,7 @@ export default function Category() {
   }, [displayCategory.name, slug]);
 
   return (
-    <main>
+    <main id="top" className="category-page">
       <header className="cat-hero">
         <div className="container">
           <nav className="breadcrumb reveal" aria-label="Breadcrumb">

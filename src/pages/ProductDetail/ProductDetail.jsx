@@ -130,8 +130,8 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <main className="product-detail-page">
-        <section className="detail-hero">
+      <main id="top" className="product-detail-page">
+        <section className="detail-hero" id="product-detail-banner">
           <div className="container">
             <nav className="breadcrumb detail-reveal" aria-label="Breadcrumb">
               <Link to="/">Home</Link>
@@ -149,8 +149,8 @@ export default function ProductDetail() {
   const categorySlug = product.category || 'categories';
 
   return (
-    <main className="product-detail-page">
-      <section className="detail-hero">
+    <main id="top" className="product-detail-page">
+      <section className="detail-hero" id="product-detail-banner">
         <div className="detail-hero-bg" aria-hidden="true" />
         <div className="container detail-hero-grid">
           <div className="detail-product-stage" aria-label={`${product.name} product image`}>

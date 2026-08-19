@@ -963,7 +963,7 @@ export default function Home() {
               </div>
               <span className="visual-featured-badge">Featured Technology</span>
               <div className="visual-panel-glow"></div>
-              <img src="/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png" alt="Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV" className="visual-panel-equipment" />
+              <img src="/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png" alt="Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV" className="visual-panel-equipment" />
               <div className="visual-panel-reflection"></div>
             </div>
             
@@ -1009,7 +1009,7 @@ export default function Home() {
               </div>
               <span className="visual-featured-badge">Selected Solution</span>
               <div className="visual-panel-glow"></div>
-              <img src="/images/Serus LLC Desalter Water Desalination.png" alt="Serus llc desalter water desalination" className="visual-panel-equipment" />
+              <img src="/images/Serus LLC Desalter Water Desalinationt.png" alt="Serus llc desalter water desalination" className="visual-panel-equipment" />
               <div className="visual-panel-reflection"></div>
             </div>
             
@@ -1055,7 +1055,7 @@ export default function Home() {
               </div>
               <span className="visual-featured-badge">Featured Technology</span>
               <div className="visual-panel-glow"></div>
-              <img src="/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV transparent.png" alt="Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV" className="visual-panel-equipment" />
+              <img src="/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png" alt="Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV" className="visual-panel-equipment" />
               <div className="visual-panel-reflection"></div>
             </div>
             
@@ -1101,7 +1101,7 @@ export default function Home() {
               </div>
               <span className="visual-featured-badge">Selected Solution</span>
               <div className="visual-panel-glow"></div>
-              <img src="/images/Magnetic Structured Water Device For 100,000 LPH.png" alt="Magnetic Structured water device for 100,000 LPH" className="visual-panel-equipment" />
+              <img src="/images/Magnetic Structured Water Device For 100,000 LPH .png" alt="Magnetic Structured water device for 100,000 LPH" className="visual-panel-equipment" />
               <div className="visual-panel-reflection"></div>
             </div>
             

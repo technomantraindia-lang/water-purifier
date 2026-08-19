@@ -180,7 +180,7 @@ export default function About() {
   }, []);
 
   return (
-    <main id="top">
+    <main id="top" className="about-page">
       <section className="hero hero-banner" aria-label="About Water Filter Africa banner">
         <img 
           src="/images/abou us banner.png" 
@@ -330,9 +330,9 @@ export default function About() {
               <span className="visual-glow" aria-hidden="true"></span>
               <span className="stage-orbit" aria-hidden="true"></span>
               <span className="stage-scan" aria-hidden="true"></span>
-              <img className="stage-product main" src="/images/Serus LLC Desalter Water Desalination.png" alt="Desalination equipment" />
+              <img className="stage-product main" src="/images/Serus LLC Desalter Water Desalinationt.png" alt="Desalination equipment" />
               <img className="stage-product side" src="/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png" alt="UV disinfection equipment" />
-              <img className="stage-product small" src="/images/Magnetic Structured Water Device For 100,000 LPH.png" alt="Magnetic structured water treatment device" />
+              <img className="stage-product small" src="/images/Magnetic Structured Water Device For 100,000 LPH .png" alt="Magnetic structured water treatment device" />
               <div className="stage-metrics" aria-hidden="true">
                 <div className="stage-metric">Process<span>Filtration</span></div>
                 <div className="stage-metric">Control<span>UV + RO</span></div>
@@ -424,3 +424,4 @@ export default function About() {
     </main>
   );
 }
+

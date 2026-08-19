@@ -707,7 +707,7 @@
 
 .related-product-image {
   height: 200px;
-  background: radial-gradient(circle at 50% 50%, rgba(77, 216, 245, 0.15), transparent 60%), linear-gradient(145deg, #fafdff, #edf7fc);
+  background: #ffffff !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -720,7 +720,7 @@
   max-height: 160px;
   object-fit: contain;
   transition: transform 0.4s ease;
-  filter: drop-shadow(0 10px 15px rgba(3, 29, 49, 0.12));
+  filter: none !important;
 }
 
 .related-product-card:hover .related-product-image img {
