@@ -844,8 +844,10 @@ export default function Home() {
 
             <div className="about-content-premium">
               <span className="eyebrow-premium">About Water Filter Africa</span>
-              <h2 className="title-premium">Advanced Water Treatment Built Around Real-World Applications</h2>
-              <p className="desc-premium">Joshi Ion Exchange Ltd. operates as Water Filter Africa, supplying application-based, custom-engineered filtration, conditioning, and purification systems for residential, agricultural, livestock, commercial buildings, and heavy industry across Africa.</p>
+              <h2 className="title-premium">Water Filtration & Water Treatment Solutions Across Africa</h2>
+              <p className="desc-premium">Water Filter Africa provides water filtration and water treatment solutions for residential, commercial, agricultural, livestock and industrial applications.</p>
+              <p className="desc-premium" style={{ marginTop: '12px' }}>From whole-house and commercial water filters to industrial filtration, UV disinfection and desalination systems, we offer solutions designed for different water quality requirements.</p>
+              <p className="desc-premium" style={{ marginTop: '12px' }}>Serving customers across South Africa, Zambia, Zimbabwe, Namibia, Congo, Botswana and Angola, we help homes, businesses, farms and industries find practical water treatment solutions for their needs.</p>
               
               <div className="about-capabilities">
                 <div className="capability-row">
@@ -973,16 +975,6 @@ export default function Home() {
               <h3 className="product-showcase-heading">Ultraviolet<br/>Disinfectant-Sterilizer<br/>SERUSUV-1A UV</h3>
               <p className="product-showcase-desc">Advanced UV disinfection technology designed for high-performance industrial water-treatment applications.</p>
               
-              <div className="product-metadata-grid">
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Application</span>
-                  <span className="metadata-row-value">Industrial Water Treatment</span>
-                </div>
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Technology</span>
-                  <span className="metadata-row-value">UV Sterilization</span>
-                </div>
-              </div>
               
               <div className="showcase-cta-block">
                 <a href="https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-1a-uv" target="_blank" rel="noreferrer" className="premium-action-explore">
@@ -1019,16 +1011,6 @@ export default function Home() {
               <h3 className="product-showcase-heading">Serus LLC<br/>Desalter Water<br/>Desalination</h3>
               <p className="product-showcase-desc">Reliable desalination and treatment support for demanding agricultural and farming water needs.</p>
               
-              <div className="product-metadata-grid">
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Application</span>
-                  <span className="metadata-row-value">Agricultural & Irrigation</span>
-                </div>
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Technology</span>
-                  <span className="metadata-row-value">Structured Desalination</span>
-                </div>
-              </div>
               
               <div className="showcase-cta-block">
                 <a href="https://www.waterfilterafrica.com/serus-llc-desalter-water-desalination" target="_blank" rel="noreferrer" className="premium-action-explore">
@@ -1065,16 +1047,6 @@ export default function Home() {
               <h3 className="product-showcase-heading">Ultraviolet<br/>Disinfectant-Sterilizer<br/>SERUSUV-1A UV</h3>
               <p className="product-showcase-desc">Dependable sterilization and water disinfection for commercial and institutional water systems.</p>
               
-              <div className="product-metadata-grid">
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Application</span>
-                  <span className="metadata-row-value">Commercial Water Supply</span>
-                </div>
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Technology</span>
-                  <span className="metadata-row-value">UV Disinfection</span>
-                </div>
-              </div>
               
               <div className="showcase-cta-block">
                 <a href="https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-1a-uv" target="_blank" rel="noreferrer" className="premium-action-explore">
@@ -1111,16 +1083,6 @@ export default function Home() {
               <h3 className="product-showcase-heading">Magnetic Structured<br/>Water Device<br/>For 100,000 LPH</h3>
               <p className="product-showcase-desc">Engineered water-conditioning technology for advanced residential and domestic filtration requirements.</p>
               
-              <div className="product-metadata-grid">
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Application</span>
-                  <span className="metadata-row-value">Residential Water Supply</span>
-                </div>
-                <div className="metadata-grid-row">
-                  <span className="metadata-row-label">Technology</span>
-                  <span className="metadata-row-value">Magnetic Structuring</span>
-                </div>
-              </div>
               
               <div className="showcase-cta-block">
                 <a href="https://www.waterfilterafrica.com/magnetic-structured-water-device-for-100000-lph" target="_blank" rel="noreferrer" className="premium-action-explore">
@@ -1445,7 +1407,7 @@ export default function Home() {
                   </div>
                   
                   <button type="submit" className="form-submit-btn">
-                    <span>Send Message</span>
+                    <span>SEND MESSAGE</span>
                     <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
                   </button>
                 </form>
