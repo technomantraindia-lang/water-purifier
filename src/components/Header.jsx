@@ -71,13 +71,13 @@ export default function Header() {
             </span>
             <span className="strip-socials" aria-label="Social links">
               <a href="#" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24"><path d="M6.5 10v9M6.5 6.5h.01M11 19v-9h4.2c2.2 0 3.8 1.4 3.8 4.2V19M11 14.2c0-2.7 1.5-4.2 3.5-4.2"/></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
               </a>
               <a href="#" aria-label="X">
-                <svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4 4 20"/></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </a>
               <a href="#" aria-label="Facebook">
-                <svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v3H6v4h3v4h4v-4h3.2l.8-4h-4V9c0-.7.3-1 1-1Z"/></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.101 23.685v-9.695H6.602v-3.85h2.499v-2.883c0-2.478 1.48-3.834 3.702-3.834 1.065 0 2.18.19 2.18.19v2.402h-1.226c-1.225 0-1.608.759-1.608 1.54v2.585h2.696l-.43 3.85h-2.266v9.695H9.101z"/></svg>
               </a>
             </span>
           </div>

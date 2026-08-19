@@ -88,17 +88,9 @@
 }
 
 .strip-socials svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   display: block;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.strip-socials a:last-child svg {
   fill: currentColor;
   stroke: none;
 }
@@ -446,22 +438,11 @@ footer > .container {
 }
 
 .socials svg {
-  width: 16px;
-  height: 16px;
   display: block;
   margin: auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transform: none;
-}
-
-.socials a:first-child svg,
-.socials a:nth-child(4) svg {
   fill: currentColor;
   stroke: none;
+  transform: none;
 }
 
 .socials .social-facebook svg {
@@ -485,8 +466,8 @@ footer > .container {
 }
 
 .socials .social-x svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 }
 
 .copyright {
