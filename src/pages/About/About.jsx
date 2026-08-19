@@ -5,27 +5,14 @@ import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ABOUT_INDUSTRIES = [
-  ["Agriculture", "Reliable filtration for irrigation, crop production and agricultural water management."],
-  ["Sea Water", "Treatment approaches for challenging high-salinity source water applications."],
-  ["Mining", "Robust water treatment support for demanding industrial operating environments."],
-  ["Municipal", "Practical treatment systems for public and infrastructure water needs."],
-  ["Power & Energy", "Water quality support for power, utilities and energy applications."],
-  ["Dairy", "Filtration and water-treatment support for dairy operations."],
-  ["Hospital & Healthcare", "Treatment approaches for healthcare water-quality requirements."],
-  ["Metal Reduction", "Water treatment support for applications affected by metal content."],
-  ["Restaurant & Hotel", "Commercial water filtration for hospitality environments."],
-  ["Boiler Feed", "Conditioning and filtration for boiler feed water requirements."],
-  ["Wastewater", "Treatment and recovery support for wastewater applications."],
-  ["Disaster Relief", "Practical water-treatment approaches for urgent operating conditions."],
-  ["Marine", "Water-treatment solutions for marine environments and vessel applications."],
-  ["Spot Free Rinse", "High-purity rinse water for residue-sensitive applications."],
-  ["Offshore", "Treatment capability for offshore operating environments."],
-  ["Environmental", "Water technologies for environmental and quality-focused applications."],
-  ["Refinery", "Industrial water treatment for refinery operating conditions."],
-  ["Residential / House & Apartment Building", "Domestic and building-scale purification and filtration systems."],
-  ["Industrial", "High-capacity treatment systems for process and plant requirements."],
-  ["Iron Reduction", "Treatment approaches for water affected by iron content."]
+const ABOUT_COUNTRIES = [
+  ["South Africa", "We provide residential, commercial, agricultural and industrial water filtration solutions for different water treatment requirements in South Africa."],
+  ["Zambia", "Our water filtration and treatment solutions are available for residential, commercial, agricultural and industrial applications in Zambia."],
+  ["Zimbabwe", "We provide water filtration and purification solutions designed for homes, businesses, farms and industrial applications in Zimbabwe."],
+  ["Namibia", "Our solutions support different water treatment requirements in Namibia, including residential, commercial, agricultural and industrial applications."],
+  ["Congo", "Water Filter Africa provides filtration and water treatment solutions for different applications and water quality requirements in Congo."],
+  ["Botswana", "We provide water filtration and treatment solutions for residential, commercial, agricultural, livestock and industrial applications in Botswana."],
+  ["Angola", "Our water filtration and purification solutions are available for different residential, commercial, agricultural and industrial water treatment requirements in Angola."]
 ];
 
 const ICON_SVG = (
@@ -35,13 +22,13 @@ const ICON_SVG = (
 );
 
 export default function About() {
-  const [activeIndustryIndex, setActiveIndustryIndex] = useState(0);
-  const [displayIndustryIndex, setDisplayIndustryIndex] = useState(0);
+  const [activeCountryIndex, setActiveCountryIndex] = useState(0);
+  const [displayCountryIndex, setDisplayCountryIndex] = useState(0);
 
   // Tech showcase hover index
   const [activeTechIndex, setActiveTechIndex] = useState(null);
 
-  // Sync active industry detail with GSAP crossfade
+  // Sync active country detail with GSAP crossfade
   useEffect(() => {
     const appTitle = document.getElementById("appTitle");
     const appDesc = document.getElementById("appDesc");
@@ -55,8 +42,8 @@ export default function About() {
         y: 8,
         duration: 0.16,
         onComplete: () => {
-          setDisplayIndustryIndex(activeIndustryIndex);
-          gsap.set([appTitle, appDesc], { y: 0 }); // Note: script set y to 6, then animated to 0
+          setDisplayCountryIndex(activeCountryIndex);
+          gsap.set([appTitle, appDesc], { y: 0 });
           gsap.to([appTitle, appDesc], {
             opacity: 1,
             y: 0,
@@ -67,9 +54,9 @@ export default function About() {
         }
       });
     } else {
-      setDisplayIndustryIndex(activeIndustryIndex);
+      setDisplayCountryIndex(activeCountryIndex);
     }
-  }, [activeIndustryIndex]);
+  }, [activeCountryIndex]);
 
   // GSAP ScrollTriggers on mount
   useEffect(() => {
@@ -197,15 +184,11 @@ export default function About() {
             <div className="image-float"><img src="/images/about_clean_water.png" alt="Clean water filtration detail" /></div>
           </div>
           <div>
-            <span className="eyebrow reveal">Who We Are</span>
-            <h2 className="reveal">Practical Water Treatment Backed by Advanced Technology</h2>
-            <p className="copy reveal">Joshi Ion Exchange Ltd. operates as Water Filter Africa, supplying application-based water-treatment and filtration solutions for households, agriculture, livestock, commercial buildings and industry across Africa.</p>
-            <p className="copy reveal">Our focus is not simply on supplying equipment. We match treatment technologies to the water source, flow requirement, application and operating environment so each solution is practical, scalable and fit for purpose.</p>
-            <div className="capability-rows">
-              <div className="hover-line reveal"><span className="icon">≈</span><div><h3>Water Purification & Filtration</h3><p>Source-specific filtration approaches for cleaner, more reliable water.</p></div><span className="arrow">→</span></div>
-              <div className="hover-line reveal"><span class="icon">UV</span><div><h3>UV Disinfection & Conditioning</h3><p>Treatment technologies for disinfection, conditioning and operational needs.</p></div><span className="arrow">→</span></div>
-              <div className="hover-line reveal"><span className="icon">↕</span><div><h3>Domestic to Industrial-Scale Solutions</h3><p>Systems selected around flow, application and installation environment.</p></div><span className="arrow">→</span></div>
-            </div>
+            <span className="eyebrow reveal">About Water Filter Africa</span>
+            <h2 className="reveal">Water Filtration & Water Treatment Solutions Across Africa</h2>
+            <p className="copy reveal">Water Filter Africa is a water filtration and water treatment solutions provider serving residential, commercial, agricultural, livestock and industrial customers across South Africa, Zambia, Zimbabwe, Namibia, Congo, Botswana and Angola.</p>
+            <p className="copy reveal">We provide a wide range of water filtration, purification and treatment solutions designed to address different water quality requirements. Our solutions are suitable for homes, businesses, farms, commercial facilities and industrial operations where reliable water treatment is essential.</p>
+            <p className="copy reveal">Our goal is to make effective and practical water filtration and water treatment solutions accessible across Africa, helping customers manage their water quality with suitable technologies for their specific applications.</p>
           </div>
         </div>
       </section>
@@ -222,27 +205,47 @@ export default function About() {
             <div className="story-tech-line" aria-hidden="true"></div>
           </div>
           <div>
-            <span className="eyebrow reveal">Our Story</span>
-            <h2 className="reveal">From Water Challenges to Practical Solutions</h2>
-            <p className="copy reveal">Water Filter Africa focuses on the development, implementation and operation of advanced technological solutions for water quality, filtration, disinfection, conditioning, desalination and application-specific treatment.</p>
-            <p className="copy reveal">The company works from the practical reality of each application: the source water, the demand profile, the operating environment and the treatment outcome required.</p>
+            <span className="eyebrow reveal">Solutions</span>
+            <h2 className="reveal">Our Water Filtration & Treatment Solutions</h2>
+            <p className="copy reveal">Water quality can vary considerably depending on the source, location and intended use. Water from municipal supplies, boreholes, groundwater, rivers and other sources may require different filtration or treatment processes.</p>
             <div className="story-points">
-              <span className="reveal">Water quality and filtration challenges</span>
-              <span className="reveal">Disinfection, conditioning and desalination needs</span>
-              <span className="reveal">Application-specific treatment implementation</span>
+              <span className="reveal">Whole-house water filtration systems</span>
+              <span className="reveal">Domestic and residential water filters</span>
+              <span className="reveal">Commercial water filtration systems</span>
+              <span className="reveal">Industrial water treatment systems</span>
+              <span className="reveal">Self-cleaning water filtration systems</span>
+              <span className="reveal">Automatic water filtration systems</span>
+              <span className="reveal">Agricultural and irrigation water filtration</span>
+              <span className="reveal">Livestock and poultry water filtration systems</span>
+              <span className="reveal">UV water disinfection systems</span>
+              <span className="reveal">Water softening and conditioning systems</span>
+              <span className="reveal">Seawater desalination systems</span>
             </div>
+            <p className="copy reveal" style={{ marginTop: '20px' }}>Each application may require a different combination of filtration and treatment technologies. The appropriate solution depends on factors such as water source, water quality, flow rate, application and treatment objectives.</p>
           </div>
         </div>
       </section>
 
       <section className="section pale2">
         <div className="container">
-          <span className="eyebrow reveal">Mission / Vision / Approach</span>
-          <h2 className="reveal">Built Around Performance, Scale and Support</h2>
+          <span className="eyebrow reveal">Our Approach</span>
+          <h2 className="reveal">Our Approach to Water Treatment</h2>
           <div className="panel-stack">
-            <article className="mission-panel reveal" tabIndex="0"><div className="mission-num">01</div><div className="mission-label">Mission</div><p className="mission-statement">Deliver efficient and environmentally responsible water solutions.</p></article>
-            <article className="mission-panel reveal" tabIndex="0"><div className="mission-num">02</div><div className="mission-label">Vision</div><p className="mission-statement">Become a trusted African provider of advanced water-treatment systems.</p></article>
-            <article className="mission-panel reveal" tabIndex="0"><div className="mission-num">03</div><div className="mission-label">Approach</div><p className="mission-statement">Match systems to water source, flow requirement and application.</p></article>
+            <article className="mission-panel reveal" tabIndex="0">
+              <div className="mission-num">01</div>
+              <div className="mission-label">Water Quality & Sources</div>
+              <p className="mission-statement">We understand that there is no single water treatment solution that is suitable for every application. Water quality, water source, flow rate and intended use can all influence the type of filtration or treatment system required.</p>
+            </article>
+            <article className="mission-panel reveal" tabIndex="0">
+              <div className="mission-num">02</div>
+              <div className="mission-label">Our Approach</div>
+              <p className="mission-statement">Our approach is to understand the application and water treatment requirements before recommending an appropriate solution.</p>
+            </article>
+            <article className="mission-panel reveal" tabIndex="0">
+              <div className="mission-num">03</div>
+              <div className="mission-label">Our Focus</div>
+              <p className="mission-statement">We focus on providing practical, efficient and reliable water filtration and water treatment systems that can be used across a wide range of residential, commercial, agricultural and industrial applications.</p>
+            </article>
           </div>
         </div>
       </section>
@@ -288,26 +291,26 @@ export default function About() {
 
       <section className="section pale2">
         <div className="container">
-          <span className="eyebrow reveal">Applications & Industries</span>
-          <h2 className="reveal">Supporting Water Needs Across Diverse Environments</h2>
+          <span className="eyebrow reveal">Markets</span>
+          <h2 className="reveal">Serving Customers Across Africa</h2>
           <div className="apps-layout">
             <aside className="app-detail reveal" aria-live="polite">
               <div>
-                <span className="app-kicker">Selected Application</span>
-                <h3 id="appTitle">{ABOUT_INDUSTRIES[displayIndustryIndex][0]}</h3>
-                <p id="appDesc">{ABOUT_INDUSTRIES[displayIndustryIndex][1]}</p>
+                <span className="app-kicker">Selected Country</span>
+                <h3 id="appTitle">{ABOUT_COUNTRIES[displayCountryIndex][0]}</h3>
+                <p id="appDesc">{ABOUT_COUNTRIES[displayCountryIndex][1]}</p>
               </div>
-              <p>Move through the application matrix to see how water-treatment needs shift across source, setting and operating demand.</p>
+              <p>Move through the country matrix to see how our water-treatment and filtration solutions serve South Africa, Zambia, Zimbabwe, Namibia, Congo, Botswana and Angola.</p>
             </aside>
             <div className="industry-matrix" id="industryMatrix">
-              {ABOUT_INDUSTRIES.map(([title], index) => (
+              {ABOUT_COUNTRIES.map(([title], index) => (
                 <button 
                   key={index}
                   type="button"
-                  className={`industry-item reveal ${activeIndustryIndex === index ? 'active' : ''}`}
-                  onMouseEnter={() => setActiveIndustryIndex(index)}
-                  onFocus={() => setActiveIndustryIndex(index)}
-                  onClick={() => setActiveIndustryIndex(index)}
+                  className={`industry-item reveal ${activeCountryIndex === index ? 'active' : ''}`}
+                  onMouseEnter={() => setActiveCountryIndex(index)}
+                  onFocus={() => setActiveCountryIndex(index)}
+                  onClick={() => setActiveCountryIndex(index)}
                 >
                   {ICON_SVG}
                   <span>{title}</span>
@@ -320,8 +323,9 @@ export default function About() {
 
       <section className="section dark">
         <div className="container">
-          <span className="eyebrow reveal">Technology / Capability Showcase</span>
-          <h2 className="reveal">Technology Built for Different Water Conditions</h2>
+          <span className="eyebrow reveal">Commitment</span>
+          <h2 className="reveal">Our Commitment to Water Filtration in Africa</h2>
+          <p className="lead reveal" style={{ color: 'rgba(255,255,255,0.72)', marginBottom: '40px' }}>Our commitment is to provide customers across South Africa, Zambia, Zimbabwe, Namibia, Congo, Botswana and Angola with access to suitable water filtration and water treatment technologies. From residential water filters and whole-house filtration systems to commercial, agricultural and industrial water treatment solutions, we aim to help customers find an appropriate solution for their specific water quality and application requirements.</p>
           <div className="tech-showcase">
             <div 
               className={`dark-stage clip-reveal ${activeTechIndex !== null ? 'is-active' : ''}`}
@@ -389,13 +393,14 @@ export default function About() {
 
       <section className="section white">
         <div className="container">
-          <span className="eyebrow reveal">Why Water Filter Africa</span>
-          <h2 className="reveal">Designed Around the Application, Not Just the Equipment</h2>
+          <span className="eyebrow reveal">Applications</span>
+          <h2 className="reveal">Water Treatment Solutions for Homes, Businesses & Industries</h2>
+          <p className="lead reveal" style={{ marginBottom: '40px' }}>Our water filtration solutions are designed for a broad range of applications.</p>
           <div className="why-grid">
-            <article className="why-block reveal"><b>01</b><h3>Application-Based Solutions</h3><p>Treatment choices are guided by source water, flow requirement and usage context.</p></article>
-            <article className="why-block reveal"><b>02</b><h3>Technology Across Multiple Treatment Methods</h3><p>Filtration, UV disinfection, conditioning, desalination and high-capacity treatment options.</p></article>
-            <article className="why-block reveal"><b>03</b><h3>Scalable Systems from Domestic to Industrial</h3><p>Solutions can be matched to household, commercial, agricultural and industrial scale.</p></article>
-            <article className="why-block reveal"><b>04</b><h3>Support for Diverse Operating Environments</h3><p>Practical implementation for different African water-quality challenges and applications.</p></article>
+            <article className="why-block reveal"><b>01</b><h3>Residential Water Filtration</h3><p>We provide water filtration and purification solutions for homes, apartments and residential properties. These can include whole-house filtration, domestic water filters and other solutions designed around household water requirements.</p></article>
+            <article className="why-block reveal"><b>02</b><h3>Commercial Water Treatment</h3><p>Businesses such as hotels, restaurants, hospitals, schools and commercial facilities can require dependable water filtration and treatment systems. We provide solutions designed to support different commercial water requirements and water usage levels.</p></article>
+            <article className="why-block reveal"><b>03</b><h3>Agricultural & Livestock Water Filtration</h3><p>Water quality is important for agricultural and livestock operations. Our filtration solutions can be used for irrigation, farming, poultry, dairy and livestock applications where managing water quality is an important operational requirement.</p></article>
+            <article className="why-block reveal"><b>04</b><h3>Industrial Water Treatment</h3><p>Industrial facilities often have specific water treatment requirements based on their processes and water sources. Water Filter Africa provides filtration and treatment solutions for industrial applications, helping businesses select technologies appropriate for their particular requirements.</p></article>
           </div>
         </div>
       </section>
@@ -403,9 +408,9 @@ export default function About() {
       <section className="final-cta" id="contact">
         <div className="container cta-grid">
           <div>
-            <span className="eyebrow reveal">Contact Water Filter Africa</span>
-            <h2 className="reveal">Let's Find the Right Water Solution for Your Application.</h2>
-            <p className="reveal">Tell us about your water source, flow requirement and application. Our team can help you identify the appropriate treatment approach.</p>
+            <span className="eyebrow reveal">Contact Us</span>
+            <h2 className="reveal">Contact Water Filter Africa</h2>
+            <p className="reveal">If you need a water filtration or water treatment solution for your home, business, farm or industrial facility, contact Water Filter Africa to discuss your requirements and identify a suitable solution for your application.</p>
             <div className="actions reveal">
               <a className="btn btn-primary" href="mailto:office@waterfilterafrica.com">Send an Enquiry <span className="arrow">→</span></a>
               <a className="btn btn-secondary" href="tel:+260969113323">Call Us</a>
