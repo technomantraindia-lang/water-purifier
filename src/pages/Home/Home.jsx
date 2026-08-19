@@ -727,14 +727,14 @@ export default function Home() {
           </div>
           
           <div className="categories-grid">
-            <Link className="category-card" data-grid="industrial" to="/category/industrial-water-filtration">
+            <Link className="category-card" data-grid="industrial" to="/industrial-water-filtration">
               <div className="category-card-bg">
-                <img src="/images/industrial_filtration.png" alt="Industrial Water Filtration" />
+                <img src="/images/industrial_filtration.png" alt="Industrial Water Filtration System" />
               </div>
               <div className="category-card-overlay"></div>
               <div className="category-card-content">
                 <span className="category-card-number">01 / INDUSTRIAL</span>
-                <h3 className="category-card-title">Industrial Water Filtration</h3>
+                <h3 className="category-card-title">Industrial Water Filtration System</h3>
                 <p className="category-card-desc">High-capacity filtration systems engineered for demanding industrial processes, mining, and power generation.</p>
                 <span className="category-card-cta">
                   <span>Explore Systems</span>
@@ -746,14 +746,14 @@ export default function Home() {
               <div className="category-card-border"></div>
             </Link>
 
-            <Link className="category-card" data-grid="agriculture" to="/category/agriculture-farming-water-filtration">
+            <Link className="category-card" data-grid="agriculture" to="/agriculture-farming-water-filtration">
               <div className="category-card-bg">
-                <img src="/images/agriculture_filtration.png" alt="Agriculture Water Filtration" />
+                <img src="/images/agriculture_filtration.png" alt="Agriculture Farming Water Filtration" />
               </div>
               <div className="category-card-overlay"></div>
               <div className="category-card-content">
                 <span className="category-card-number">02 / AGRICULTURE</span>
-                <h3 className="category-card-title">Agriculture Water Filtration</h3>
+                <h3 className="category-card-title">Agriculture Farming Water Filtration</h3>
                 <p className="category-card-desc">Optimize irrigation systems, protect farm crops, and improve yield quality with cleaner water source filters.</p>
                 <span className="category-card-cta">
                   <span>Explore Systems</span>
@@ -765,14 +765,14 @@ export default function Home() {
               <div className="category-card-border"></div>
             </Link>
 
-            <Link className="category-card" data-grid="animal-farming" to="/category/animal-farming-water-filtration">
+            <Link className="category-card" data-grid="animal-farming" to="/animal-farming-water-filtration">
               <div className="category-card-bg">
-                <img src="/images/animal_farming_filtration.png" alt="Animal Farming Water Filtration" />
+                <img src="/images/animal_farming_filtration.png" alt="Animals Farming Water Filtration System" />
               </div>
               <div className="category-card-overlay"></div>
               <div className="category-card-content">
                 <span className="category-card-number">03 / LIVESTOCK</span>
-                <h3 className="category-card-title">Animal Farming Water Filtration</h3>
+                <h3 className="category-card-title">Animals Farming Water Filtration System</h3>
                 <p className="category-card-desc">Ensure highly productive livestock with safe, disease-free, and impurity-free water supply.</p>
                 <span className="category-card-cta">
                   <span>Explore Systems</span>
@@ -784,7 +784,7 @@ export default function Home() {
               <div className="category-card-border"></div>
             </Link>
 
-            <Link className="category-card" data-grid="commercial" to="/category/commercial-water-filters">
+            <Link className="category-card" data-grid="commercial" to="/commercial-water-filters">
               <div className="category-card-bg">
                 <img src="/images/commercial_filtration.png" alt="Commercial Water Filters" />
               </div>
@@ -803,7 +803,7 @@ export default function Home() {
               <div className="category-card-border"></div>
             </Link>
 
-            <Link className="category-card" data-grid="domestic" to="/category/domestic-water-filtration-system">
+            <Link className="category-card" data-grid="domestic" to="/domestic-water-filtration-system">
               <div className="category-card-bg">
                 <img src="/images/domestic_filtration.png" alt="Domestic Water Filtration System" />
               </div>

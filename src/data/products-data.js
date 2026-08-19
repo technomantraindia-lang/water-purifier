@@ -3,8 +3,8 @@ export const WFA_PRODUCTS = {
     {
       id: "industrial",
       slug: "industrial-water-filtration",
-      name: "Industrial Water Filtration Solutions",
-      label: "Industrial Filtration",
+      name: "Industrial Water Filtration System",
+      label: "Industrial Water Filtration System",
       number: "01",
       image: "/images/industrial_filtration.png",
       description: "Heavy-duty treatment systems designed for factories, processing plants, and municipal scale purification projects."
@@ -12,8 +12,8 @@ export const WFA_PRODUCTS = {
     {
       id: "agriculture",
       slug: "agriculture-farming-water-filtration",
-      name: "Agriculture & Farming Filtration",
-      label: "Agri-Filtration",
+      name: "Agriculture Farming Water Filtration",
+      label: "Agriculture Farming Water Filtration",
       number: "02",
       image: "/images/agriculture_filtration.png",
       description: "Irrigation pre-filters and source water conditioners that prevent scaling, optimize soil hydration, and improve crop growth."
@@ -21,8 +21,8 @@ export const WFA_PRODUCTS = {
     {
       id: "animal-farming",
       slug: "animal-farming-water-filtration",
-      name: "Animal Farming & Livestock Water",
-      label: "Livestock Water",
+      name: "Animals Farming Water Filtration System",
+      label: "Animals Farming Water Filtration System",
       number: "03",
       image: "/images/about_clean_water.png",
       description: "Pathogen disinfection and structured water devices to keep livestock hydrated, reduce disease, and improve herd yield."
@@ -30,8 +30,8 @@ export const WFA_PRODUCTS = {
     {
       id: "commercial",
       slug: "commercial-water-filters",
-      name: "Commercial Buildings & Institutions",
-      label: "Commercial Filters",
+      name: "Commercial Water Filters",
+      label: "Commercial Water Filters",
       number: "04",
       image: "/images/commercial_filtration.png",
       description: "Reliable filtration setups for hotels, clinics, shopping centers, and offices that ensure sanitary, scale-free water."
@@ -39,8 +39,8 @@ export const WFA_PRODUCTS = {
     {
       id: "domestic",
       slug: "domestic-water-filtration-system",
-      name: "Domestic & Residential Filtration",
-      label: "Domestic Filtration",
+      name: "Domestic Water Filtration System",
+      label: "Domestic Water Filtration System",
       number: "05",
       image: "/images/domestic_filtration.png",
       description: "Whole-house filters and point-of-use purifiers for clean, soft, and safe drinking water directly at home."

@@ -415,58 +415,52 @@ footer > .container {
 }
 
 .socials a {
-  width: 34px;
-  height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border-radius: 50%;
-  background: rgba(8,48,79,0.08);
-  color: var(--navy);
-  border: 1px solid rgba(8,48,79,0.08);
-  text-align: center;
-  line-height: 0;
-  transition: transform .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  flex: 0 0 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: var(--navy) !important;
+  border: 1px solid rgba(6, 46, 82, 0.15) !important;
+  text-align: center !important;
+  line-height: 0 !important;
+  transition: all 0.2s ease !important;
+  box-shadow: none !important;
 }
 
 .socials a:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, var(--navy), var(--blue));
-  border-color: rgba(77,216,245,0.28);
-  color: #ffffff;
+  border-color: var(--blue) !important;
+  color: var(--blue) !important;
+  background: transparent !important;
 }
 
 .socials svg {
   display: block;
+  flex: 0 0 auto;
   fill: currentColor;
   stroke: none;
   transform: none;
+  margin: 0 !important;
 }
 
 .socials .social-facebook svg {
+  width: 14px;
+  height: 14px;
+}
+
+.socials .social-instagram svg {
   width: 15px;
   height: 15px;
 }
 
-.socials .social-instagram svg {
-  width: 16px;
-  height: 16px;
-}
-
-.socials .social-linkedin svg {
-  width: 16px;
-  height: 16px;
-}
-
 .socials .social-youtube svg {
-  width: 17px;
-  height: 17px;
-}
-
-.socials .social-x svg {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
 }
 
 .copyright {
@@ -1135,11 +1129,9 @@ footer > .container {
   }
 
   .footer-grid .brand img {
-    width: 74px;
-    height: 74px;
-    padding: 8px;
-    border-radius: 14px;
-    background: #ffffff;
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
   }
 
   .footer-grid p {
@@ -1415,6 +1407,17 @@ footer > .container {
   footer .footer-grid a,
   footer .contact-block strong {
     color: #ffffff;
+  }
+
+  footer .socials a {
+    color: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+  }
+
+  footer .socials a:hover {
+    color: #4DD8F5 !important;
+    border-color: #4DD8F5 !important;
+    background: transparent !important;
   }
 }
 

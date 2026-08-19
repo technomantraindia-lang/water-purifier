@@ -257,10 +257,10 @@ export default function About() {
           <p className="lead reveal">Each capability is treated as an engineered response to a real water condition, not a one-size-fits-all product category.</p>
           <div className="capability-map">
             <div className="cap-list">
-              <div className="tech-node reveal"><span>Industrial Water Filtration</span><small>01</small></div>
+              <div className="tech-node reveal"><span>Industrial Water Filtration System</span><small>01</small></div>
               <div className="tech-node reveal"><span>Agriculture Farming Water Filtration</span><small>02</small></div>
               <div className="tech-node reveal"><span>Commercial Water Filters</span><small>03</small></div>
-              <div className="tech-node reveal"><span>Domestic Water Filtration Systems</span><small>04</small></div>
+              <div className="tech-node reveal"><span>Domestic Water Filtration System</span><small>04</small></div>
             </div>
             <div className="central-visual clip-reveal"><span className="visual-glow" aria-hidden="true"></span><img src="/images/industrial_filtration.png" alt="Industrial filtration equipment visual" /></div>
             <div className="cap-list">

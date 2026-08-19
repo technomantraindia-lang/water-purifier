@@ -63,7 +63,6 @@ export default function App() {
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/category" element={<Category />} />
         <Route path="/category.html" element={<Category />} />
-        <Route path="/category/:slug" element={<Category />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog.html" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogDetail />} />
@@ -73,6 +72,7 @@ export default function App() {
         <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/terms-conditions.html" element={<TermsConditions />} />
+        <Route path="/:slug" element={<Category />} />
       </Routes>
       <Footer />
       <div className="floating-actions" aria-label="Quick contact actions">

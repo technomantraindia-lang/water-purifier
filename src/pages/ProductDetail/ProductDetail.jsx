@@ -10,6 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
 export default function ProductDetail() {
   const { slug } = useParams();
   const [activeImage, setActiveImage] = useState(0);
+  const [showBrochureForm, setShowBrochureForm] = useState(false);
+  const [brochureData, setBrochureData] = useState({ name: '', email: '', phone: '' });
 
   // Find product from static data
   const product = useMemo(() => {
@@ -51,6 +53,42 @@ export default function ProductDetail() {
   const showNextImage = () => {
     if (!galleryImages.length) return;
     setActiveImage((current) => (current + 1) % galleryImages.length);
+  };
+
+  const downloadBrochure = () => {
+    if (!product) return;
+    const lines = [
+      'Water Filter Africa Product Brochure',
+      '',
+      product.name,
+      product.shortDescription || product.description || '',
+      '',
+      `Brand: ${product.brand || 'Water Filter Africa'}`,
+      `Type: ${product.type || '-'}`,
+      `Capacity: ${product.capacity || '-'}`,
+      `Origin: ${product.origin || '-'}`,
+      '',
+      'Specifications:',
+      ...(product.specs || []).map(([label, value]) => `${label}: ${value}`),
+      '',
+      'Contact: office@waterfilterafrica.com | +260 969 113 323'
+    ];
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${product.slug || 'water-filter-africa-product'}-brochure.txt`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleBrochureSubmit = (event) => {
+    event.preventDefault();
+    setShowBrochureForm(false);
+    setBrochureData({ name: '', email: '', phone: '' });
+    downloadBrochure();
   };
 
   useEffect(() => {
@@ -146,7 +184,11 @@ export default function ProductDetail() {
     );
   }
 
-  const categorySlug = product.category || 'categories';
+  const categorySlug = useMemo(() => {
+    if (!product) return 'categories';
+    const cat = WFA_PRODUCTS.categories.find(c => c.id === product.category);
+    return cat ? cat.slug : product.category;
+  }, [product]);
 
   return (
     <main id="top" className="product-detail-page">
@@ -158,30 +200,32 @@ export default function ProductDetail() {
             <div className="product-carousel">
               <div className="hero-product-image">
                 <img src={(galleryImages.length ? galleryImages[activeImage] : null) || product.image || '/images/logo.png'} alt={`${product.name} view ${activeImage + 1}`} />
+                {galleryImages.length > 1 && (
+                  <>
+                    <button className="carousel-arrow carousel-arrow-prev" type="button" onClick={showPreviousImage} aria-label="Show previous product image">
+                      <span aria-hidden="true">{'\u003C'}</span>
+                    </button>
+                    <button className="carousel-arrow carousel-arrow-next" type="button" onClick={showNextImage} aria-label="Show next product image">
+                      <span aria-hidden="true">{'\u003E'}</span>
+                    </button>
+                  </>
+                )}
               </div>
               {galleryImages.length > 1 && (
-                <>
-                  <button className="carousel-arrow carousel-arrow-prev" type="button" onClick={showPreviousImage} aria-label="Show previous product image">
-                    <span aria-hidden="true">{'\u003C'}</span>
-                  </button>
-                  <button className="carousel-arrow carousel-arrow-next" type="button" onClick={showNextImage} aria-label="Show next product image">
-                    <span aria-hidden="true">{'\u003E'}</span>
-                  </button>
-                  <div className="carousel-thumbs" aria-label="Product image thumbnails">
-                    {galleryImages.map((image, index) => (
-                      <button
-                        className={index === activeImage ? "carousel-thumb active" : "carousel-thumb"}
-                        type="button"
-                        key={image}
-                        onClick={() => setActiveImage(index)}
-                        aria-label={`Show product image ${index + 1}`}
-                        aria-current={index === activeImage}
-                      >
-                        <img src={image} alt="" />
-                      </button>
-                    ))}
-                  </div>
-                </>
+                <div className="carousel-thumbs" aria-label="Product image thumbnails">
+                  {galleryImages.map((image, index) => (
+                    <button
+                      className={index === activeImage ? "carousel-thumb active" : "carousel-thumb"}
+                      type="button"
+                      key={image}
+                      onClick={() => setActiveImage(index)}
+                      aria-label={`Show product image ${index + 1}`}
+                      aria-current={index === activeImage}
+                    >
+                      <img src={image} alt="" />
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
           </div>
@@ -191,7 +235,7 @@ export default function ProductDetail() {
               <span>/</span>
               <Link to="/product">Products</Link>
               <span>/</span>
-              <Link to={`/category/${categorySlug}`}>{product.category || "Product Category"}</Link>
+              <Link to={`/${categorySlug}`}>{product.category || "Product Category"}</Link>
             </nav>
             <span className="eyebrow detail-reveal">{product.technology}</span>
             <h1 className="detail-reveal">{product.name}</h1>
@@ -204,11 +248,35 @@ export default function ProductDetail() {
             </div>
             <div className="hero-actions detail-reveal">
               <a href="https://wa.me/260969113323" target="_blank" rel="noreferrer">Request Quote</a>
-              <Link to="/contact">Contact Team</Link>
+              <button type="button" onClick={() => setShowBrochureForm(true)}>Download Brochure</button>
             </div>
           </div>
         </div>
       </section>
+
+      {showBrochureForm && (
+        <div className="brochure-modal" role="dialog" aria-modal="true" aria-labelledby="brochureTitle">
+          <div className="brochure-modal-backdrop" onClick={() => setShowBrochureForm(false)} />
+          <form className="brochure-form" onSubmit={handleBrochureSubmit}>
+            <button className="brochure-close" type="button" onClick={() => setShowBrochureForm(false)} aria-label="Close brochure form">x</button>
+            <span className="eyebrow">Brochure Access</span>
+            <h2 id="brochureTitle">Download Brochure</h2>
+            <label>
+              Full Name *
+              <input required value={brochureData.name} onChange={(e) => setBrochureData({ ...brochureData, name: e.target.value })} />
+            </label>
+            <label>
+              Email Address *
+              <input required type="email" value={brochureData.email} onChange={(e) => setBrochureData({ ...brochureData, email: e.target.value })} />
+            </label>
+            <label>
+              Phone Number *
+              <input required type="tel" value={brochureData.phone} onChange={(e) => setBrochureData({ ...brochureData, phone: e.target.value })} />
+            </label>
+            <button type="submit">Submit & Download</button>
+          </form>
+        </div>
+      )}
 
       <section className="detail-content">
         <div className="container detail-content-grid">

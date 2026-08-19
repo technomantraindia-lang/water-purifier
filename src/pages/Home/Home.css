@@ -1605,6 +1605,10 @@
         position: relative;
         z-index: 2;
       }
+      .contact-section .contact-left,
+      .contact-section .contact-form-container {
+        align-self: stretch;
+      }
       .contact-left .map-card {
         background: transparent;
         border: none;
@@ -1613,16 +1617,32 @@
         min-height: auto;
       }
       .contact-left .map-card-head h3 {
-        color: #ffffff;
+        color: #062E52;
         margin-top: 0;
+        font-size: 1.8rem;
+        font-weight: 800;
       }
       .contact-left .map-card-head p {
-        color: rgba(255, 255, 255, 0.76);
+        color: rgba(8, 37, 63, 0.68);
+        line-height: 1.5;
       }
       .contact-left .map-card-head .form-label-tag {
-        color: #7EDBFF;
+        color: #0789F9;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 8px;
       }
       .contact-left {
+        background: #ffffff;
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.22);
+        color: #08253F;
+        position: relative;
+        z-index: 2;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -1636,7 +1656,8 @@
       .contact-left .map-card iframe {
         flex: 1;
         width: 100%;
-        min-height: 400px;
+        min-height: 0;
+        height: 100%;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
         border-radius: 24px !important;
         border: none !important;
@@ -1654,6 +1675,7 @@
         }
         .contact-left .map-card iframe {
           height: 400px;
+          min-height: 400px;
           flex: none;
         }
       }
@@ -1684,7 +1706,6 @@
       .contact-left {
         display: flex;
         flex-direction: column;
-        color: #ffffff;
       }
       .contact-left .eyebrow-premium {
         color: #7EDBFF;
@@ -1852,7 +1873,7 @@
 
       /* Right side form container */
       .contact-form-container {
-        background: rgba(255, 255, 255, 0.97);
+        background: #ffffff;
         border-radius: 30px;
         padding: 50px;
         box-shadow: 0 30px 90px rgba(0, 0, 0, 0.22);
@@ -1861,7 +1882,8 @@
         z-index: 2;
       }
       @media (max-width: 768px) {
-        .contact-form-container {
+        .contact-form-container,
+        .contact-left {
           padding: 30px 24px;
         }
       }

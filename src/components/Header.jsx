@@ -117,8 +117,8 @@ export default function Header() {
               {WFA_PRODUCTS.categories.map((category) => (
                 <Link
                   key={category.id}
-                  to={`/category/${category.slug}`}
-                  onClick={(e) => handleLinkClick(e, `/category/${category.slug}`, '#top')}
+                  to={`/${category.slug}`}
+                  onClick={(e) => handleLinkClick(e, `/${category.slug}`, '#top')}
                 >
                   {category.name}
                 </Link>

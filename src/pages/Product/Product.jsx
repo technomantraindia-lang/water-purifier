@@ -149,7 +149,7 @@ export default function Product() {
                 <Link 
                   key={category.id} 
                   className="category-card reveal" 
-                  to={`/category/${category.slug}`}
+                  to={`/${category.slug}`}
                 >
                   <div className="category-image">
                     <img src={category.image || '/images/logo.png'} alt={category.name} />
