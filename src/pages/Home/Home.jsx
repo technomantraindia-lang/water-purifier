@@ -672,7 +672,7 @@ export default function Home() {
   return (
     <main id="home">
       <section className="hero">
-        <div className="hero-banner hero-carousel">
+        <div className={`hero-banner hero-carousel banner-aspect-${activeHeroBanner}`}>
           {HERO_BANNERS.map((banner, index) => (
             <img
               key={banner.src}

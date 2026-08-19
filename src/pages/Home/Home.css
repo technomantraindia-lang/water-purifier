@@ -3135,7 +3135,12 @@
         .hero-carousel {
           height: auto !important;
           min-height: 0 !important;
+        }
+        .hero-carousel.banner-aspect-0 {
           aspect-ratio: 2144 / 733 !important;
+        }
+        .hero-carousel.banner-aspect-1 {
+          aspect-ratio: 2048 / 768 !important;
         }
 
         .hero-carousel img,
@@ -3211,7 +3216,12 @@
         .hero-carousel {
           height: auto !important;
           min-height: 0 !important;
+        }
+        .hero-carousel.banner-aspect-0 {
           aspect-ratio: 2144 / 733 !important;
+        }
+        .hero-carousel.banner-aspect-1 {
+          aspect-ratio: 2048 / 768 !important;
         }
 
         .hero-banner img {
@@ -3256,7 +3266,14 @@
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
+}
+
+#home .hero-carousel.banner-aspect-0 {
   aspect-ratio: 2144 / 733 !important;
+}
+
+#home .hero-carousel.banner-aspect-1 {
+  aspect-ratio: 2048 / 768 !important;
 }
 
 #home .hero-carousel img,
