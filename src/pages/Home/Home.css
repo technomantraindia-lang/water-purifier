@@ -1601,7 +1601,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: clamp(40px, 6vw, 100px);
-        align-items: center;
+        align-items: stretch;
         position: relative;
         z-index: 2;
       }
@@ -1622,8 +1622,21 @@
       .contact-left .map-card-head .form-label-tag {
         color: #7EDBFF;
       }
+      .contact-left {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .contact-left .map-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+      }
       .contact-left .map-card iframe {
-        min-height: 480px;
+        flex: 1;
+        width: 100%;
+        min-height: 400px;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
         border-radius: 24px !important;
         border: none !important;
@@ -1632,6 +1645,16 @@
         .contact-section .container {
           grid-template-columns: 1fr;
           gap: 50px;
+        }
+        .contact-left {
+          height: auto;
+        }
+        .contact-left .map-card {
+          height: auto;
+        }
+        .contact-left .map-card iframe {
+          height: 400px;
+          flex: none;
         }
       }
       /* Background Decorations */
