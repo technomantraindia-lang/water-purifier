@@ -80,6 +80,105 @@ export const WFA_PRODUCTS = {
       number: "09",
       image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png",
       description: "Advanced ozone generator equipment for fast organic oxidation, iron removal, and heavy-duty pathogen disinfection."
+    },
+    {
+      id: "boiler-chemicals",
+      slug: "boiler-water-treatment-chemicals",
+      name: "Boiler Chemicals",
+      label: "Boiler Chemicals",
+      number: "10",
+      image: "/images/industrial_filtration.png",
+      description: "Specialized treatment chemicals that prevent scale, corrosion, and foaming in boiler water systems to maximize efficiency and lifespan."
+    },
+    {
+      id: "cooling-tower-chemicals",
+      slug: "cooling-tower-water-treatment-chemicals",
+      name: "Cooling Tower Chemicals",
+      label: "Cooling Tower Chemicals",
+      number: "11",
+      image: "/images/commercial_filtration.png",
+      description: "Scale and corrosion control programs for cooling towers that protect heat exchangers and improve heat-transfer performance."
+    },
+    {
+      id: "membrane",
+      slug: "membrane-filtration-spiral-wound",
+      name: "Membrane",
+      label: "Membrane",
+      number: "12",
+      image: "/images/Serus LLC Desalter Water Desalinationt.png",
+      description: "High-performance spiral-wound RO and NF membranes for separation, purification, and desalination applications."
+    },
+    {
+      id: "biocide-cleaner",
+      slug: "biocide-water-treatment-cleaner",
+      name: "Biocide Cleaner",
+      label: "Biocide Cleaner",
+      number: "13",
+      image: "/images/Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV.png",
+      description: "Rapid-acting biocides that eliminate bacteria, algae, and slime-forming organisms in cooling and process water systems."
+    },
+    {
+      id: "antiscalant-ro",
+      slug: "antiscalant-for-reverse-osmosis",
+      name: "Antiscalant for Reverse Osmosis",
+      label: "Antiscalant for Reverse Osmosis",
+      number: "14",
+      image: "/images/industrial_filtration.png",
+      description: "Scale-inhibitor formulations that prevent membrane fouling from calcium, silica, sulfate, and iron in RO feed water."
+    },
+    {
+      id: "acidic-cleaner",
+      slug: "acidic-membrane-system-cleaner",
+      name: "Acidic Cleaner",
+      label: "Acidic Cleaner",
+      number: "15",
+      image: "/images/industrial_filtration.png",
+      description: "Acid-based cleaning solutions that dissolve mineral scale, iron deposits, and inorganic foulants from membranes and equipment."
+    },
+    {
+      id: "alkaline-cleaner",
+      slug: "alkaline-membrane-system-cleaner",
+      name: "Alkaline Cleaner",
+      label: "Alkaline Cleaner",
+      number: "16",
+      image: "/images/industrial_filtration.png",
+      description: "Alkaline cleaning agents that remove organic foulants, biological deposits, oil traces, and biofilms from filtration systems."
+    },
+    {
+      id: "flocculant",
+      slug: "flocculant-water-treatment",
+      name: "Flocculant",
+      label: "Flocculant",
+      number: "17",
+      image: "/images/commercial_filtration.png",
+      description: "Water treatment polymers that clump suspended particles together for faster settling and clearer effluent in clarification processes."
+    },
+    {
+      id: "coagulant",
+      slug: "coagulant-water-treatment",
+      name: "Coagulant",
+      label: "Coagulant",
+      number: "18",
+      image: "/images/commercial_filtration.png",
+      description: "Coagulating agents that neutralize charge on suspended solids to form larger particles, improving filtration and settling efficiency."
+    },
+    {
+      id: "caustic-soda-lye",
+      slug: "caustic-soda-lye",
+      name: "Caustic Soda Lye",
+      label: "Caustic Soda Lye",
+      number: "19",
+      image: "/images/industrial_filtration.png",
+      description: "High-purity sodium hydroxide lye for pH adjustment, cleaning, regeneration, and general-purpose industrial alkali applications."
+    },
+    {
+      id: "aluminium-sulphate",
+      slug: "aluminium-sulphate-alum",
+      name: "Aluminium Sulphate",
+      label: "Aluminium Sulphate",
+      number: "20",
+      image: "/images/commercial_filtration.png",
+      description: "A highly effective coagulant (alum) for drinking-water and wastewater treatment that removes turbidity, color, and suspended solids."
     }
   ],
   products: [

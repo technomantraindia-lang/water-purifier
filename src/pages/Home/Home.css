@@ -435,6 +435,16 @@
         grid-row: span 1;
         min-height: 380px;
       }
+      .category-card[data-grid="boiler-chemicals"] {
+        grid-column: span 3;
+        grid-row: span 1;
+        min-height: 380px;
+      }
+      .category-card[data-grid="acidic-cleaner"] {
+        grid-column: span 3;
+        grid-row: span 1;
+        min-height: 380px;
+      }
       .category-card-bg {
         position: absolute;
         inset: 0;

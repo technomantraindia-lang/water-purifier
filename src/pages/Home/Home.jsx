@@ -821,6 +821,44 @@ export default function Home() {
               </div>
               <div className="category-card-border"></div>
             </Link>
+
+            <Link className="category-card" data-grid="boiler-chemicals" to="/boiler-chemicals">
+              <div className="category-card-bg">
+                <img src="/images/new boiler chemcials.png" alt="Boiler Chemicals" />
+              </div>
+              <div className="category-card-overlay"></div>
+              <div className="category-card-content">
+                <span className="category-card-number">06 / BOILER CHEMICALS</span>
+                <h3 className="category-card-title">Boiler Chemicals</h3>
+                <p className="category-card-desc">High-performance chemical treatment solutions to protect boilers from scale, corrosion, and fouling for reliable operation.</p>
+                <span className="category-card-cta">
+                  <span>Explore Systems</span>
+                  <svg className="cta-arrow" viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                </span>
+              </div>
+              <div className="category-card-border"></div>
+            </Link>
+
+            <Link className="category-card" data-grid="acidic-cleaner" to="/acidic-cleaner">
+              <div className="category-card-bg">
+                <img src="/images/acidic cleaner.png" alt="Acidic Cleaner" />
+              </div>
+              <div className="category-card-overlay"></div>
+              <div className="category-card-content">
+                <span className="category-card-number">07 / ACIDIC CLEANER</span>
+                <h3 className="category-card-title">Acidic Cleaner</h3>
+                <p className="category-card-desc">Effective acidic cleaning solutions for removing scale, rust, and mineral deposits from membranes and water systems.</p>
+                <span className="category-card-cta">
+                  <span>Explore Systems</span>
+                  <svg className="cta-arrow" viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                </span>
+              </div>
+              <div className="category-card-border"></div>
+            </Link>
           </div>
         </div>
       </section>
