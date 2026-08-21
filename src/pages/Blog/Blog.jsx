@@ -1,14 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
+import { getBlogs } from '../../api';
 import './Blog.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Blog() {
-  const blogs = BLOG_POSTS;
+  const [blogs, setBlogs] = useState(BLOG_POSTS);
+
+  useEffect(() => {
+    let active = true;
+    getBlogs().then(data => {
+      if (active) setBlogs(data);
+    });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

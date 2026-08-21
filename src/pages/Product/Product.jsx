@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
+import { getCategories } from '../../api';
 import './Product.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -61,7 +62,15 @@ const ICONS = {
 };
 
 export default function Product() {
-  const categories = WFA_PRODUCTS.categories;
+  const [categories, setCategories] = useState(WFA_PRODUCTS.categories);
+
+  useEffect(() => {
+    let isMounted = true;
+    getCategories().then(data => {
+      if (isMounted) setCategories(data);
+    });
+    return () => { isMounted = false; };
+  }, []);
 
   // Helper to get icon by category slug (backend returns numeric IDs)
   const getIconKey = (category) => {

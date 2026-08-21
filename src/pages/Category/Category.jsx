@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams, Link, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
+import { getCategories, getProductsByCategory } from '../../api';
 import './Category.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,9 +13,9 @@ export default function Category() {
   const params = useParams();
   const slug = params.slug || searchParams.get("slug") || '';
 
-  // Get categories and products from static data
-  const categories = useMemo(() => WFA_PRODUCTS.categories, []);
-  const allProducts = useMemo(() => WFA_PRODUCTS.products, []);
+  const [categories, setCategories] = useState(WFA_PRODUCTS.categories);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Find category by slug first, then fallback to ID/category matching
   const displayCategory = useMemo(() => {
@@ -25,20 +26,27 @@ export default function Category() {
     return categories[0] || {};
   }, [categories, slug]);
 
-  // Filter products for this category
-  const products = useMemo(() => {
-    return allProducts.filter(p => {
-      if (displayCategory && (displayCategory.id || displayCategory.slug)) {
-        return p.category === displayCategory.id || p.category === displayCategory.slug;
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    
+    Promise.all([
+      getCategories(),
+      getProductsByCategory(slug)
+    ]).then(([cats, catProducts]) => {
+      if (active) {
+        setCategories(cats);
+        setProducts(catProducts);
+        setLoading(false);
       }
-      return false;
     });
-  }, [allProducts, displayCategory]);
+
+    return () => { active = false; };
+  }, [slug]);
 
   useEffect(() => {
-    if (displayCategory.name) {
-      document.title = `${displayCategory.name} | Water Filter Africa`;
-    }
+    if (!displayCategory.name) return;
+    document.title = `${displayCategory.name} | Water Filter Africa`;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealEls = document.querySelectorAll(".reveal");
@@ -88,7 +96,7 @@ export default function Category() {
       clearTimeout(timer2);
       window.removeEventListener('load', handleWindowLoad);
     };
-  }, [displayCategory.name, slug]);
+  }, [displayCategory.name, products]);
 
   return (
     <main id="top" className="category-page">
@@ -120,7 +128,7 @@ export default function Category() {
                   to={`/product/${p.slug}`}
                 >
                   <div className="product-stage">
-                    <img src={p.image || '/images/logo.png'} alt={p.name} />
+                    <img src={p.image || '/storage/products/1787224154_FeTzsn2enx.png'} alt={p.name} />
                   </div>
                   <span className="product-label">{p.technology || displayCategory.label}</span>
                   <h2>{p.name}</h2>

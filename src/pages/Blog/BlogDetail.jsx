@@ -1,26 +1,40 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
+import { getBlogBySlug, getBlogs } from '../../api';
 import './BlogDetail.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BlogDetail() {
   const { slug } = useParams();
-
-  // Find current blog post
-  const blog = useMemo(() => {
-    if (!slug) return null;
-    return BLOG_POSTS.find(b => b.slug === slug || b.id === slug) || null;
-  }, [slug]);
+  const [blog, setBlog] = useState(null);
+  const [allBlogs, setAllBlogs] = useState(BLOG_POSTS);
+  const [loading, setLoading] = useState(true);
 
   // Find recent posts (excluding current post, max 5)
   const recentPosts = useMemo(() => {
-    if (!blog) return BLOG_POSTS.slice(0, 5);
-    return BLOG_POSTS.filter(b => b.id !== blog.id).slice(0, 5);
-  }, [blog]);
+    if (!blog) return allBlogs.slice(0, 5);
+    return allBlogs.filter(b => b.id !== blog.id).slice(0, 5);
+  }, [blog, allBlogs]);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    Promise.all([
+      getBlogBySlug(slug),
+      getBlogs()
+    ]).then(([currentBlog, list]) => {
+      if (active) {
+        setBlog(currentBlog);
+        setAllBlogs(list);
+        setLoading(false);
+      }
+    });
+    return () => { active = false; };
+  }, [slug]);
 
   useEffect(() => {
     if (!blog) return;
@@ -37,6 +51,14 @@ export default function BlogDetail() {
     
     window.scrollTo(0, 0);
   }, [blog]);
+
+  if (loading) {
+    return (
+      <main className="blog-detail-page flex items-center justify-center min-h-screen">
+        <div className="text-xl font-bold text-gray-500 animate-pulse">Loading blog details...</div>
+      </main>
+    );
+  }
 
   if (!blog) {
     return (

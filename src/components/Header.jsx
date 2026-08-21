@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { WFA_PRODUCTS } from '../data/products-data';
+import { getCategories } from '../api';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [categories, setCategories] = useState(WFA_PRODUCTS.categories);
+
+  useEffect(() => {
+    let isMounted = true;
+    getCategories().then(data => {
+      if (isMounted) setCategories(data);
+    });
+    return () => { isMounted = false; };
+  }, []);
 
   const handleLinkClick = (e, path, hash) => {
     setMenuOpen(false);
@@ -114,7 +124,7 @@ export default function Header() {
               <svg className="dropdown-arrow-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '6px', transition: 'transform 0.2s ease' }}><polyline points="6 9 12 15 18 9"></polyline></svg>
             </a>
             <div className="nav-dropdown-menu" aria-label="Product categories">
-              {WFA_PRODUCTS.categories.map((category) => (
+              {categories.map((category) => (
                 <Link
                   key={category.id}
                   to={`/${category.slug}`}

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
+import { getCategories, getProductBySlug, getProductsByCategory } from '../../api';
 import './ProductDetail.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,12 +14,36 @@ export default function ProductDetail() {
   const [showBrochureForm, setShowBrochureForm] = useState(false);
   const [brochureData, setBrochureData] = useState({ name: '', email: '', phone: '' });
 
-  // Find product from static data
-  const product = useMemo(() => {
-    if (!slug) return null;
-    return WFA_PRODUCTS.products.find(p => 
-      p.slug === slug || p.id === slug
-    ) || null;
+  const [categories, setCategories] = useState(WFA_PRODUCTS.categories);
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    
+    Promise.all([
+      getCategories(),
+      getProductBySlug(slug)
+    ]).then(async ([cats, prod]) => {
+      if (!active) return;
+      setCategories(cats);
+      setProduct(prod);
+      
+      if (prod) {
+        const rel = await getProductsByCategory(prod.category);
+        if (active) {
+          const relArray = Array.isArray(rel) ? rel : (rel && Array.isArray(rel.products) ? rel.products : []);
+          setRelatedProducts(relArray.filter(p => p.slug !== prod.slug).slice(0, 3));
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => { active = false; };
   }, [slug]);
 
   const galleryImages = useMemo(() => {
@@ -35,14 +60,49 @@ export default function ProductDetail() {
         gallery = [];
       }
     }
-    return Array.from(new Set([...gallery, ...fallbackImages])).filter(Boolean).slice(0, 3);
+    const combined = Array.from(new Set([...gallery, ...fallbackImages])).filter(Boolean).slice(0, 5);
+    if (combined.length === 0) {
+      combined.push('/storage/products/1787224154_FeTzsn2enx.png');
+    }
+    return combined;
   }, [product]);
 
-  const relatedProducts = useMemo(() => {
+  const specs = useMemo(() => {
     if (!product) return [];
-    return WFA_PRODUCTS.products
-      .filter(p => p.category === product.category && p.id !== product.id)
-      .slice(0, 3);
+    if (Array.isArray(product.specs)) return product.specs;
+    if (typeof product.specs === 'string') {
+      try {
+        const parsed = JSON.parse(product.specs);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
+    }
+    return [];
+  }, [product]);
+
+  const highlights = useMemo(() => {
+    if (!product) return [];
+    if (Array.isArray(product.highlights)) return product.highlights;
+    if (typeof product.highlights === 'string') {
+      try {
+        const parsed = JSON.parse(product.highlights);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
+      return product.highlights.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    return [];
+  }, [product]);
+
+  const technicalDetails = useMemo(() => {
+    if (!product) return [];
+    if (Array.isArray(product.technicalDetails)) return product.technicalDetails;
+    if (typeof product.technicalDetails === 'string') {
+      try {
+        const parsed = JSON.parse(product.technicalDetails);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
+      return product.technicalDetails.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    return [];
   }, [product]);
 
   const showPreviousImage = () => {
@@ -69,7 +129,12 @@ export default function ProductDetail() {
       `Origin: ${product.origin || '-'}`,
       '',
       'Specifications:',
-      ...(product.specs || []).map(([label, value]) => `${label}: ${value}`),
+      ...(specs || []).map((item) => {
+        if (!item) return '';
+        const label = Array.isArray(item) ? item[0] : (typeof item === 'object' ? item.label || item.key : item);
+        const value = Array.isArray(item) ? item[1] : (typeof item === 'object' ? item.value : '');
+        return `${label || 'Specification'}: ${value || '-'}`;
+      }),
       '',
       'Contact: office@waterfilterafrica.com | +260 969 113 323'
     ];
@@ -166,6 +231,20 @@ export default function ProductDetail() {
     };
   }, [product]);
 
+  const categorySlug = useMemo(() => {
+    if (!product) return 'categories';
+    const cat = categories.find(c => c.id === product.category);
+    return cat ? cat.slug : product.category;
+  }, [product, categories]);
+
+  if (loading) {
+    return (
+      <main id="top" className="product-detail-page flex items-center justify-center min-h-screen">
+        <div className="text-xl font-bold text-gray-500 animate-pulse">Loading product details...</div>
+      </main>
+    );
+  }
+
   if (!product) {
     return (
       <main id="top" className="product-detail-page">
@@ -183,12 +262,6 @@ export default function ProductDetail() {
       </main>
     );
   }
-
-  const categorySlug = useMemo(() => {
-    if (!product) return 'categories';
-    const cat = WFA_PRODUCTS.categories.find(c => c.id === product.category);
-    return cat ? cat.slug : product.category;
-  }, [product]);
 
   return (
     <main id="top" className="product-detail-page">
@@ -297,40 +370,45 @@ export default function ProductDetail() {
               <h2>Ultraviolet water disinfection built for reliable operation.</h2>
               <p>{product.description}</p>
               <div className="highlight-grid">
-                {(product.highlights || []).map((item) => (
-                  <div className="highlight-card" key={item}>
+                {(highlights || []).map((item, idx) => (
+                  <div className="highlight-card" key={(item || '') + idx}>
                     <span aria-hidden="true" />
                     <p>{item}</p>
                   </div>
                 ))}
               </div>
             </section>
-
-            <section className="detail-panel spec-panel detail-reveal">
-              <div>
-                <span className="eyebrow">Product Details</span>
-                <h2>Built for chemical-free water sterilization.</h2>
-              </div>
-              <div className="product-table-wrap">
-                <table className="product-spec-table">
-                  <tbody>
-                    {(product.specs || []).map(([label, value]) => (
-                      <tr key={label}>
-                        <th scope="row">{label}</th>
-                        <td>{value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-
-            <section className="tech-strip detail-reveal">
-              {(product.technicalDetails || []).map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </section>
           </div>
+
+          <section className="detail-panel spec-panel full-width detail-reveal">
+            <div>
+              <span className="eyebrow">Product Details</span>
+              <h2>Built for chemical-free water sterilization.</h2>
+            </div>
+            <div className="product-table-wrap">
+              <table className="product-spec-table">
+                <tbody>
+                  {(specs || []).map((item, idx) => {
+                    if (!item) return null;
+                    const label = Array.isArray(item) ? item[0] : (typeof item === 'object' ? item.label || item.key : item);
+                    const value = Array.isArray(item) ? item[1] : (typeof item === 'object' ? item.value : '');
+                    return (
+                      <tr key={(label || '') + idx}>
+                        <th scope="row">{label || 'Specification'}</th>
+                        <td>{value || '-'}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section className="tech-strip full-width detail-reveal">
+            {(technicalDetails || []).map((item, idx) => (
+              <span key={(item || '') + idx}>{item}</span>
+            ))}
+          </section>
         </div>
       </section>
 
@@ -343,7 +421,7 @@ export default function ProductDetail() {
               {relatedProducts.map((p) => (
                 <Link to={`/product/${p.slug}`} key={p.id} className="related-product-card">
                   <div className="related-product-image">
-                    <img src={p.image || '/images/logo.png'} alt={p.name} />
+                    <img src={p.image || '/storage/products/1787224154_FeTzsn2enx.png'} alt={p.name} />
                   </div>
                   <div className="related-product-content">
                     <span className="related-tech">{p.technology}</span>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
+import { getBlogs } from '../../api';
 import './Home.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -81,6 +82,19 @@ export default function Home() {
   // Testimonials Carousel state
   const [activeTestimonial, setActiveTestimonial] = useState(1);
   const [isHoveringTestimonials, setIsHoveringTestimonials] = useState(false);
+
+  // Blogs state
+  const [recentBlogs, setRecentBlogs] = useState(BLOG_POSTS.slice(0, 3));
+
+  useEffect(() => {
+    let active = true;
+    getBlogs().then(data => {
+      if (active && Array.isArray(data)) {
+        setRecentBlogs(data.slice(0, 3));
+      }
+    });
+    return () => { active = false; };
+  }, []);
 
   // Contact Form States
   const [formData, setFormData] = useState({
@@ -1329,24 +1343,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="blog-section" id="blog">
+
+
+      <section className="home-blog-section section" id="blogs">
         <div className="container">
-          <div className="blog-header">
-            <span className="eyebrow-premium">Water Knowledge</span>
-            <h2 className="title-premium">Blogs & Latest Insights</h2>
+          <div className="home-blog-header">
+            <span className="eyebrow">Insights &amp; Case Studies</span>
+            <h2>Blogs &amp; Latest Insights</h2>
+            <p className="lead">Read our technical guides, water-quality insights, and field installation updates from our engineering teams.</p>
           </div>
-          <div className="blog-grid">
-            {BLOG_POSTS.slice(0, 3).map((post, index) => (
-              <article className="blog-card" key={post.title}>
-                <span className="blog-index">0{index + 1}</span>
-                <span className="blog-category">{post.category}</span>
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
-                <Link to="/blog">Read Blog <span>&rarr;</span></Link>
-              </article>
+          <div className="home-blog-grid">
+            {recentBlogs.map((blog) => (
+              <Link to={`/blog/${blog.slug}`} key={blog.id} className="home-blog-card">
+                <div className="home-blog-image">
+                  <img src={blog.image || '/images/logo.png'} alt={blog.title} />
+                </div>
+                <div className="home-blog-content">
+                  <span className="home-blog-date">{blog.date}</span>
+                  <h3>{blog.title}</h3>
+                  <p>{blog.excerpt}</p>
+                  <span className="home-blog-cta">Read Article &rarr;</span>
+                </div>
+              </Link>
             ))}
           </div>
-          <Link className="blog-all-link" to="/blog">View All Blogs <span>&rarr;</span></Link>
         </div>
       </section>
 
