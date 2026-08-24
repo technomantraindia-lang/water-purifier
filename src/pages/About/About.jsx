@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getCountries } from '../../api';
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -22,11 +24,29 @@ const ICON_SVG = (
 );
 
 export default function About() {
+  const [countriesList, setCountriesList] = useState([]);
   const [activeCountryIndex, setActiveCountryIndex] = useState(0);
   const [displayCountryIndex, setDisplayCountryIndex] = useState(0);
 
   // Tech showcase hover index
   const [activeTechIndex, setActiveTechIndex] = useState(null);
+
+  // Sync country data from API
+  useEffect(() => {
+    let active = true;
+    getCountries().then(data => {
+      if (active && data && data.length > 0) {
+        const mapped = data.map(c => [
+          c.name,
+          c.about_text || `We provide residential, commercial, agricultural and industrial water filtration solutions in ${c.name}.`
+        ]);
+        setCountriesList(mapped);
+      }
+    });
+    return () => { active = false; };
+  }, []);
+
+  const activeCountries = countriesList.length > 0 ? countriesList : ABOUT_COUNTRIES;
 
   // Sync active country detail with GSAP crossfade
   useEffect(() => {
@@ -297,13 +317,35 @@ export default function About() {
             <aside className="app-detail reveal" aria-live="polite">
               <div>
                 <span className="app-kicker">Selected Country</span>
-                <h3 id="appTitle">{ABOUT_COUNTRIES[displayCountryIndex][0]}</h3>
-                <p id="appDesc">{ABOUT_COUNTRIES[displayCountryIndex][1]}</p>
+                <h3 id="appTitle">{activeCountries[displayCountryIndex < activeCountries.length ? displayCountryIndex : 0][0]}</h3>
+                <p id="appDesc">{activeCountries[displayCountryIndex < activeCountries.length ? displayCountryIndex : 0][1]}</p>
+                <Link 
+                  to={`/country/${activeCountries[displayCountryIndex < activeCountries.length ? displayCountryIndex : 0][0].toLowerCase().replace(/\s+/g, '')}`}
+                  onClick={() => {
+                    const countryCode = activeCountries[displayCountryIndex < activeCountries.length ? displayCountryIndex : 0][0].toLowerCase().replace(/\s+/g, '');
+                    localStorage.setItem('selected_country', countryCode);
+                    window.location.reload();
+                  }}
+                  className="btn-primary"
+                  style={{ 
+                    display: 'inline-block', 
+                    marginTop: '16px', 
+                    padding: '8px 16px', 
+                    borderRadius: '6px', 
+                    background: 'var(--accent)', 
+                    color: 'white', 
+                    fontSize: '0.85rem', 
+                    fontWeight: 600,
+                    textDecoration: 'none'
+                  }}
+                >
+                  View {activeCountries[displayCountryIndex < activeCountries.length ? displayCountryIndex : 0][0]} Products &rarr;
+                </Link>
               </div>
               <p>Move through the country matrix to see how our water-treatment and filtration solutions serve South Africa, Zambia, Zimbabwe, Namibia, Congo, Botswana and Angola.</p>
             </aside>
             <div className="industry-matrix" id="industryMatrix">
-              {ABOUT_COUNTRIES.map(([title], index) => (
+              {activeCountries.map(([title], index) => (
                 <button 
                   key={index}
                   type="button"

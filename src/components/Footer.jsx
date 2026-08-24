@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { getCountries, getCountryDetails, getActiveCountryCode } from '../api';
 
 export default function Footer() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [countries, setCountries] = useState([]);
+  const [countryDetails, setCountryDetails] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    getCountries().then(data => {
+      if (active) setCountries(data);
+    });
+
+    const activeCode = getActiveCountryCode();
+    getCountryDetails(activeCode).then(details => {
+      if (active && details) setCountryDetails(details);
+    });
+
+    return () => { active = false; };
+  }, []);
+
+  const handleCountryClick = (e, countryCode) => {
+    e.preventDefault();
+    localStorage.setItem('selected_country', countryCode);
+    navigate(`/country/${countryCode}`);
+    window.location.reload();
+  };
 
   const handleLinkClick = (e, path, hash) => {
     if (hash) {
@@ -31,18 +55,34 @@ export default function Footer() {
         
         {/* Country Subdomains Navigation Bar */}
         <div className="footer-country-bar">
-          <a href="https://www.angola.waterfilterafrica.com/" target="_blank" rel="noreferrer">ANGOLA</a>
-          <span className="bar-separator">||</span>
-          <a href="https://www.southafrica.waterfilterafrica.com/" target="_blank" rel="noreferrer">SOUTHAFRICA</a>
-          <span className="bar-separator">||</span>
-          <a href="https://www.zimbabwe.waterfilterafrica.com/" target="_blank" rel="noreferrer">ZIMBABWE</a>
-          <span className="bar-separator">||</span>
-          <a href="https://www.namibia.waterfilterafrica.com/" target="_blank" rel="noreferrer">NAMIBIA</a>
-          <span className="bar-separator">||</span>
-          <a href="https://www.congo.waterfilterafrica.com/" target="_blank" rel="noreferrer">CONGO</a>
-          <span className="bar-separator">||</span>
-          <a href="https://www.botswana.waterfilterafrica.com/" target="_blank" rel="noreferrer">BOTSWANA</a>
-          <span className="bar-separator">||</span>
+          <React.Fragment key="africa">
+            <a 
+              href="/" 
+              onClick={(e) => {
+                e.preventDefault();
+                localStorage.setItem('selected_country', 'africa');
+                navigate('/');
+                window.location.reload();
+              }}
+              style={{ textTransform: 'uppercase', fontWeight: 'bold', color: '#ffea00' }}
+            >
+              Water Filter Africa
+            </a>
+            {countries.length > 0 && <span className="bar-separator">||</span>}
+          </React.Fragment>
+
+          {countries.map((c, index) => (
+            <React.Fragment key={c.code}>
+              <a 
+                href={`https://${c.code}.waterfilterafrica.com/`} 
+                onClick={(e) => handleCountryClick(e, c.code)}
+                style={{ textTransform: 'uppercase' }}
+              >
+                {c.name}
+              </a>
+              {index < countries.length - 1 && <span className="bar-separator">||</span>}
+            </React.Fragment>
+          ))}
         </div>
 
         <div className="footer-grid">
@@ -78,9 +118,9 @@ export default function Footer() {
           <div>
             <h4>Contact</h4>
             <p><strong>Joshi Ion Exchange Ltd.</strong></p>
-            <p>P.O Box 32014,<br/>Lusaka, Zambia, Africa</p>
-            <p><a href="tel:+260969113323" style={{ color: 'inherit', textDecoration: 'none' }}>+260969113323</a></p>
-            <p><a href="mailto:office@waterfilterafrica.com" style={{ color: 'inherit', textDecoration: 'none' }}>office@waterfilterafrica.com</a></p>
+            <p>{(countryDetails && countryDetails.address) || 'P.O Box 32014, Lusaka, Zambia, Africa'}</p>
+            <p><a href={`tel:${(countryDetails && countryDetails.phone) || '+260969113323'}`} style={{ color: 'inherit', textDecoration: 'none' }}>{(countryDetails && countryDetails.phone) || '+260969113323'}</a></p>
+            <p><a href={`mailto:${(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}`} style={{ color: 'inherit', textDecoration: 'none' }}>{(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}</a></p>
             <p><a href="mailto:joshiionexchangeltd@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>joshiionexchangeltd@gmail.com</a></p>
           </div>
         </div>

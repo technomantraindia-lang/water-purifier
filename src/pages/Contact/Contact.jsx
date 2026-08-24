@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getActiveCountryCode, getCountryDetails } from '../../api';
 import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Contact() {
+  const [countryDetails, setCountryDetails] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    const code = getActiveCountryCode();
+    getCountryDetails(code).then(details => {
+      if (active && details) setCountryDetails(details);
+    });
+    return () => { active = false; };
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -300,17 +312,17 @@ export default function Contact() {
           <div className="contact-map-card reveal">
             <div className="contact-map-copy">
               <span className="eyebrow">Find Us</span>
-              <h2>Water Treatment Support From Lusaka</h2>
-              <p className="copy">Visit or contact our Zambia office for water filtration, purification and treatment requirements across Africa.</p>
+              <h2>{(countryDetails && countryDetails.name) ? `Water Treatment Support From ${countryDetails.name}` : 'Water Treatment Support From Lusaka'}</h2>
+              <p className="copy">{(countryDetails && countryDetails.name) ? `Visit or contact our ${countryDetails.name} office for water filtration, purification and treatment requirements.` : 'Visit or contact our Zambia office for water filtration, purification and treatment requirements across Africa.'}</p>
               <address>
                 <strong>JOSHI ION EXCHANGE LTD</strong>
-                <span>P.O Box 32014, Lusaka, Zambia, Africa</span>
+                <span>{(countryDetails && countryDetails.address) || 'P.O Box 32014, Lusaka, Zambia, Africa'}</span>
               </address>
             </div>
             <div className="contact-map-frame">
               <iframe
                 title="Water Filter Africa office map"
-                src="https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed"
+                src={(countryDetails && countryDetails.map_link) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen

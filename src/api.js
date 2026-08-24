@@ -3,9 +3,59 @@ import { BLOG_POSTS } from './data/blog-data';
 
 const BASE_URL = '/api';
 
-export async function getCategories() {
+export function getActiveCountryCode() {
+  const host = window.location.hostname;
+  const parts = host.split('.');
+  
+  if (parts.length >= 3) {
+    const subdomain = parts[0] === 'www' ? parts[1] : parts[0];
+    const knownCodes = ['angola', 'southafrica', 'zimbabwe', 'namibia', 'congo', 'botswana', 'zambia'];
+    if (knownCodes.includes(subdomain.toLowerCase())) {
+      return subdomain.toLowerCase();
+    }
+  }
+  
+  const local = localStorage.getItem('selected_country');
+  if (local === 'africa' || !local) return '';
+  return local;
+}
+
+export async function getCountries() {
   try {
-    const res = await fetch(`${BASE_URL}/v1/categories`);
+    const res = await fetch(`${BASE_URL}/v1/countries`);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    return data.countries ? data.countries : data;
+  } catch (error) {
+    console.warn('Failed to fetch countries from backend:', error);
+    return [
+      { name: 'Angola', code: 'angola' },
+      { name: 'South Africa', code: 'southafrica' },
+      { name: 'Zimbabwe', code: 'zimbabwe' },
+      { name: 'Namibia', code: 'namibia' },
+      { name: 'Congo', code: 'congo' },
+      { name: 'Botswana', code: 'botswana' },
+      { name: 'Zambia', code: 'zambia' }
+    ];
+  }
+}
+
+export async function getCountryDetails(countryCode) {
+  try {
+    const res = await fetch(`${BASE_URL}/v1/countries/${countryCode}`);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    return data.country ? data.country : data;
+  } catch (error) {
+    console.warn('Failed to fetch country details from backend:', error);
+    return null;
+  }
+}
+
+export async function getCategories(countryCode) {
+  try {
+    const country = countryCode !== undefined ? countryCode : getActiveCountryCode();
+    const res = await fetch(`${BASE_URL}/v1/categories?country=${country}`);
     if (!res.ok) throw new Error('API error');
     const data = await res.json();
     return data.categories ? data.categories : data;
@@ -17,7 +67,8 @@ export async function getCategories() {
 
 export async function getProducts() {
   try {
-    const res = await fetch(`${BASE_URL}/v1/products`);
+    const country = getActiveCountryCode();
+    const res = await fetch(`${BASE_URL}/v1/products?country=${country}`);
     if (!res.ok) throw new Error('API error');
     const data = await res.json();
     return data.products ? data.products : data;
@@ -30,7 +81,8 @@ export async function getProducts() {
 export async function getProductsByCategory(categoryCode) {
   try {
     if (!categoryCode) return [];
-    const res = await fetch(`${BASE_URL}/v1/products/category/${categoryCode}`);
+    const country = getActiveCountryCode();
+    const res = await fetch(`${BASE_URL}/v1/products/category/${categoryCode}?country=${country}`);
     if (!res.ok) throw new Error('API error');
     const data = await res.json();
     return data.products ? data.products : data;
@@ -45,7 +97,8 @@ export async function getProductsByCategory(categoryCode) {
 
 export async function getProductBySlug(slug) {
   try {
-    const res = await fetch(`${BASE_URL}/v1/products/${slug}`);
+    const country = getActiveCountryCode();
+    const res = await fetch(`${BASE_URL}/v1/products/${slug}?country=${country}`);
     if (!res.ok) throw new Error('API error');
     const data = await res.json();
     return data.product ? data.product : data;

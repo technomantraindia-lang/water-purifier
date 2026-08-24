@@ -1,21 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { WFA_PRODUCTS } from '../data/products-data';
-import { getCategories } from '../api';
+import { getCategories, getActiveCountryCode, getCountryDetails } from '../api';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [categories, setCategories] = useState(WFA_PRODUCTS.categories);
+  const [countryDetails, setCountryDetails] = useState(null);
+
+  const getCountryFromLocation = () => {
+    if (location.pathname.startsWith('/country/')) {
+      return location.pathname.split('/')[2] || '';
+    }
+    return getActiveCountryCode();
+  };
+
+  const currentCountry = getCountryFromLocation();
 
   useEffect(() => {
     let isMounted = true;
-    getCategories().then(data => {
+    getCategories(currentCountry).then(data => {
       if (isMounted) setCategories(data);
     });
+    
+    if (currentCountry) {
+      getCountryDetails(currentCountry).then(details => {
+        if (isMounted) {
+          setCountryDetails(details);
+        }
+      });
+    } else {
+      setCountryDetails(null);
+    }
+
     return () => { isMounted = false; };
-  }, []);
+  }, [currentCountry]);
 
   const handleLinkClick = (e, path, hash) => {
     setMenuOpen(false);
@@ -59,17 +80,17 @@ export default function Header() {
       <div className="contact-strip">
         <div className="contact-strip-inner">
           <div className="contact-strip-left">
-            <a href="tel:+260969113323" aria-label="Call Water Filter Africa">
+            <a href={`tel:${(countryDetails && countryDetails.phone) || '+260969113323'}`} aria-label="Call Water Filter Africa">
               <span className="strip-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.05 9.91a16 16 0 0 0 6.04 6.04l1.27-1.27a2 2 0 0 1 2.11-.45c.91.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92Z"/></svg>
               </span>
-              +260969113323
+              {(countryDetails && countryDetails.phone) || '+260969113323'}
             </a>
-            <a href="mailto:office@waterfilterafrica.com" aria-label="Email Water Filter Africa">
+            <a href={`mailto:${(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}`} aria-label="Email Water Filter Africa">
               <span className="strip-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 4 8 5 8-5"/></svg>
               </span>
-              office@waterfilterafrica.com
+              {(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}
             </a>
           </div>
           <div className="contact-strip-right">
@@ -77,7 +98,7 @@ export default function Header() {
               <span className="strip-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M12 21s7-4.8 7-11a7 7 0 1 0-14 0c0 6.2 7 11 7 11Zm0-8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
               </span>
-              Lusaka, Zambia, Africa
+              {(countryDetails && countryDetails.address) || 'Lusaka, Zambia, Africa'}
             </span>
             <span className="strip-socials" aria-label="Social links">
               <a href="#" aria-label="LinkedIn">

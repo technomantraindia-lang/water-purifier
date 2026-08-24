@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
-import { getBlogs } from '../../api';
+import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails } from '../../api';
 import './Home.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -67,6 +67,57 @@ const HERO_BANNERS = [
   { src: "/images/image.png", alt: "Water Filter Africa banner 2" }
 ];
 
+const DEFAULT_FEATURED = [
+  {
+    id: 1,
+    name: "Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV",
+    category: "industrial",
+    categoryLabel: "01 / Industrial System",
+    image: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
+    description: "Advanced UV disinfection technology designed for high-performance industrial water-treatment applications.",
+    slug: "ultraviolet-disinfectant-sterilizer-serusuv-1a-uv",
+    coordinate: "SYS_SERUSUV-1A [N-55]",
+    location: "44.8°N / 20.4°E",
+    badge: "Featured Technology"
+  },
+  {
+    id: 2,
+    name: "Serus LLC Desalter Water Desalination",
+    category: "agriculture",
+    categoryLabel: "02 / Agriculture Filtration",
+    image: "/images/Serus LLC Desalter Water Desalinationt.png",
+    description: "Reliable desalination and treatment support for demanding agricultural and farming water needs.",
+    slug: "serus-llc-desalter-water-desalination",
+    coordinate: "SYS_DESALTER [AG-02]",
+    location: "15.3°S / 28.2°E",
+    badge: "Selected Solution"
+  },
+  {
+    id: 3,
+    name: "Ultraviolet Disinfectant-Sterilizer SERUSUV-1A UV",
+    category: "commercial",
+    categoryLabel: "03 / Commercial Filters",
+    image: "/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png",
+    description: "Dependable sterilization and water disinfection for commercial and institutional water systems.",
+    slug: "ultraviolet-disinfectant-sterilizer-serusuv-1a-uv",
+    coordinate: "SYS_SERUSUV-1A [C-88]",
+    location: "33.9°S / 18.4°E",
+    badge: "Featured Technology"
+  },
+  {
+    id: 4,
+    name: "Magnetic Structured Water Device For 100,000 LPH",
+    category: "domestic",
+    categoryLabel: "04 / Domestic Filtration",
+    image: "/images/Magnetic Structured Water Device For 100,000 LPH .png",
+    description: "Engineered water-conditioning technology for advanced residential and domestic filtration requirements.",
+    slug: "magnetic-structured-water-device-for-100000-lph",
+    coordinate: "SYS_MAGNETIC [D-12]",
+    location: "1.29°S / 36.8°E",
+    badge: "Selected Solution"
+  }
+];
+
 export default function Home() {
   const [activeHeroBanner, setActiveHeroBanner] = useState(0);
   const [activeFeaturedProduct, setActiveFeaturedProduct] = useState(0);
@@ -85,12 +136,32 @@ export default function Home() {
 
   // Blogs state
   const [recentBlogs, setRecentBlogs] = useState(BLOG_POSTS.slice(0, 3));
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  const [countryDetails, setCountryDetails] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    const countryCode = getActiveCountryCode();
+    getCountryDetails(countryCode).then(details => {
+      if (active && details) {
+        setCountryDetails(details);
+      }
+    });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     let active = true;
     getBlogs().then(data => {
       if (active && Array.isArray(data)) {
         setRecentBlogs(data.slice(0, 3));
+      }
+    });
+    getProducts().then(data => {
+      if (active && Array.isArray(data)) {
+        const activeProds = data.filter(p => p.is_active);
+        setFeaturedProducts(activeProds.slice(0, 4));
       }
     });
     return () => { active = false; };
@@ -147,22 +218,24 @@ export default function Home() {
     });
   }, [activeFeaturedProduct]);
 
+  const displayProducts = featuredProducts.length > 0 ? featuredProducts : DEFAULT_FEATURED;
+
   useEffect(() => {
     if (isHoveringFeatured) return undefined;
 
     const interval = setInterval(() => {
-      setActiveFeaturedProduct((current) => (current + 1) % 4);
+      setActiveFeaturedProduct((current) => (current + 1) % displayProducts.length);
     }, 4500);
 
     return () => clearInterval(interval);
-  }, [isHoveringFeatured]);
+  }, [isHoveringFeatured, displayProducts.length]);
 
   const showPrevFeaturedProduct = () => {
-    setActiveFeaturedProduct((current) => (current === 0 ? 3 : current - 1));
+    setActiveFeaturedProduct((current) => (current === 0 ? displayProducts.length - 1 : current - 1));
   };
 
   const showNextFeaturedProduct = () => {
-    setActiveFeaturedProduct((current) => (current + 1) % 4);
+    setActiveFeaturedProduct((current) => (current + 1) % displayProducts.length);
   };
 
   // GSAP animations on mount
@@ -1007,150 +1080,72 @@ export default function Home() {
               onMouseEnter={() => setIsHoveringFeatured(true)}
               onMouseLeave={() => setIsHoveringFeatured(false)}
             >
-          {/* Product Row 1: Industrial */}
-          <div className="product-editorial-row row-odd" id="prod-row-1">
-            <div className="product-visual-panel">
-              <div className="visual-panel-grid"></div>
-              <div className="visual-panel-blueprint">
-                <span className="visual-panel-coordinate coordinate-tl">SYS_SERUSUV-1A [N-55]</span>
-                <span className="visual-panel-coordinate coordinate-br">44.8°N / 20.4°E</span>
-              </div>
-              <span className="visual-featured-badge">Featured Technology</span>
-              <div className="visual-panel-glow"></div>
-              <img src="/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png" alt="Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV" className="visual-panel-equipment" />
-              <div className="visual-panel-reflection"></div>
-            </div>
-            
-            <div className="product-content-panel">
-              <span className="content-panel-bg-num">01</span>
-              <span className="product-card-category">01 / Industrial System</span>
-              <h3 className="product-showcase-heading">Ultraviolet<br/>Disinfectant-Sterilizer<br/>SERUSUV-1A UV</h3>
-              <p className="product-showcase-desc">Advanced UV disinfection technology designed for high-performance industrial water-treatment applications.</p>
-              
-              
-              <div className="showcase-cta-block">
-                <a href="https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-1a-uv" target="_blank" rel="noreferrer" className="premium-action-explore">
-                  <span>Explore Product</span>
-                  <svg viewBox="0 0 24 24"><path d="M5 19L19 5M19 5H10M19 5V14" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
-                </a>
-                <a href="#products" onClick={navigateToProductsSection} className="premium-action-category">View Category →</a>
-              </div>
-            </div>
-          </div>
+            {displayProducts.map((p, index) => {
+              const isEven = index % 2 === 1;
+              const rowClass = isEven ? 'row-even' : 'row-odd';
+              const numStr = String(index + 1).padStart(2, '0');
+              const catLabel = p.categoryLabel || `${numStr} / ${p.category ? p.category.charAt(0).toUpperCase() + p.category.slice(1).replace('-', ' ') : 'General'} System`;
+              const coordinate = p.coordinate || `SYS_${(p.model || p.slug || '').toUpperCase().slice(0, 10)}`;
+              const location = p.location || '0.0°N / 0.0°E';
+              const badge = p.badge || 'Featured Solution';
+              const image = p.image || p.heroImage || '/images/logo.png';
+              const exploreLink = p.productUrl && p.productUrl.startsWith('http') && !p.productUrl.includes(window.location.host)
+                ? p.productUrl
+                : `/product/${p.slug}`;
 
-          <div className="row-divider-container">
-            <span className="row-divider-number">02 /</span>
-            <div className="row-divider-line"></div>
-          </div>
+              return (
+                <React.Fragment key={p.id || index}>
+                  <div className={`product-editorial-row ${rowClass}`} id={`prod-row-${index + 1}`}>
+                    <div className="product-visual-panel">
+                      <div className="visual-panel-grid"></div>
+                      <div className="visual-panel-blueprint">
+                        <span className="visual-panel-coordinate coordinate-tl">{coordinate}</span>
+                        <span className="visual-panel-coordinate coordinate-br">{location}</span>
+                      </div>
+                      <span className="visual-featured-badge">{badge}</span>
+                      <div className="visual-panel-glow"></div>
+                      <img src={image} alt={p.name} className="visual-panel-equipment" />
+                      <div className="visual-panel-reflection"></div>
+                    </div>
+                    
+                    <div className="product-content-panel">
+                      <span className="content-panel-bg-num">{numStr}</span>
+                      <span className="product-card-category">{catLabel}</span>
+                      <h3 className="product-showcase-heading">{p.name}</h3>
+                      <p className="product-showcase-desc">{p.description || p.shortDescription || ''}</p>
+                      
+                      <div className="showcase-cta-block">
+                        {exploreLink.startsWith('http') ? (
+                          <a href={exploreLink} target="_blank" rel="noreferrer" className="premium-action-explore">
+                            <span>Explore Product</span>
+                            <svg viewBox="0 0 24 24"><path d="M5 19L19 5M19 5H10M19 5V14" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
+                          </a>
+                        ) : (
+                          <Link to={exploreLink} className="premium-action-explore">
+                            <span>Explore Product</span>
+                            <svg viewBox="0 0 24 24"><path d="M5 19L19 5M19 5H10M19 5V14" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
+                          </Link>
+                        )}
+                        <Link to="/product" className="premium-action-category">View Category →</Link>
+                      </div>
+                    </div>
+                  </div>
 
-          {/* Product Row 2: Agriculture */}
-          <div className="product-editorial-row row-even" id="prod-row-2">
-            <div className="product-visual-panel">
-              <div className="visual-panel-grid"></div>
-              <div className="visual-panel-blueprint">
-                <span className="visual-panel-coordinate coordinate-tl">SYS_DESALTER [AG-02]</span>
-                <span className="visual-panel-coordinate coordinate-br">15.3°S / 28.2°E</span>
-              </div>
-              <span className="visual-featured-badge">Selected Solution</span>
-              <div className="visual-panel-glow"></div>
-              <img src="/images/Serus LLC Desalter Water Desalinationt.png" alt="Serus llc desalter water desalination" className="visual-panel-equipment" />
-              <div className="visual-panel-reflection"></div>
-            </div>
-            
-            <div className="product-content-panel">
-              <span className="content-panel-bg-num">02</span>
-              <span className="product-card-category">02 / Agriculture Filtration</span>
-              <h3 className="product-showcase-heading">Serus LLC<br/>Desalter Water<br/>Desalination</h3>
-              <p className="product-showcase-desc">Reliable desalination and treatment support for demanding agricultural and farming water needs.</p>
-              
-              
-              <div className="showcase-cta-block">
-                <a href="https://www.waterfilterafrica.com/serus-llc-desalter-water-desalination" target="_blank" rel="noreferrer" className="premium-action-explore">
-                  <span>Explore Product</span>
-                  <svg viewBox="0 0 24 24"><path d="M5 19L19 5M19 5H10M19 5V14" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
-                </a>
-                <a href="#products" onClick={navigateToProductsSection} className="premium-action-category">View Category →</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="row-divider-container">
-            <span className="row-divider-number">03 /</span>
-            <div className="row-divider-line"></div>
-          </div>
-
-          {/* Product Row 3: Commercial */}
-          <div className="product-editorial-row row-odd" id="prod-row-3">
-            <div className="product-visual-panel">
-              <div className="visual-panel-grid"></div>
-              <div className="visual-panel-blueprint">
-                <span className="visual-panel-coordinate coordinate-tl">SYS_SERUSUV-1A [C-88]</span>
-                <span className="visual-panel-coordinate coordinate-br">33.9°S / 18.4°E</span>
-              </div>
-              <span className="visual-featured-badge">Featured Technology</span>
-              <div className="visual-panel-glow"></div>
-              <img src="/images/Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV Ultraviolet disinfectant-sterilizer - SERUSUV-60A UV.png" alt="Ultraviolet disinfectant-sterilizer - SERUSUV-1A UV" className="visual-panel-equipment" />
-              <div className="visual-panel-reflection"></div>
-            </div>
-            
-            <div className="product-content-panel">
-              <span className="content-panel-bg-num">03</span>
-              <span className="product-card-category">03 / Commercial Filters</span>
-              <h3 className="product-showcase-heading">Ultraviolet<br/>Disinfectant-Sterilizer<br/>SERUSUV-1A UV</h3>
-              <p className="product-showcase-desc">Dependable sterilization and water disinfection for commercial and institutional water systems.</p>
-              
-              
-              <div className="showcase-cta-block">
-                <a href="https://www.waterfilterafrica.com/ultraviolet-disinfectant-sterilizer-serusuv-1a-uv" target="_blank" rel="noreferrer" className="premium-action-explore">
-                  <span>Explore Product</span>
-                  <svg viewBox="0 0 24 24"><path d="M5 19L19 5M19 5H10M19 5V14" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
-                </a>
-                <a href="#products" onClick={navigateToProductsSection} className="premium-action-category">View Category →</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="row-divider-container">
-            <span className="row-divider-number">04 /</span>
-            <div className="row-divider-line"></div>
-          </div>
-
-          {/* Product Row 4: Domestic */}
-          <div className="product-editorial-row row-even" id="prod-row-4">
-            <div className="product-visual-panel">
-              <div className="visual-panel-grid"></div>
-              <div className="visual-panel-blueprint">
-                <span className="visual-panel-coordinate coordinate-tl">SYS_MAGNETIC [D-12]</span>
-                <span className="visual-panel-coordinate coordinate-br">1.29°S / 36.8°E</span>
-              </div>
-              <span className="visual-featured-badge">Selected Solution</span>
-              <div className="visual-panel-glow"></div>
-              <img src="/images/Magnetic Structured Water Device For 100,000 LPH .png" alt="Magnetic Structured water device for 100,000 LPH" className="visual-panel-equipment" />
-              <div className="visual-panel-reflection"></div>
-            </div>
-            
-            <div className="product-content-panel">
-              <span className="content-panel-bg-num">04</span>
-              <span className="product-card-category">04 / Domestic Filtration</span>
-              <h3 className="product-showcase-heading">Magnetic Structured<br/>Water Device<br/>For 100,000 LPH</h3>
-              <p className="product-showcase-desc">Engineered water-conditioning technology for advanced residential and domestic filtration requirements.</p>
-              
-              
-              <div className="showcase-cta-block">
-                <a href="https://www.waterfilterafrica.com/magnetic-structured-water-device-for-100000-lph" target="_blank" rel="noreferrer" className="premium-action-explore">
-                  <span>Explore Product</span>
-                  <svg viewBox="0 0 24 24"><path d="M5 19L19 5M19 5H10M19 5V14" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
-                </a>
-                <a href="#products" onClick={navigateToProductsSection} className="premium-action-category">View Category →</a>
-              </div>
-            </div>
-          </div>
+                  {index < displayProducts.length - 1 && (
+                    <div className="row-divider-container">
+                      <span className="row-divider-number">{String(index + 2).padStart(2, '0')} /</span>
+                      <div className="row-divider-line"></div>
+                    </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
             </div>
             <button className="featured-nav featured-next" type="button" aria-label="Next featured product" onClick={showNextFeaturedProduct}>
               <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
             </button>
             <div className="featured-dots" aria-label="Featured product position">
-              {[0, 1, 2, 3].map((index) => (
+              {displayProducts.map((_, index) => (
                 <button
                   key={index}
                   type="button"
@@ -1379,12 +1374,12 @@ export default function Home() {
             <div className="map-card">
               <div className="map-card-head">
                 <span className="form-label-tag">Find Us</span>
-                <h3>Lusaka, Zambia</h3>
-                <p>Water Filter Africa supports projects across Africa from our Lusaka office.</p>
+                <h3>{(countryDetails && countryDetails.name) || 'Lusaka, Zambia'}</h3>
+                <p>{(countryDetails && countryDetails.name) ? `Water Filter Africa supports projects from our ${countryDetails.name} office.` : 'Water Filter Africa supports projects across Africa from our Lusaka office.'}</p>
               </div>
               <iframe
                 title="Water Filter Africa location map"
-                src="https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed"
+                src={(countryDetails && countryDetails.map_link) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
