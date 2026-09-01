@@ -8,19 +8,31 @@ export default function Footer() {
   const [countries, setCountries] = useState([]);
   const [countryDetails, setCountryDetails] = useState(null);
 
+  const getCountryFromLocation = () => {
+    if (location.pathname.startsWith('/country/')) {
+      return location.pathname.split('/')[2] || '';
+    }
+    return getActiveCountryCode();
+  };
+
+  const currentCountry = getCountryFromLocation();
+
   useEffect(() => {
     let active = true;
     getCountries().then(data => {
       if (active) setCountries(data);
     });
 
-    const activeCode = getActiveCountryCode();
-    getCountryDetails(activeCode).then(details => {
-      if (active && details) setCountryDetails(details);
-    });
+    if (currentCountry) {
+      getCountryDetails(currentCountry).then(details => {
+        if (active) setCountryDetails(details);
+      });
+    } else {
+      setCountryDetails(null);
+    }
 
     return () => { active = false; };
-  }, []);
+  }, [currentCountry, location.pathname]);
 
   const handleCountryClick = (e, countryCode) => {
     e.preventDefault();

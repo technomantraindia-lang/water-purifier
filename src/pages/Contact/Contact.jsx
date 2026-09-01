@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { getActiveCountryCode, getCountryDetails } from '../../api';
+import { getActiveCountryCode, getCountryDetails, getEmbedMapUrl } from '../../api';
 import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -146,13 +146,12 @@ export default function Contact() {
               <p className="copy">Reach out to Water Filter Africa for product enquiries, application guidance and water-treatment requirements.</p>
               <div className="contact-rows">
                 <div className="contact-row reveal">
-                  <span className="contact-icon">⌖</span>
+                  <span className="contact-icon">📍</span>
                   <div>
-                    <small>Head Office</small>
+                    <small>{(countryDetails && countryDetails.name) ? `${countryDetails.name} Office` : 'Head Office'}</small>
                     <address className="office-address">
                       <strong>JOSHI ION EXCHANGE LTD</strong>
-                      <span>P.O Box 32014, Lusaka</span>
-                      <span>Zambia, Africa</span>
+                      <span>{(countryDetails && countryDetails.address) || 'P.O Box 32014, Lusaka, Zambia, Africa'}</span>
                     </address>
                   </div>
                 </div>
@@ -160,15 +159,14 @@ export default function Contact() {
                   <span className="contact-icon">@</span>
                   <div>
                     <small>Email</small>
-                    <a href="mailto:office@waterfilterafrica.com">office@waterfilterafrica.com</a>
-                    <a href="mailto:joshiionexchangeltd@gmail.com">joshiionexchangeltd@gmail.com</a>
+                    <a href={`mailto:${(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}`}>{(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}</a>
                   </div>
                 </div>
                 <div className="contact-row reveal">
                   <span className="contact-icon">☎</span>
                   <div>
                     <small>Phone</small>
-                    <a href="tel:+260969113323">+260969113323</a>
+                    <a href={`tel:${(countryDetails && countryDetails.phone) || '+260969113323'}`}>{(countryDetails && countryDetails.phone) || '+260969113323'}</a>
                   </div>
                 </div>
               </div>
@@ -322,7 +320,7 @@ export default function Contact() {
             <div className="contact-map-frame">
               <iframe
                 title="Water Filter Africa office map"
-                src={(countryDetails && countryDetails.map_link) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
+                src={(countryDetails && getEmbedMapUrl(countryDetails.map_link)) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen
@@ -335,8 +333,8 @@ export default function Contact() {
       <section className="trust-strip">
         <div className="container">
           <strong>Need to discuss your requirement directly?</strong>
-          <span>Call <a href="tel:+260969113323">+260969113323</a></span>
-          <span>or email <a href="mailto:office@waterfilterafrica.com">office@waterfilterafrica.com</a></span>
+          <span>Call <a href={`tel:${(countryDetails && countryDetails.phone) || '+260969113323'}`}>{(countryDetails && countryDetails.phone) || '+260969113323'}</a></span>
+          <span>or email <a href={`mailto:${(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}`}>{(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}</a></span>
         </div>
       </section>
     </main>

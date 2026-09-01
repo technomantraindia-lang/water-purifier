@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
-import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails } from '../../api';
+import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, getBanners } from '../../api';
 import './Home.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -62,10 +62,6 @@ const TESTIMONIALS_DATA = [
   }
 ];
 
-const HERO_BANNERS = [
-  { src: "/images/short banner 1.png", alt: "Water Filter Africa banner 1" },
-  { src: "/images/image.png", alt: "Water Filter Africa banner 2" }
-];
 
 const DEFAULT_FEATURED = [
   {
@@ -139,6 +135,10 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   const [countryDetails, setCountryDetails] = useState(null);
+  const [banners, setBanners] = useState([
+    { image: "/images/short banner 1.png", alt: "Water Filter Africa banner 1" },
+    { image: "/images/image.png", alt: "Water Filter Africa banner 2" }
+  ]);
 
   useEffect(() => {
     let active = true;
@@ -146,6 +146,11 @@ export default function Home() {
     getCountryDetails(countryCode).then(details => {
       if (active && details) {
         setCountryDetails(details);
+      }
+    });
+    getBanners().then(data => {
+      if (active && Array.isArray(data) && data.length > 0) {
+        setBanners(data);
       }
     });
     return () => { active = false; };
@@ -197,12 +202,13 @@ export default function Home() {
   const featuredTrackRef = useRef(null);
 
   useEffect(() => {
+    if (banners.length <= 1) return undefined;
     const interval = setInterval(() => {
-      setActiveHeroBanner((current) => (current + 1) % HERO_BANNERS.length);
+      setActiveHeroBanner((current) => (current + 1) % banners.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [banners.length]);
 
   useEffect(() => {
     const track = featuredTrackRef.current;
@@ -760,46 +766,51 @@ export default function Home() {
     <main id="home">
       <section className="hero">
         <div className={`hero-banner hero-carousel banner-aspect-${activeHeroBanner}`}>
-          {HERO_BANNERS.map((banner, index) => (
+          {banners.map((banner, index) => (
             <img
-              key={banner.src}
-              src={banner.src}
+              key={banner.image || banner.src}
+              src={banner.image || banner.src}
               alt={banner.alt}
               className={index === activeHeroBanner ? 'active' : ''}
               onLoad={() => ScrollTrigger.refresh()}
             />
           ))}
-          <button
-            className="hero-carousel-arrow hero-carousel-prev"
-            type="button"
-            aria-label="Previous banner"
-            onClick={() => setActiveHeroBanner((current) => (current - 1 + HERO_BANNERS.length) % HERO_BANNERS.length)}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-          <button
-            className="hero-carousel-arrow hero-carousel-next"
-            type="button"
-            aria-label="Next banner"
-            onClick={() => setActiveHeroBanner((current) => (current + 1) % HERO_BANNERS.length)}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-          <div className="hero-carousel-dots" aria-label="Banner slides">
-            {HERO_BANNERS.map((banner, index) => (
+          
+          {banners.length > 1 && (
+            <>
               <button
-                key={banner.src}
+                className="hero-carousel-arrow hero-carousel-prev"
                 type="button"
-                className={index === activeHeroBanner ? 'active' : ''}
-                aria-label={`Show banner ${index + 1}`}
-                onClick={() => setActiveHeroBanner(index)}
-              />
-            ))}
-          </div>
+                aria-label="Previous banner"
+                onClick={() => setActiveHeroBanner((current) => (current - 1 + banners.length) % banners.length)}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button
+                className="hero-carousel-arrow hero-carousel-next"
+                type="button"
+                aria-label="Next banner"
+                onClick={() => setActiveHeroBanner((current) => (current + 1) % banners.length)}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+              <div className="hero-carousel-dots" aria-label="Banner slides">
+                {banners.map((banner, index) => (
+                  <button
+                    key={banner.image || banner.src}
+                    type="button"
+                    className={index === activeHeroBanner ? 'active' : ''}
+                    aria-label={`Show banner ${index + 1}`}
+                    onClick={() => setActiveHeroBanner(index)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -1379,7 +1390,7 @@ export default function Home() {
               </div>
               <iframe
                 title="Water Filter Africa location map"
-                src={(countryDetails && countryDetails.map_link) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
+                src={(countryDetails && getEmbedMapUrl(countryDetails.map_link)) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>

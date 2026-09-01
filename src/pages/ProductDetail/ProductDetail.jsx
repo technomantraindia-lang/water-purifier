@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
-import { getCategories, getProductBySlug, getProductsByCategory } from '../../api';
+import { getCategories, getProductBySlug, getProductsByCategory, getActiveCountryCode } from '../../api';
 import './ProductDetail.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -69,14 +69,21 @@ export default function ProductDetail() {
 
   const specs = useMemo(() => {
     if (!product) return [];
-    if (Array.isArray(product.specs)) return product.specs;
-    if (typeof product.specs === 'string') {
+    let list = [];
+    if (Array.isArray(product.specs)) list = product.specs;
+    else if (typeof product.specs === 'string') {
       try {
         const parsed = JSON.parse(product.specs);
-        if (Array.isArray(parsed)) return parsed;
+        if (Array.isArray(parsed)) list = parsed;
       } catch (e) {}
     }
-    return [];
+    return list.filter((item) => {
+      if (!item) return false;
+      const label = Array.isArray(item) ? item[0] : (typeof item === 'object' ? item.label || item.key : item);
+      if (!label) return true;
+      const lower = String(label).trim().toLowerCase();
+      return lower !== 'origin' && lower !== 'place of origin';
+    });
   }, [product]);
 
   const highlights = useMemo(() => {
@@ -126,7 +133,6 @@ export default function ProductDetail() {
       `Brand: ${product.brand || 'Water Filter Africa'}`,
       `Type: ${product.type || '-'}`,
       `Capacity: ${product.capacity || '-'}`,
-      `Origin: ${product.origin || '-'}`,
       '',
       'Specifications:',
       ...(specs || []).map((item) => {
@@ -158,7 +164,51 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (!product) return;
-    document.title = product.name ? `${product.name} | Water Filter Africa` : 'Water Filter Africa';
+    
+    // Find meta tags for active country
+    const countryCode = getActiveCountryCode() || 'default';
+    const activeCountryCode = countryCode.toLowerCase();
+    
+    let metaTitle = product.name ? `${product.name} | Water Filter Africa` : 'Water Filter Africa';
+    let metaDescription = product.shortDescription || product.description || '';
+    let metaKeywords = '';
+    
+    if (product.meta_tags) {
+      let metaTags = product.meta_tags;
+      if (typeof metaTags === 'string') {
+        try { metaTags = JSON.parse(metaTags); } catch (e) {}
+      }
+      if (metaTags && typeof metaTags === 'object') {
+        // Look up by country code
+        const countryMeta = metaTags[activeCountryCode] || metaTags[countryCode];
+        if (countryMeta) {
+          if (countryMeta.title) metaTitle = countryMeta.title;
+          if (countryMeta.description) metaDescription = countryMeta.description;
+          if (countryMeta.keywords) metaKeywords = countryMeta.keywords;
+        }
+      }
+    }
+    
+    document.title = metaTitle;
+    
+    // Dynamically update/create meta tags in the document head
+    let metaDescTag = document.querySelector('meta[name="description"]');
+    if (!metaDescTag) {
+      metaDescTag = document.createElement('meta');
+      metaDescTag.name = 'description';
+      document.head.appendChild(metaDescTag);
+    }
+    metaDescTag.content = metaDescription;
+    
+    if (metaKeywords) {
+      let metaKeysTag = document.querySelector('meta[name="keywords"]');
+      if (!metaKeysTag) {
+        metaKeysTag = document.createElement('meta');
+        metaKeysTag.name = 'keywords';
+        document.head.appendChild(metaKeysTag);
+      }
+      metaKeysTag.content = metaKeywords;
+    }
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealEls = document.querySelectorAll(".detail-reveal");
@@ -317,7 +367,6 @@ export default function ProductDetail() {
               <div><span>Brand</span><strong>{product.brand}</strong></div>
               <div><span>Type</span><strong>{product.type}</strong></div>
               <div><span>Capacity</span><strong>{product.capacity}</strong></div>
-              <div><span>Origin</span><strong>{product.origin}</strong></div>
             </div>
             <div className="hero-actions detail-reveal">
               <a href="https://wa.me/260969113323" target="_blank" rel="noreferrer">Request Quote</a>
@@ -358,8 +407,6 @@ export default function ProductDetail() {
             <strong>{product.model}</strong>
             <span>Capacity</span>
             <strong>{product.capacity}</strong>
-            <span>Origin</span>
-            <strong>{product.origin}</strong>
             <span>Warranty</span>
             <strong>10 Year Warranty</strong>
           </aside>

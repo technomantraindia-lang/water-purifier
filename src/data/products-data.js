@@ -199,7 +199,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Serus",
       type: "Ultraviolet Disinfectant Sterilizer",
-      origin: "Russia",
       capacity: "1,000 Liter Per Hour (LPH)",
       model: "SERUSUV-1A UV",
       specs: [
@@ -213,7 +212,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "10 Year Warranty"],
         ["Chemicals", "Not Required"],
         ["Maintenance", "Zero"],
-        ["Place of Origin", "Russia"],
         ["Get rid of", "Water disinfectant for virus, bacteria, molds, algae, and other microorganisms"],
         ["Installation", "Local plumber can fit easily"],
         ["Feature", "Destroys DNA of microorganisms and leaves them unable to grow further"],
@@ -255,7 +253,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Serus",
       type: "Desalination Unit",
-      origin: "Russia",
       capacity: "5,000 Liter Per Hour (LPH)",
       model: "SERUS-DESALT-5K",
       specs: [
@@ -267,7 +264,6 @@ export const WFA_PRODUCTS = {
         ["Material", "Reinforced Composite & Stainless Steel"],
         ["Warranty", "5 Year Warranty"],
         ["Maintenance", "Low Maintenance"],
-        ["Place of Origin", "Russia"],
         ["Get rid of", "Excessive salts, dissolved minerals, brackish components in well water"],
         ["Installation", "Professional technical setup recommended"]
       ],
@@ -303,7 +299,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Serus",
       type: "Livestock UV Disinfectant Sterilizer",
-      origin: "Russia",
       capacity: "2,000 Liter Per Hour (LPH)",
       model: "SERUSUV-2A-ANIMAL",
       specs: [
@@ -317,7 +312,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "10 Year Warranty"],
         ["Chemicals", "Not Required"],
         ["Maintenance", "Zero"],
-        ["Place of Origin", "Russia"],
         ["Get rid of", "Viruses, E.coli, Salmonella, bacteria, and algae in stock tanks"],
         ["Installation", "Easy connection inline before drinker supply lines"]
       ],
@@ -353,7 +347,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Serus",
       type: "Commercial UV Disinfectant Sterilizer",
-      origin: "Russia",
       capacity: "3,000 Liter Per Hour (LPH)",
       model: "SERUSUV-3A-COMMERCIAL",
       specs: [
@@ -367,7 +360,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "10 Year Warranty"],
         ["Chemicals", "Not Required"],
         ["Maintenance", "Zero"],
-        ["Place of Origin", "Russia"],
         ["Get rid of", "Microorganisms, Legionella, cysts, bacteria, and algae"],
         ["Installation", "Fitted after pressure tanks or booster pumps"]
       ],
@@ -402,7 +394,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Joshi",
       type: "Magnetic Structured Water Conditioner",
-      origin: "India",
       capacity: "100,000 Liter Per Hour (LPH)",
       model: "JOSHI-MAG-100K",
       specs: [
@@ -416,7 +407,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "15 Year Warranty"],
         ["Chemicals", "Not Required"],
         ["Maintenance", "Zero"],
-        ["Place of Origin", "India"],
         ["Get rid of", "Limescale deposit, hard water problems, pipe corrosion"],
         ["Installation", "Inline placement, local plumber fit easily"]
       ],
@@ -451,7 +441,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Joshi",
       type: "Industrial Reverse Osmosis Machine",
-      origin: "India",
       capacity: "10,000 Liter Per Hour (LPH)",
       model: "JOSHI-RO-10K",
       specs: [
@@ -464,7 +453,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "2 Year Warranty"],
         ["Chemicals", "Antiscalant dosing required"],
         ["Maintenance", "Standard membrane clean cycles"],
-        ["Place of Origin", "India"],
         ["Get rid of", "High TDS, fluorides, nitrates, heavy metals, pesticides, brackish taste"],
         ["Installation", "Commissioned by our expert technicians"]
       ],
@@ -499,7 +487,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Joshi",
       type: "FRP Vessel & Membrane Housing Accessories",
-      origin: "China",
       capacity: "Flow support up to 50,000 LPH",
       model: "FRP-VESSEL-COMP",
       specs: [
@@ -511,7 +498,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "3 Year Warranty"],
         ["Chemicals", "Highly Resistant"],
         ["Maintenance", "Zero for structural shell"],
-        ["Place of Origin", "China"],
         ["Get rid of", "Rusting metal tanks, leaking housings"],
         ["Installation", "Plumbing connection matching vessel thread sizes"]
       ],
@@ -546,7 +532,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Runxin",
       type: "Automatic & Manual Control Valve",
-      origin: "China",
       capacity: "Up to 10,000 LPH",
       model: "RUNXIN-F63-AUTO",
       specs: [
@@ -557,7 +542,6 @@ export const WFA_PRODUCTS = {
         ["Material", "Heavy Duty ABS & Ceramic Discs"],
         ["Warranty", "2 Year Warranty"],
         ["Maintenance", "O-Ring lubrication check"],
-        ["Place of Origin", "China"],
         ["Get rid of", "Complex manual piping manifolds for backwashing filters"],
         ["Installation", "Screw mount on top of standard FRP vessels"]
       ],
@@ -592,7 +576,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Joshi",
       type: "Ozone Generator Disinfection Machine",
-      origin: "India",
       capacity: "10 Grams Per Hour (GPH) Ozone output",
       model: "JOSHI-OZONE-10G",
       specs: [
@@ -606,7 +589,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "3 Year Warranty"],
         ["Chemicals", "Not Required (generates from air)"],
         ["Maintenance", "Standard filter cleaning"],
-        ["Place of Origin", "India"],
         ["Get rid of", "Odors, iron, manganese, color, organic chemicals, bacteria, and mold"],
         ["Installation", "Fitted with venturi injector or aeration system"]
       ],
@@ -642,7 +624,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Serus",
       type: "Heavy Industrial UV Sterilizer",
-      origin: "Russia",
       capacity: "60,000 Liter Per Hour (LPH)",
       model: "SERUSUV-60A UV",
       specs: [
@@ -656,7 +637,6 @@ export const WFA_PRODUCTS = {
         ["Warranty", "10 Year Warranty"],
         ["Chemicals", "Not Required"],
         ["Maintenance", "Zero"],
-        ["Place of Origin", "Russia"],
         ["Get rid of", "Bacterial blooms, algae, waterborne viruses, spore microorganisms"],
         ["Installation", "Main pipeline flanged fitment"]
       ],
@@ -692,7 +672,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Serus",
       type: "Premium Scale Industrial UV Sterilizer",
-      origin: "Russia",
       capacity: "100,000 Liter Per Hour (LPH)",
       model: "SERUSUV-100A UV",
       specs: [
@@ -704,7 +683,6 @@ export const WFA_PRODUCTS = {
         ["Material", "Marine Grade 316 Stainless Steel"],
         ["Warranty", "10 Year Warranty"],
         ["Maintenance", "Zero Maintenance"],
-        ["Place of Origin", "Russia"],
         ["Get rid of", "All pathogens, mold, bacterial colonies, cysts, virus strains"],
         ["Installation", "Flanged mounting, professional assembly recommended"]
       ],
@@ -740,7 +718,6 @@ export const WFA_PRODUCTS = {
       ],
       brand: "Serus",
       type: "Super Capacity Industrial UV Sterilizer",
-      origin: "Russia",
       capacity: "300,000 Liter Per Hour (LPH)",
       model: "SERUSUV-300A UV",
       specs: [
@@ -751,7 +728,6 @@ export const WFA_PRODUCTS = {
         ["Material", "Marine Grade 316 Stainless Steel"],
         ["Warranty", "10 Year Warranty"],
         ["Maintenance", "Zero Maintenance"],
-        ["Place of Origin", "Russia"],
         ["Get rid of", "All pathogens, mold, bacterial colonies, cysts, virus strains"],
         ["Installation", "Professional technical installation required"]
       ],
