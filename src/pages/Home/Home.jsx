@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
-import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, getBanners } from '../../api';
+import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, getBanners, submitEnquiry } from '../../api';
 import './Home.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -180,22 +180,42 @@ export default function Home() {
     application: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState({
     show: false,
+    success: false,
     message: ''
   });
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
-    setFormStatus({
-      show: true,
-      message: 'Thank you for your message! Our team will get back to you shortly.'
-    });
+
+    setIsSubmitting(true);
+
+    try {
+      const res = await submitEnquiry({
+        ...formData,
+        country: countryDetails?.name || countryDetails?.code || ''
+      });
+      setFormStatus({
+        show: true,
+        success: true,
+        message: `Thank you! Your message has been sent successfully to our ${countryDetails?.name || 'regional'} team (${res.target_email || 'office@waterfilterafrica.com'}). We will contact you shortly.`
+      });
+    } catch (err) {
+      setFormStatus({
+        show: true,
+        success: false,
+        message: err.message || 'Failed to send message. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const cellsGlowRefs = useRef([]);
@@ -1470,8 +1490,8 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  <button type="submit" className="form-submit-btn">
-                    <span>SEND MESSAGE</span>
+                  <button type="submit" className="form-submit-btn" disabled={isSubmitting}>
+                    <span>{isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}</span>
                     <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
                   </button>
                 </form>
@@ -1483,8 +1503,8 @@ export default function Home() {
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                 </div>
-                <h3>Message Sent Successfully!</h3>
-                <p>Thank you for reaching out. We have received your inquiry and our team will get back to you shortly.</p>
+                <h3>{formStatus.success ? 'Message Sent Successfully!' : 'Submission Error'}</h3>
+                <p>{formStatus.message}</p>
               </div>
             )}
           </div>

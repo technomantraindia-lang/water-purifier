@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
-import { getCategories, getProductBySlug, getProductsByCategory, getActiveCountryCode } from '../../api';
+import { getCategories, getProductBySlug, getProductsByCategory, getActiveCountryCode, submitEnquiry } from '../../api';
 import './ProductDetail.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -155,11 +155,24 @@ export default function ProductDetail() {
     URL.revokeObjectURL(url);
   };
 
-  const handleBrochureSubmit = (event) => {
+  const handleBrochureSubmit = async (event) => {
     event.preventDefault();
+    const dataToSend = { ...brochureData };
     setShowBrochureForm(false);
     setBrochureData({ name: '', email: '', phone: '' });
     downloadBrochure();
+
+    try {
+      await submitEnquiry({
+        name: dataToSend.name,
+        email: dataToSend.email,
+        phone: dataToSend.phone,
+        product_name: product ? product.name : '',
+        message: `Product brochure & details download request for: ${product ? product.name : 'Water Filter System'}`
+      });
+    } catch (e) {
+      console.warn('Could not store brochure request:', e);
+    }
   };
 
   useEffect(() => {

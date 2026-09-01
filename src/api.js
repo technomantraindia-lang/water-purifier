@@ -209,3 +209,28 @@ export function getEmbedMapUrl(url) {
 
   return `https://maps.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
 }
+
+export async function submitEnquiry(formData) {
+  try {
+    const payload = {
+      ...formData,
+      country: formData.country || getActiveCountryCode() || ''
+    };
+    const res = await fetch(`${BASE_URL}/v1/enquiry`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to submit enquiry');
+    }
+    return data;
+  } catch (error) {
+    console.error('Error submitting enquiry:', error);
+    throw error;
+  }
+}

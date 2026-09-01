@@ -37,8 +37,13 @@ export default function App() {
     s1.src = 'https://embed.tawk.to/64de851394cf5d10a2de2db2/1h82sknsc';
     s1.charset = 'UTF-8';
     s1.setAttribute('crossorigin', '*');
+    s1.onerror = () => {
+      console.warn('Tawk.to chat widget script could not be loaded.');
+    };
     var s0 = document.getElementsByTagName("script")[0];
-    s0.parentNode.insertBefore(s1, s0);
+    if (s0 && s0.parentNode) {
+      s0.parentNode.insertBefore(s1, s0);
+    }
 
     // Hide default widget launcher bubble
     window.Tawk_API = window.Tawk_API || {};

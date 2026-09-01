@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { getActiveCountryCode, getCountryDetails, getEmbedMapUrl } from '../../api';
+import { getActiveCountryCode, getCountryDetails, getEmbedMapUrl, submitEnquiry } from '../../api';
 import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Contact() {
   const [countryDetails, setCountryDetails] = useState(null);
-
-  useEffect(() => {
-    let active = true;
-    const code = getActiveCountryCode();
-    getCountryDetails(code).then(details => {
-      if (active && details) setCountryDetails(details);
-    });
-    return () => { active = false; };
-  }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -31,10 +23,26 @@ export default function Contact() {
 
   const [formStatus, setFormStatus] = useState({
     show: false,
+    success: false,
     message: ''
   });
 
-  const handleFormSubmit = (e) => {
+  useEffect(() => {
+    let active = true;
+    const code = getActiveCountryCode();
+    getCountryDetails(code).then(details => {
+      if (active && details) {
+        setCountryDetails(details);
+        setFormData(prev => ({
+          ...prev,
+          country: prev.country || details.name || details.code || ''
+        }));
+      }
+    });
+    return () => { active = false; };
+  }, []);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (!form.checkValidity()) {
@@ -42,10 +50,35 @@ export default function Contact() {
       return;
     }
 
-    setFormStatus({
-      show: true,
-      message: 'This form is ready for backend integration. Connect it to your enquiry handler to submit project details.'
-    });
+    setIsSubmitting(true);
+    setFormStatus({ show: false, success: false, message: '' });
+
+    try {
+      const res = await submitEnquiry(formData);
+      setFormStatus({
+        show: true,
+        success: true,
+        message: `Thank you! Your project enquiry has been sent successfully to our ${countryDetails?.name || 'regional'} team (${res.target_email || 'office@waterfilterafrica.com'}). We will get back to you shortly.`
+      });
+      setFormData({
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+        country: countryDetails?.name || countryDetails?.code || '',
+        application: '',
+        source: '',
+        message: ''
+      });
+    } catch (err) {
+      setFormStatus({
+        show: true,
+        success: false,
+        message: err.message || 'Failed to submit enquiry. Please check your connection and try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -285,19 +318,27 @@ export default function Contact() {
                   ></textarea>
                 </div>
                 <div className="field full">
-                  <button className="btn" type="submit">
-                    Send Enquiry <span className="arrow">&rarr;</span>
+                  <button className="btn" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending Enquiry...' : <>Send Enquiry <span className="arrow">&rarr;</span></>}
                   </button>
                 </div>
               </form>
               <div 
-                className="form-status" 
+                className={`form-status ${formStatus.success ? 'form-status-success' : 'form-status-error'}`} 
                 id="formStatus" 
                 role="status" 
                 aria-live="polite"
-                style={{ display: formStatus.show ? 'block' : 'none' }}
+                style={{
+                  display: formStatus.show ? 'block' : 'none',
+                  marginTop: '1rem',
+                  padding: '1rem 1.25rem',
+                  borderRadius: '0.5rem',
+                  backgroundColor: formStatus.success ? '#e6f4ea' : '#fce8e6',
+                  color: formStatus.success ? '#137333' : '#c5221f',
+                  border: `1px solid ${formStatus.success ? '#ceead6' : '#fad2cf'}`
+                }}
               >
-                <strong>Backend Ready</strong><br />
+                <strong>{formStatus.success ? 'Enquiry Submitted!' : 'Submission Notice'}</strong><br />
                 {formStatus.message}
               </div>
             </section>
