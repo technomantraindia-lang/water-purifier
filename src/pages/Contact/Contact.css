@@ -376,7 +376,7 @@
       .reveal, .clip-reveal { visibility: visible; opacity: 1 !important; transform: none !important; clip-path: none !important; filter: none !important; }
     }
 
-/* Hero Banner Full-Width Styling like About Page */
+/* Hero Banner Full-Width & Mobile Responsive Styling */
 .contact-page .hero-banner {
   height: clamp(260px, 30vw, 430px) !important;
   min-height: 0 !important;
@@ -404,4 +404,33 @@
     height: clamp(360px, 29vw, 500px) !important;
   }
 }
+
+@media (max-width: 768px) {
+  .contact-page .hero-banner {
+    height: auto !important;
+    aspect-ratio: 1916 / 821 !important;
+    min-height: 0 !important;
+    background: #031D31 !important;
+  }
+  
+  .contact-page .hero-banner img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    object-fit: cover !important;
+    object-position: left center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-page .hero-banner {
+    height: auto !important;
+    aspect-ratio: 1916 / 821 !important;
+  }
+  .contact-page .hero-banner img {
+    object-fit: cover !important;
+    object-position: 5% center !important;
+  }
+}
+
   
