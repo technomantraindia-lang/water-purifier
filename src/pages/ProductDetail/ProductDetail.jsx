@@ -235,7 +235,7 @@ export default function ProductDetail() {
 
     if (!reduced) {
       gsap.set(".detail-reveal", { autoAlpha: 0, y: 28, filter: "blur(8px)" });
-      gsap.set(".product-orbit, .hero-product-image", { autoAlpha: 0, scale: .94, y: 18 });
+      gsap.set(".hero-product-image", { autoAlpha: 0, scale: .94, y: 18 });
       gsap.to(".detail-hero .detail-reveal", {
         autoAlpha: 1,
         y: 0,
@@ -244,19 +244,13 @@ export default function ProductDetail() {
         stagger: .08,
         ease: "power3.out"
       });
-      gsap.to(".product-orbit, .hero-product-image", {
+      gsap.to(".hero-product-image", {
         autoAlpha: 1,
         scale: 1,
         y: 0,
         duration: 1,
         stagger: .08,
         ease: "power4.out"
-      });
-      gsap.to(".product-orbit", {
-        rotate: 360,
-        duration: 34,
-        repeat: -1,
-        ease: "none"
       });
       gsap.to(".hero-product-image img", {
         y: -10,
@@ -277,7 +271,7 @@ export default function ProductDetail() {
         }
       });
     } else {
-      document.querySelectorAll(".detail-reveal, .product-orbit, .hero-product-image").forEach((el) => {
+      document.querySelectorAll(".detail-reveal, .hero-product-image").forEach((el) => {
         el.style.visibility = "visible";
         el.style.opacity = "1";
         el.style.transform = "none";
@@ -332,7 +326,6 @@ export default function ProductDetail() {
         <div className="detail-hero-bg" aria-hidden="true" />
         <div className="container detail-hero-grid">
           <div className="detail-product-stage" aria-label={`${product.name} product image`}>
-            <div className="product-orbit" aria-hidden="true" />
             <div className="product-carousel">
               <div className="hero-product-image">
                 <img src={(galleryImages.length ? galleryImages[activeImage] : null) || product.image || '/images/logo.png'} alt={`${product.name} view ${activeImage + 1}`} />

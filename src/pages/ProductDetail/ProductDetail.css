@@ -66,16 +66,6 @@
   place-items: center;
 }
 
-.product-orbit {
-  position: absolute;
-  width: min(88vw, 390px);
-  height: 84%;
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: 0 26px 55px rgba(3, 29, 49, .08);
-  border: 1px solid rgba(6, 46, 82, .06);
-}
-
 .product-carousel {
   position: relative;
   width: 100%;
@@ -669,11 +659,6 @@
     right: 10px;
   }
 
-  .product-orbit {
-    width: min(92vw, 320px);
-    height: 230px;
-  }
-
   .highlight-grid,
   .product-snapshot {
     grid-template-columns: 1fr;
@@ -709,7 +694,6 @@
   }
 
   .detail-reveal,
-  .product-orbit,
   .hero-product-image {
     visibility: visible;
     opacity: 1 !important;
