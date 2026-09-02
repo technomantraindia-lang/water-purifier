@@ -30,6 +30,13 @@ function ScrollToTop() {
   return null;
 }
 
+function AdminRedirect() {
+  useEffect(() => {
+    window.location.href = '/admin';
+  }, []);
+  return null;
+}
+
 export default function App() {
   useEffect(() => {
     var s1 = document.createElement("script");
@@ -79,6 +86,8 @@ export default function App() {
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/terms-conditions.html" element={<TermsConditions />} />
         <Route path="/country/:countryCode" element={<CountryPage />} />
+        <Route path="/admin" element={<AdminRedirect />} />
+        <Route path="/admin/*" element={<AdminRedirect />} />
         <Route path="/:slug" element={<Category />} />
       </Routes>
       <Footer />
