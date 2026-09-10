@@ -3,7 +3,8 @@ import { useSearchParams, Link, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
-import { getCategories, getProductsByCategory } from '../../api';
+import { getCategories, getProductsByCategory, getActiveCountryCode } from '../../api';
+import FormattedContent from '../../components/FormattedContent';
 import './Category.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -25,6 +26,7 @@ export default function Category() {
     if (byId) return byId;
     return categories[0] || {};
   }, [categories, slug]);
+  const activeCountryCode = getActiveCountryCode();
 
   useEffect(() => {
     let active = true;
@@ -105,15 +107,13 @@ export default function Category() {
           <nav className="breadcrumb reveal" aria-label="Breadcrumb">
             <Link to="/">Home</Link>
             <span>/</span>
-            <Link to="/product">Products</Link>
-            <span>/</span>
             <span id="crumbCategory">{displayCategory.name || 'Category'}</span>
           </nav>
           <span className="eyebrow reveal" id="categoryEyebrow">
             Product Category / {displayCategory.number || ''}
           </span>
           <h1 className="reveal" id="categoryTitle">{displayCategory.name || 'Loading...'}</h1>
-          <p className="cat-desc reveal" id="categoryDesc">{displayCategory.description || ''}</p>
+          <FormattedContent as="p" className="cat-desc reveal" id="categoryDesc" value={displayCategory.description} format={displayCategory.descriptionFormat || 'plain'} />
         </div>
       </header>
       
@@ -125,14 +125,14 @@ export default function Category() {
                 <Link 
                   key={p.id}
                   className="product-card reveal" 
-                  to={`/product/${p.slug}`}
+                  to={activeCountryCode ? '/country/' + activeCountryCode + '/product/' + p.slug : '/product/' + p.slug}
                 >
                   <div className="product-stage">
                     <img src={p.image || '/storage/products/1787224154_FeTzsn2enx.png'} alt={p.name} />
                   </div>
                   <span className="product-label">{p.technology || displayCategory.label}</span>
                   <h2>{p.name}</h2>
-                  <p>{p.shortDescription || ''}</p>
+                  <FormattedContent as="p" value={p.shortDescription || ''} format={p.shortDescriptionFormat || 'plain'} />
                   <span className="product-cta">
                     View Product <span>&rarr;</span>
                   </span>
@@ -141,7 +141,7 @@ export default function Category() {
             ) : (
               <div className="empty" id="emptyState">
                 No products are currently available in this category.<br />
-                <Link to="/product">Back to Products &rarr;</Link>
+                <Link to="/">Back to Home &rarr;</Link>
               </div>
             )}
           </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProducts, getCountryDetails } from '../../api';
+import FormattedContent from '../../components/FormattedContent';
 import '../Category/Category.css'; // Reuse category page styling
 
 export default function CountryPage() {
@@ -36,11 +37,31 @@ export default function CountryPage() {
   }, [countryCode]);
 
   const countryName = countryDetails ? countryDetails.name : countryCode.toUpperCase();
-  const countryDesc = countryDetails ? countryDetails.about_text : `Water Filter Africa provides residential, commercial, agricultural, and industrial water treatment solutions in ${countryName}.`;
+  const countryTitle = countryDetails?.hero_title || `Water Filter ${countryName}`;
+  const countryDesc = countryDetails?.about_text || `Water Filter Africa provides residential, commercial, agricultural, and industrial water treatment solutions in ${countryName}.`;
 
   useEffect(() => {
-    document.title = `Water Filter ${countryName} | Water Filter Africa`;
-  }, [countryName]);
+    document.title = countryDetails?.meta_title || `${countryTitle} | Water Filter Africa`;
+
+    const description = countryDetails?.meta_description || countryDesc;
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = description;
+
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (countryDetails?.meta_keywords && !metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+    if (metaKeywords) {
+      metaKeywords.content = countryDetails?.meta_keywords || '';
+    }
+  }, [countryTitle, countryDesc, countryDetails]);
 
   return (
     <main id="top" className="category-page">
@@ -49,15 +70,15 @@ export default function CountryPage() {
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Home</Link>
             <span>/</span>
-            <span>Countries</span>
+            <span style={{ color: '#ffffff' }}>Countries</span>
             <span>/</span>
             <span style={{ color: 'var(--accent)' }}>{countryName}</span>
           </nav>
           <span className="eyebrow">
             Our Markets
           </span>
-          <h1>Water Filter {countryName}</h1>
-          <p className="cat-desc">{countryDesc}</p>
+          <h1>{countryTitle}</h1>
+          <FormattedContent as="p" className="cat-desc" value={countryDesc} format={countryDetails?.about_text_format || 'plain'} />
         </div>
       </header>
       
@@ -74,14 +95,14 @@ export default function CountryPage() {
                 <Link 
                   key={p.id}
                   className="product-card" 
-                  to={`/product/${p.slug}`}
+                  to={`/country/${countryCode}/product/${p.slug}`}
                 >
                   <div className="product-stage">
                     <img src={p.image || '/images/logo.png'} alt={p.name} />
                   </div>
                   <span className="product-label">{p.technology || p.brand}</span>
                   <h2>{p.name}</h2>
-                  <p>{p.shortDescription || p.short_description || ''}</p>
+                  <FormattedContent as="p" value={p.shortDescription || p.short_description || ''} format={p.shortDescriptionFormat || 'plain'} />
                   <span className="product-cta">
                     View Product <span>&rarr;</span>
                   </span>
@@ -90,7 +111,7 @@ export default function CountryPage() {
             ) : (
               <div className="empty">
                 No products are currently assigned to {countryName} in the admin panel.<br />
-                <Link to="/product" style={{ color: 'var(--accent)', textDecoration: 'underline', marginTop: '12px', display: 'inline-block' }}>Browse all products &rarr;</Link>
+                <Link to="/" style={{ color: 'var(--accent)', textDecoration: 'underline', marginTop: '12px', display: 'inline-block' }}>Back to Home &rarr;</Link>
               </div>
             )}
           </div>

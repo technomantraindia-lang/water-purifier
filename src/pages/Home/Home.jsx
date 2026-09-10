@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
-import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, getBanners, submitEnquiry } from '../../api';
+import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, getBanners, getSiteSettings, submitEnquiry } from '../../api';
 import './Home.css';
+import FormattedContent from '../../components/FormattedContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -158,6 +159,33 @@ export default function Home() {
 
   useEffect(() => {
     let active = true;
+    getSiteSettings().then(settings => {
+      if (!active || !settings) return;
+      if (settings.home_title) document.title = settings.home_title;
+      if (settings.home_description) {
+        let metaDescription = document.querySelector('meta[name="description"]');
+        if (!metaDescription) {
+          metaDescription = document.createElement('meta');
+          metaDescription.name = 'description';
+          document.head.appendChild(metaDescription);
+        }
+        metaDescription.content = settings.home_description;
+      }
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (settings.home_keywords && !metaKeywords) {
+        metaKeywords = document.createElement('meta');
+        metaKeywords.name = 'keywords';
+        document.head.appendChild(metaKeywords);
+      }
+      if (metaKeywords) {
+        metaKeywords.content = settings.home_keywords || '';
+      }
+    });
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
     getBlogs().then(data => {
       if (active && Array.isArray(data)) {
         setRecentBlogs(data.slice(0, 3));
@@ -165,8 +193,8 @@ export default function Home() {
     });
     getProducts().then(data => {
       if (active && Array.isArray(data)) {
-        const activeProds = data.filter(p => p.is_active);
-        setFeaturedProducts(activeProds.slice(0, 4));
+        const selectedFeatured = data.filter(p => p.is_active && p.is_featured);
+        setFeaturedProducts(selectedFeatured);
       }
     });
     return () => { active = false; };
@@ -1122,7 +1150,9 @@ export default function Home() {
               const image = p.image || p.heroImage || '/images/logo.png';
               const exploreLink = p.productUrl && p.productUrl.startsWith('http') && !p.productUrl.includes(window.location.host)
                 ? p.productUrl
-                : `/product/${p.slug}`;
+                : (getActiveCountryCode()
+                  ? '/country/' + getActiveCountryCode() + '/product/' + p.slug
+                  : '/product/' + p.slug);
 
               return (
                 <React.Fragment key={p.id || index}>
@@ -1143,7 +1173,7 @@ export default function Home() {
                       <span className="content-panel-bg-num">{numStr}</span>
                       <span className="product-card-category">{catLabel}</span>
                       <h3 className="product-showcase-heading">{p.name}</h3>
-                      <p className="product-showcase-desc">{p.description || p.shortDescription || ''}</p>
+                      <FormattedContent as="p" className="product-showcase-desc" value={p.description || p.shortDescription || ''} format={p.description ? (p.descriptionFormat || 'plain') : (p.shortDescriptionFormat || 'plain')} />
                       
                       <div className="showcase-cta-block">
                         {exploreLink.startsWith('http') ? (
@@ -1157,7 +1187,6 @@ export default function Home() {
                             <svg viewBox="0 0 24 24"><path d="M5 19L19 5M19 5H10M19 5V14" strokeLinecap="round" strokeLinejoin="round" stroke="currentColor" strokeWidth="2.5" fill="none"/></svg>
                           </Link>
                         )}
-                        <Link to="/product" className="premium-action-category">View Category →</Link>
                       </div>
                     </div>
                   </div>
@@ -1217,10 +1246,16 @@ export default function Home() {
           <div className="industries-header-split">
             <div className="industries-header-left">
               <span className="eyebrow-premium">Applications & Industries</span>
-              <h2 className="title-premium">Water Solutions Across Every Environment</h2>
+              <h2 className="title-premium">
+                <span>Water Solutions Across</span>{' '}
+                <span>Every Environment</span>
+              </h2>
             </div>
             <div className="industries-header-right">
-              <p>From agriculture and municipal infrastructure to offshore operations, healthcare and industrial processing, our filtration technologies adapt to diverse water conditions.</p>
+              <p>
+                From agriculture and municipal infrastructure to offshore operations,<br className="industries-copy-break" />{' '}
+                healthcare and industrial processing, our filtration technologies adapt to diverse water conditions.
+              </p>
               <div className="ind-stat-block">
                 <span className="ind-stat-number" id="ind-stat-number">20</span>
                 <span className="ind-stat-label">Application<br/>Environments</span>

@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
 import { getBlogs } from '../../api';
 import './Blog.css';
+import FormattedContent from '../../components/FormattedContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,7 +81,7 @@ export default function Blog() {
                 <div className="blog-card-content">
                   <span className="blog-card-date">{blog.date}</span>
                   <h3>{blog.title}</h3>
-                  <p>{blog.excerpt}</p>
+                  <FormattedContent as="p" value={blog.excerpt} format={blog.excerptFormat || 'plain'} />
                   <span className="blog-card-cta">Read Article &rarr;</span>
                 </div>
               </Link>

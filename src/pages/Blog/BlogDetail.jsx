@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
 import { getBlogBySlug, getBlogs } from '../../api';
 import './BlogDetail.css';
+import FormattedContent from '../../components/FormattedContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,34 @@ export default function BlogDetail() {
     if (!blog) return allBlogs.slice(0, 5);
     return allBlogs.filter(b => b.id !== blog.id).slice(0, 5);
   }, [blog, allBlogs]);
+
+  const contentImages = useMemo(() => {
+    const images = blog?.contentImages ?? blog?.content_images;
+    if (Array.isArray(images)) return images.filter(Boolean);
+    if (typeof images === 'string') {
+      try {
+        const parsed = JSON.parse(images);
+        return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }, [blog]);
+
+  const contentBlocks = useMemo(() => {
+    const blocks = blog?.contentBlocks ?? blog?.content_blocks;
+    if (Array.isArray(blocks)) return blocks.filter((block) => block && typeof block === 'object');
+    if (typeof blocks === 'string') {
+      try {
+        const parsed = JSON.parse(blocks);
+        return Array.isArray(parsed) ? parsed.filter((block) => block && typeof block === 'object') : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }, [blog]);
 
   useEffect(() => {
     let active = true;
@@ -99,10 +128,40 @@ export default function BlogDetail() {
               <img src={blog.image || '/images/logo.png'} alt={blog.title} />
             </div>
 
-            <div 
+            <FormattedContent
               className="blog-detail-body"
-              dangerouslySetInnerHTML={{ __html: blog.content }}
+              value={blog.content}
+              format={blog.contentFormat || 'plain'}
             />
+            {contentImages.length > 0 && (
+              <div className="blog-content-images" aria-label="Blog content images">
+                {contentImages.map((image, index) => (
+                  <img key={`${image}-${index}`} src={image} alt={`${blog.title} content ${index + 1}`} loading="lazy" />
+                ))}
+              </div>
+            )}
+            {contentBlocks.length > 0 && (
+              <div className="blog-content-blocks" aria-label="Additional blog details">
+                {contentBlocks.map((block, index) => (
+                  block.type === 'image' && block.image ? (
+                    <figure className="blog-content-block-image" key={`${block.image}-${index}`}>
+                      <img src={block.image} alt={`${blog.title} detail ${index + 1}`} loading="lazy" />
+                      <figcaption>
+                        <span>Additional image</span>
+                        <span className="blog-content-block-image-mark" aria-hidden="true" />
+                      </figcaption>
+                    </figure>
+                  ) : (
+                    <FormattedContent
+                      key={`text-${index}`}
+                      className="blog-content-block-text"
+                      value={block.content || ''}
+                      format={block.format || 'plain'}
+                    />
+                  )
+                ))}
+              </div>
+            )}
           </article>
 
           {/* Sidebar Column */}

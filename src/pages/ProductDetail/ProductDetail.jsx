@@ -1,23 +1,67 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
-import { getCategories, getProductBySlug, getProductsByCategory, getActiveCountryCode, submitEnquiry } from '../../api';
+import { getCategories, getProductBySlug, getProductsByCategory, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, submitEnquiry } from '../../api';
 import './ProductDetail.css';
+import FormattedContent from '../../components/FormattedContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ProductDetail() {
-  const { slug } = useParams();
+  const { slug, countryCode } = useParams();
+  const navigate = useNavigate();
   const [activeImage, setActiveImage] = useState(0);
   const [showBrochureForm, setShowBrochureForm] = useState(false);
   const [brochureData, setBrochureData] = useState({ name: '', email: '', phone: '' });
+  const [countryDetails, setCountryDetails] = useState(null);
+  const [contactData, setContactData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    phone: '',
+    country: '',
+    application: '',
+    source: '',
+    message: ''
+  });
+  const [contactStatus, setContactStatus] = useState({ show: false, success: false, message: '' });
+  const [isSubmittingContact, setIsSubmittingContact] = useState(false);
 
   const [categories, setCategories] = useState(WFA_PRODUCTS.categories);
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (countryCode) return;
+    const activeCountry = getActiveCountryCode();
+    if (activeCountry) {
+      navigate('/country/' + activeCountry + '/product/' + slug, { replace: true });
+    }
+  }, [countryCode, navigate, slug]);
+
+  useEffect(() => {
+    let active = true;
+    const activeCountry = countryCode || getActiveCountryCode();
+
+    if (!activeCountry) {
+      setCountryDetails(null);
+      return () => { active = false; };
+    }
+
+    getCountryDetails(activeCountry).then((details) => {
+      if (!active) return;
+      setCountryDetails(details);
+      setContactData((current) => ({
+        ...current,
+        country: current.country || details?.name || activeCountry
+      }));
+    });
+
+    return () => { active = false; };
+  }, [countryCode]);
 
   useEffect(() => {
     let active = true;
@@ -112,6 +156,34 @@ export default function ProductDetail() {
     return [];
   }, [product]);
 
+  const descriptionImages = useMemo(() => {
+    const images = product?.descriptionImages ?? product?.description_images;
+    if (Array.isArray(images)) return images.filter(Boolean);
+    if (typeof images === 'string') {
+      try {
+        const parsed = JSON.parse(images);
+        return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }, [product]);
+
+  const detailImages = useMemo(() => {
+    const images = product?.detailImages ?? product?.detail_images;
+    if (Array.isArray(images)) return images.filter(Boolean);
+    if (typeof images === 'string') {
+      try {
+        const parsed = JSON.parse(images);
+        return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }, [product]);
+
   const showPreviousImage = () => {
     if (!galleryImages.length) return;
     setActiveImage((current) => (current - 1 + galleryImages.length) % galleryImages.length);
@@ -124,6 +196,18 @@ export default function ProductDetail() {
 
   const downloadBrochure = () => {
     if (!product) return;
+    if (product.brochure) {
+      const link = document.createElement('a');
+      link.href = product.brochure;
+      link.download = product.brochure.split('/').pop() || (product.slug || 'product') + '-brochure';
+      link.target = '_blank';
+      link.rel = 'noopener';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      return;
+    }
+
     const lines = [
       'Water Filter Africa Product Brochure',
       '',
@@ -172,6 +256,45 @@ export default function ProductDetail() {
       });
     } catch (e) {
       console.warn('Could not store brochure request:', e);
+    }
+  };
+
+  const handleProductContactSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmittingContact(true);
+    setContactStatus({ show: false, success: false, message: '' });
+
+    try {
+      const response = await submitEnquiry({
+        ...contactData,
+        country: contactData.country || countryDetails?.name || countryCode || getActiveCountryCode(),
+        product_name: product?.name || '',
+        message: `Product enquiry for ${product?.name || 'Water Filter System'}\n\n${contactData.message}`
+      });
+
+      setContactStatus({
+        show: true,
+        success: true,
+        message: response.message || 'Thank you. Your product enquiry has been submitted successfully.'
+      });
+      setContactData((current) => ({
+        ...current,
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+        application: '',
+        source: '',
+        message: ''
+      }));
+    } catch (error) {
+      setContactStatus({
+        show: true,
+        success: false,
+        message: error.message || 'Unable to submit your enquiry. Please try again.'
+      });
+    } finally {
+      setIsSubmittingContact(false);
     }
   };
 
@@ -294,6 +417,10 @@ export default function ProductDetail() {
     return cat ? cat.slug : product.category;
   }, [product, categories]);
 
+  const productPath = (productSlug) => (countryCode || getActiveCountryCode())
+    ? '/country/' + (countryCode || getActiveCountryCode()) + '/product/' + productSlug
+    : '/product/' + productSlug;
+
   if (loading) {
     return (
       <main id="top" className="product-detail-page flex items-center justify-center min-h-screen">
@@ -310,10 +437,9 @@ export default function ProductDetail() {
             <nav className="breadcrumb detail-reveal" aria-label="Breadcrumb">
               <Link to="/">Home</Link>
               <span>/</span>
-              <Link to="/product">Products</Link>
             </nav>
             <h1>Product not found</h1>
-            <p><Link to="/product">Back to Products &rarr;</Link></p>
+            <p><Link to="/">Back to Home &rarr;</Link></p>
           </div>
         </section>
       </main>
@@ -362,13 +488,11 @@ export default function ProductDetail() {
             <nav className="breadcrumb detail-reveal" aria-label="Breadcrumb">
               <Link to="/">Home</Link>
               <span>/</span>
-              <Link to="/product">Products</Link>
-              <span>/</span>
               <Link to={`/${categorySlug}`}>{product.category || "Product Category"}</Link>
             </nav>
             <span className="eyebrow detail-reveal">{product.technology}</span>
             <h1 className="detail-reveal">{product.name}</h1>
-            <p className="detail-lead detail-reveal">{product.shortDescription || product.description}</p>
+            <FormattedContent as="p" className="detail-lead detail-reveal" value={product.shortDescription || product.description} format={product.shortDescription ? (product.shortDescriptionFormat || 'plain') : (product.descriptionFormat || 'plain')} />
             <div className="hero-facts detail-reveal">
               <div><span>Brand</span><strong>{product.brand}</strong></div>
               <div><span>Type</span><strong>{product.type}</strong></div>
@@ -401,6 +525,7 @@ export default function ProductDetail() {
               Phone Number *
               <input required type="tel" value={brochureData.phone} onChange={(e) => setBrochureData({ ...brochureData, phone: e.target.value })} />
             </label>
+            <p className="brochure-consent">By downloading this brochure, I agree to receive promotional emails and marketing communications from you.</p>
             <button type="submit">Submit & Download</button>
           </form>
         </div>
@@ -421,7 +546,14 @@ export default function ProductDetail() {
             <section className="detail-panel detail-reveal">
               <span className="eyebrow">Engineered Disinfection</span>
               <h2>Ultraviolet water disinfection built for reliable operation.</h2>
-              <p>{product.description}</p>
+              <FormattedContent as="p" value={product.description} format={product.descriptionFormat || 'plain'} />
+              {descriptionImages.length > 0 && (
+                <div className="description-images" aria-label="Product description images">
+                  {descriptionImages.map((image, index) => (
+                    <img key={image} src={image} alt={`${product.name} description ${index + 1}`} loading="lazy" />
+                  ))}
+                </div>
+              )}
               <div className="highlight-grid">
                 {(highlights || []).map((item, idx) => (
                   <div className="highlight-card" key={(item || '') + idx}>
@@ -432,6 +564,27 @@ export default function ProductDetail() {
               </div>
             </section>
           </div>
+
+          {detailImages.length > 0 && (
+            <section className="detail-images-showcase full-width detail-reveal" aria-labelledby="detail-images-title">
+              <div className="detail-images-heading">
+                <span className="eyebrow">Product Details Gallery</span>
+                <h2 id="detail-images-title">A closer look at the system.</h2>
+                <p>Explore the engineering, finish and key components behind this water-treatment solution.</p>
+              </div>
+              <div className="detail-images-grid">
+                {detailImages.map((image, index) => (
+                  <figure className="detail-image-card" key={`${image}-${index}`}>
+                    <div className="detail-image-frame">
+                      <img src={image} alt={`${product.name} product detail ${index + 1}`} loading="lazy" />
+                      <span className="detail-image-number">{String(index + 1).padStart(2, '0')}</span>
+                    </div>
+                    <figcaption>Product detail <span aria-hidden="true">↗</span></figcaption>
+                  </figure>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section className="detail-panel spec-panel full-width detail-reveal">
             <div>
@@ -465,6 +618,98 @@ export default function ProductDetail() {
         </div>
       </section>
 
+      <section className="product-contact-section detail-reveal" aria-labelledby="product-contact-title">
+        <div className="container">
+          <div className="product-contact-grid">
+            <aside className="product-contact-info">
+              <span className="eyebrow">{countryDetails?.name ? `${countryDetails.name} Support` : 'Product Support'}</span>
+              <h2 id="product-contact-title">Talk to our water-treatment team</h2>
+              <p>Share your requirements for <strong>{product.name}</strong> and our local team will help you with the right solution.</p>
+              <div className="product-contact-details">
+                <div>
+                  <span>Office</span>
+                  <strong>{countryDetails?.company_name || countryDetails?.name || 'Water Filter Africa'}</strong>
+                </div>
+                <div>
+                  <span>Address</span>
+                  <strong>{countryDetails?.address || 'Contact our team for local office details.'}</strong>
+                </div>
+                <div>
+                  <span>Email</span>
+                  <a href={`mailto:${countryDetails?.email || 'office@waterfilterafrica.com'}`}>
+                    {countryDetails?.email || 'office@waterfilterafrica.com'}
+                  </a>
+                </div>
+                <div>
+                  <span>Phone</span>
+                  <a href={`tel:${countryDetails?.phone || '+260969113323'}`}>
+                    {countryDetails?.phone || '+260969113323'}
+                  </a>
+                </div>
+              </div>
+            </aside>
+
+            <div className="product-contact-form-wrap">
+              <span className="eyebrow">Product Enquiry</span>
+              <h2>Tell us what you need</h2>
+              <form className="product-contact-form" onSubmit={handleProductContactSubmit}>
+                <label>
+                  Full Name *
+                  <input required value={contactData.name} onChange={(e) => setContactData({ ...contactData, name: e.target.value })} />
+                </label>
+                <label>
+                  Company / Organization
+                  <input value={contactData.company} onChange={(e) => setContactData({ ...contactData, company: e.target.value })} />
+                </label>
+                <label>
+                  Email Address *
+                  <input required type="email" value={contactData.email} onChange={(e) => setContactData({ ...contactData, email: e.target.value })} />
+                </label>
+                <label>
+                  Phone Number *
+                  <input required type="tel" value={contactData.phone} onChange={(e) => setContactData({ ...contactData, phone: e.target.value })} />
+                </label>
+                <label>
+                  Application / Industry
+                  <input value={contactData.application} onChange={(e) => setContactData({ ...contactData, application: e.target.value })} placeholder="Agriculture, industrial, municipal..." />
+                </label>
+                <label>
+                  Water Source / Requirement
+                  <input value={contactData.source} onChange={(e) => setContactData({ ...contactData, source: e.target.value })} />
+                </label>
+                <label className="product-contact-full">
+                  Message / Project Details *
+                  <textarea required rows="5" value={contactData.message} onChange={(e) => setContactData({ ...contactData, message: e.target.value })} />
+                </label>
+                <button className="product-contact-submit product-contact-full" type="submit" disabled={isSubmittingContact}>
+                  {isSubmittingContact ? 'Sending Enquiry...' : 'Send Product Enquiry →'}
+                </button>
+              </form>
+              {contactStatus.show && (
+                <div className={`product-contact-status ${contactStatus.success ? 'success' : 'error'}`} role="status" aria-live="polite">
+                  {contactStatus.message}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="product-contact-map">
+            <div>
+              <span className="eyebrow">Find Us</span>
+              <h2>{countryDetails?.name ? `Water-treatment support in ${countryDetails.name}` : 'Water-treatment support from Water Filter Africa'}</h2>
+              <p>{countryDetails?.address || 'Contact our team for local office and water-treatment support.'}</p>
+            </div>
+            <iframe
+              title={`${countryDetails?.name || 'Water Filter Africa'} office map`}
+              src={getEmbedMapUrl(countryDetails?.map_link || countryDetails?.address) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </section>
+
       {relatedProducts.length > 0 && (
         <section className="section related-products-section detail-reveal">
           <div className="container">
@@ -472,7 +717,7 @@ export default function ProductDetail() {
             <h2>Products in the Same Category</h2>
             <div className="related-products-grid">
               {relatedProducts.map((p) => (
-                <Link to={`/product/${p.slug}`} key={p.id} className="related-product-card">
+                <Link to={productPath(p.slug)} key={p.id} className="related-product-card">
                   <div className="related-product-image">
                     <img src={p.image || '/storage/products/1787224154_FeTzsn2enx.png'} alt={p.name} />
                   </div>

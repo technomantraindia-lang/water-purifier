@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
-import Product from './pages/Product/Product';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Category from './pages/Category/Category';
 import Contact from './pages/Contact/Contact';
@@ -71,8 +70,8 @@ export default function App() {
         <Route path="/index.html" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/about.html" element={<About />} />
-        <Route path="/product" element={<Product />} />
-        <Route path="/product.html" element={<Product />} />
+        <Route path="/product" element={<Navigate to="/" replace />} />
+        <Route path="/product.html" element={<Navigate to="/" replace />} />
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/category" element={<Category />} />
         <Route path="/category.html" element={<Category />} />
@@ -85,6 +84,7 @@ export default function App() {
         <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/terms-conditions.html" element={<TermsConditions />} />
+        <Route path="/country/:countryCode/product/:slug" element={<ProductDetail />} />
         <Route path="/country/:countryCode" element={<CountryPage />} />
         <Route path="/admin" element={<AdminRedirect />} />
         <Route path="/admin/*" element={<AdminRedirect />} />

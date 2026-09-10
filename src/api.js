@@ -60,6 +60,18 @@ export async function getCountryDetails(countryCode) {
   }
 }
 
+export async function getSiteSettings() {
+  try {
+    const res = await fetch(`${BASE_URL}/v1/site-settings`);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    return data.settings ? data.settings : data;
+  } catch (error) {
+    console.warn('Failed to fetch site settings:', error);
+    return null;
+  }
+}
+
 export async function getCategories(countryCode) {
   try {
     const country = countryCode !== undefined ? countryCode : getActiveCountryCode();
