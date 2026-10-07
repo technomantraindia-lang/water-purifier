@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { getCountries, getCountryDetails, getActiveCountryCode, getProducts } from '../api';
+import { CONTACT_PHONE, getCountries, getCountryDetails, getActiveCountryCode, getProducts } from '../api';
 import FormattedContent from './FormattedContent';
 
 export default function Footer() {
@@ -119,7 +119,7 @@ export default function Footer() {
             <h4>Products</h4>
             {currentCountry ? (
               countryProducts.length > 0 ? countryProducts.slice(0, 5).map((product) => (
-                <Link key={product.id || product.slug} to={`/country/${currentCountry}/product/${product.slug}`}>
+                <Link key={product.id || product.slug} to={`/country/${currentCountry}/products/${product.slug}`}>
                   {product.name}
                 </Link>
               )) : (
@@ -150,7 +150,7 @@ export default function Footer() {
               <>
                 <p><strong>{countryDetails?.company_name || countryDetails?.name || 'Country Office'}</strong></p>
                 {countryDetails?.address && <p>{countryDetails.address}</p>}
-                {countryDetails?.phone && <p><a href={`tel:${countryDetails.phone}`} style={{ color: 'inherit', textDecoration: 'none' }}>{countryDetails.phone}</a></p>}
+                <p><a href={`tel:${CONTACT_PHONE}`} style={{ color: 'inherit', textDecoration: 'none' }}>{CONTACT_PHONE}</a></p>
                 {countryDetails?.email && <p><a href={`mailto:${countryDetails.email}`} style={{ color: 'inherit', textDecoration: 'none' }}>{countryDetails.email}</a></p>}
               </>
             ) : (

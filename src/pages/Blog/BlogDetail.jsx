@@ -9,6 +9,13 @@ import FormattedContent from '../../components/FormattedContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
+function cleanBlogText(value) {
+  return String(value || '')
+    .replace(/After the three images above, add as many descriptions or images as needed\. They will appear in the exact order you add them\.?/gi, '')
+    .replace(/Optional images shown directly after the description\. You can add up to 3 images\.?/gi, '')
+    .trim();
+}
+
 export default function BlogDetail() {
   const { slug } = useParams();
   const [blog, setBlog] = useState(null);
@@ -37,17 +44,28 @@ export default function BlogDetail() {
 
   const contentBlocks = useMemo(() => {
     const blocks = blog?.contentBlocks ?? blog?.content_blocks;
-    if (Array.isArray(blocks)) return blocks.filter((block) => block && typeof block === 'object');
+    const normalize = (items) => items
+      .filter((block) => block && typeof block === 'object')
+      .map((block) => ({
+        ...block,
+        content: cleanBlogText(block.content)
+      }))
+      .filter((block) => block.type === 'image' ? Boolean(block.image) : Boolean(block.content));
+
+    if (Array.isArray(blocks)) return normalize(blocks);
     if (typeof blocks === 'string') {
       try {
         const parsed = JSON.parse(blocks);
-        return Array.isArray(parsed) ? parsed.filter((block) => block && typeof block === 'object') : [];
+        return Array.isArray(parsed) ? normalize(parsed) : [];
       } catch {
         return [];
       }
     }
     return [];
   }, [blog]);
+
+  const articleExcerpt = cleanBlogText(blog?.excerpt);
+  const articleContent = cleanBlogText(blog?.content);
 
   useEffect(() => {
     let active = true;
@@ -120,9 +138,15 @@ export default function BlogDetail() {
               <span className="crumb-active">{blog.title}</span>
             </nav>
 
-            <span className="blog-detail-category">{blog.category}</span>
-            <h1 className="blog-detail-title">{blog.title}</h1>
-            <div className="blog-detail-date">Published: {blog.date}</div>
+            <header className="blog-detail-header">
+              <span className="blog-detail-category">{blog.category || 'Water Treatment'}</span>
+              <h1 className="blog-detail-title">{blog.title}</h1>
+              <div className="blog-detail-meta">
+                <span>Published {blog.date}</span>
+                {blog.readTime && <span>{blog.readTime}</span>}
+              </div>
+              {articleExcerpt && <p className="blog-detail-excerpt">{articleExcerpt}</p>}
+            </header>
 
             <div className="blog-detail-featured-image">
               <img src={blog.image || '/images/logo.png'} alt={blog.title} />
@@ -130,7 +154,7 @@ export default function BlogDetail() {
 
             <FormattedContent
               className="blog-detail-body"
-              value={blog.content}
+              value={articleContent}
               format={blog.contentFormat || 'plain'}
             />
             {contentImages.length > 0 && (

@@ -95,7 +95,7 @@ export default function CountryPage() {
                 <Link 
                   key={p.id}
                   className="product-card" 
-                  to={`/country/${countryCode}/product/${p.slug}`}
+                  to={`/country/${countryCode}/products/${p.slug}`}
                 >
                   <div className="product-stage">
                     <img src={p.image || '/images/logo.png'} alt={p.name} />

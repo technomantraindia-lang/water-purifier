@@ -3,11 +3,33 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WFA_PRODUCTS } from '../../data/products-data';
-import { getCategories, getProductBySlug, getProductsByCategory, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, submitEnquiry } from '../../api';
+import { CONTACT_PHONE, getCategories, getProductBySlug, getProductsByCategory, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, submitEnquiry } from '../../api';
 import './ProductDetail.css';
 import FormattedContent from '../../components/FormattedContent';
 
 gsap.registerPlugin(ScrollTrigger);
+
+function getSpecificationEntry(specs, requestedLabel) {
+  const requested = String(requestedLabel || '').trim().toLowerCase();
+  return (specs || []).find((item) => {
+    const label = Array.isArray(item) ? item[0] : (typeof item === 'object' ? item.label || item.key : item);
+    return String(label || '').trim().toLowerCase() === requested;
+  });
+}
+
+function getSpecificationValue(specs, requestedLabel) {
+  const entry = getSpecificationEntry(specs, requestedLabel);
+  if (Array.isArray(entry)) return entry[1] || '';
+  if (entry && typeof entry === 'object') return entry.value || '';
+  return '';
+}
+
+function getSpecificationLabel(specs, requestedLabel) {
+  const entry = getSpecificationEntry(specs, requestedLabel);
+  if (Array.isArray(entry)) return entry[0] || '';
+  if (entry && typeof entry === 'object') return entry.label || entry.key || '';
+  return '';
+}
 
 export default function ProductDetail() {
   const { slug, countryCode } = useParams();
@@ -38,7 +60,7 @@ export default function ProductDetail() {
     if (countryCode) return;
     const activeCountry = getActiveCountryCode();
     if (activeCountry) {
-      navigate('/country/' + activeCountry + '/product/' + slug, { replace: true });
+      navigate('/country/' + activeCountry + '/products/' + slug, { replace: true });
     }
   }, [countryCode, navigate, slug]);
 
@@ -129,6 +151,51 @@ export default function ProductDetail() {
       return lower !== 'origin' && lower !== 'place of origin';
     });
   }, [product]);
+
+  const specificationLabels = useMemo(() => {
+    const labels = product?.specLabels || product?.spec_labels || {};
+    return {
+      section: labels.section || (product?.name ? `${product.name} specifications` : ''),
+      brand: labels.brand || getSpecificationLabel(specs, 'brand'),
+      model: labels.model || (product?.model ? getSpecificationLabel(specs, 'model') : ''),
+      capacity: labels.capacity || (product?.capacity ? getSpecificationLabel(specs, 'capacity') : ''),
+      technology: labels.technology || product?.technology || product?.type || '',
+      type: labels.type || getSpecificationLabel(specs, 'type')
+    };
+  }, [product, specs]);
+
+  const productCopy = useMemo(() => {
+    if (!product) return {};
+
+    const productName = product.name || product.label || product.slug || '';
+    const summary = product.shortDescription || product.description || productName;
+    const technology = product.technology || product.type || product.category || productName;
+
+    return {
+      technology,
+      detailsLabel: product.detailsLabel || product.details_label || technology,
+      detailsHeading: product.detailsHeading || product.details_heading || summary,
+      galleryLabel: product.detailImagesLabel || product.detail_images_label || `${productName} gallery`,
+      galleryHeading: product.detailImagesHeading || product.detail_images_heading || `${productName} details`,
+      galleryDescription: product.detailImagesDescription || product.detail_images_description || summary,
+      specificationsLabel: product.specificationsLabel || product.specifications_label || `${productName} specifications`,
+      specificationsHeading: product.specificationsHeading || product.specifications_heading || summary,
+      supportLabel: product.supportLabel || product.support_label || technology,
+      supportHeading: product.supportHeading || product.support_heading || `${productName} support`,
+      supportDescription: product.supportDescription || product.support_description || summary,
+      enquiryLabel: product.enquiryLabel || product.enquiry_label || `${productName} enquiry`,
+      enquiryHeading: product.enquiryHeading || product.enquiry_heading || `${productName} requirements`,
+      mapLabel: product.mapLabel || product.map_label || technology,
+      mapHeading: countryDetails?.name
+        ? `${productName} support in ${countryDetails.name}`
+        : `${productName} support`
+    };
+  }, [product, countryDetails]);
+
+  const warranty = useMemo(
+    () => product?.warranty || getSpecificationValue(specs, 'warranty'),
+    [product, specs]
+  );
 
   const highlights = useMemo(() => {
     if (!product) return [];
@@ -417,9 +484,14 @@ export default function ProductDetail() {
     return cat ? cat.slug : product.category;
   }, [product, categories]);
 
+  const categoryLabel = useMemo(() => {
+    const category = categories.find(c => c.id === product?.category);
+    return category?.label || category?.name || product?.category || '';
+  }, [product, categories]);
+
   const productPath = (productSlug) => (countryCode || getActiveCountryCode())
-    ? '/country/' + (countryCode || getActiveCountryCode()) + '/product/' + productSlug
-    : '/product/' + productSlug;
+    ? '/country/' + (countryCode || getActiveCountryCode()) + '/products/' + productSlug
+    : '/products/' + productSlug;
 
   if (loading) {
     return (
@@ -488,15 +560,16 @@ export default function ProductDetail() {
             <nav className="breadcrumb detail-reveal" aria-label="Breadcrumb">
               <Link to="/">Home</Link>
               <span>/</span>
-              <Link to={`/${categorySlug}`}>{product.category || "Product Category"}</Link>
+              <Link to={`/${categorySlug}`}>{categoryLabel}</Link>
             </nav>
-            <span className="eyebrow detail-reveal">{product.technology}</span>
+            <span className="eyebrow detail-reveal">{productCopy.technology}</span>
             <h1 className="detail-reveal">{product.name}</h1>
             <FormattedContent as="p" className="detail-lead detail-reveal" value={product.shortDescription || product.description} format={product.shortDescription ? (product.shortDescriptionFormat || 'plain') : (product.descriptionFormat || 'plain')} />
+            <span className="eyebrow detail-reveal">{specificationLabels.section}</span>
             <div className="hero-facts detail-reveal">
-              <div><span>Brand</span><strong>{product.brand}</strong></div>
-              <div><span>Type</span><strong>{product.type}</strong></div>
-              <div><span>Capacity</span><strong>{product.capacity}</strong></div>
+              <div><span>{specificationLabels.brand}</span><strong>{product.brand}</strong></div>
+              <div><span>{specificationLabels.type}</span><strong>{product.type}</strong></div>
+              <div><span>{specificationLabels.capacity}</span><strong>{product.capacity}</strong></div>
             </div>
             <div className="hero-actions detail-reveal">
               <a href="https://wa.me/260969113323" target="_blank" rel="noreferrer">Request Quote</a>
@@ -534,18 +607,17 @@ export default function ProductDetail() {
       <section className="detail-content">
         <div className="container detail-content-grid">
           <aside className="product-snapshot detail-reveal">
-            <span>Model</span>
+            <span>{specificationLabels.model}</span>
             <strong>{product.model}</strong>
-            <span>Capacity</span>
+            <span>{specificationLabels.capacity}</span>
             <strong>{product.capacity}</strong>
-            <span>Warranty</span>
-            <strong>10 Year Warranty</strong>
+            {warranty && <><span>{getSpecificationLabel(specs, 'warranty') || 'Warranty'}</span><strong>{warranty}</strong></>}
           </aside>
 
           <div className="product-story">
             <section className="detail-panel detail-reveal">
-              <span className="eyebrow">Engineered Disinfection</span>
-              <h2>Ultraviolet water disinfection built for reliable operation.</h2>
+              <span className="eyebrow">{productCopy.detailsLabel}</span>
+              <h2>{productCopy.detailsHeading}</h2>
               <FormattedContent as="p" value={product.description} format={product.descriptionFormat || 'plain'} />
               {descriptionImages.length > 0 && (
                 <div className="description-images" aria-label="Product description images">
@@ -568,9 +640,9 @@ export default function ProductDetail() {
           {detailImages.length > 0 && (
             <section className="detail-images-showcase full-width detail-reveal" aria-labelledby="detail-images-title">
               <div className="detail-images-heading">
-                <span className="eyebrow">Product Details Gallery</span>
-                <h2 id="detail-images-title">A closer look at the system.</h2>
-                <p>Explore the engineering, finish and key components behind this water-treatment solution.</p>
+                <span className="eyebrow">{productCopy.galleryLabel}</span>
+                <h2 id="detail-images-title">{productCopy.galleryHeading}</h2>
+                <p>{productCopy.galleryDescription}</p>
               </div>
               <div className="detail-images-grid">
                 {detailImages.map((image, index) => (
@@ -588,8 +660,8 @@ export default function ProductDetail() {
 
           <section className="detail-panel spec-panel full-width detail-reveal">
             <div>
-              <span className="eyebrow">Product Details</span>
-              <h2>Built for chemical-free water sterilization.</h2>
+                <span className="eyebrow">{productCopy.specificationsLabel}</span>
+                <h2>{productCopy.specificationsHeading}</h2>
             </div>
             <div className="product-table-wrap">
               <table className="product-spec-table">
@@ -600,8 +672,8 @@ export default function ProductDetail() {
                     const value = Array.isArray(item) ? item[1] : (typeof item === 'object' ? item.value : '');
                     return (
                       <tr key={(label || '') + idx}>
-                        <th scope="row">{label || 'Specification'}</th>
-                        <td>{value || '-'}</td>
+                        <th scope="row">{label || productCopy.specificationsLabel}</th>
+                        <td>{value || ''}</td>
                       </tr>
                     );
                   })}
@@ -622,36 +694,36 @@ export default function ProductDetail() {
         <div className="container">
           <div className="product-contact-grid">
             <aside className="product-contact-info">
-              <span className="eyebrow">{countryDetails?.name ? `${countryDetails.name} Support` : 'Product Support'}</span>
-              <h2 id="product-contact-title">Talk to our water-treatment team</h2>
-              <p>Share your requirements for <strong>{product.name}</strong> and our local team will help you with the right solution.</p>
+              <span className="eyebrow">{productCopy.supportLabel}</span>
+              <h2 id="product-contact-title">{productCopy.supportHeading}</h2>
+              <p>{productCopy.supportDescription}</p>
               <div className="product-contact-details">
                 <div>
                   <span>Office</span>
-                  <strong>{countryDetails?.company_name || countryDetails?.name || 'Water Filter Africa'}</strong>
+                  <strong>{countryDetails?.company_name || countryDetails?.name || product.brand || ''}</strong>
                 </div>
                 <div>
                   <span>Address</span>
-                  <strong>{countryDetails?.address || 'Contact our team for local office details.'}</strong>
+                  <strong>{countryDetails?.address || ''}</strong>
                 </div>
                 <div>
                   <span>Email</span>
-                  <a href={`mailto:${countryDetails?.email || 'office@waterfilterafrica.com'}`}>
-                    {countryDetails?.email || 'office@waterfilterafrica.com'}
+                  <a href={countryDetails?.email ? `mailto:${countryDetails.email}` : undefined}>
+                    {countryDetails?.email || ''}
                   </a>
                 </div>
                 <div>
                   <span>Phone</span>
-                  <a href={`tel:${countryDetails?.phone || '+260969113323'}`}>
-                    {countryDetails?.phone || '+260969113323'}
+                  <a href={`tel:${CONTACT_PHONE}`}>
+                    {CONTACT_PHONE}
                   </a>
                 </div>
               </div>
             </aside>
 
             <div className="product-contact-form-wrap">
-              <span className="eyebrow">Product Enquiry</span>
-              <h2>Tell us what you need</h2>
+              <span className="eyebrow">{productCopy.enquiryLabel}</span>
+              <h2>{productCopy.enquiryHeading}</h2>
               <form className="product-contact-form" onSubmit={handleProductContactSubmit}>
                 <label>
                   Full Name *
@@ -671,7 +743,7 @@ export default function ProductDetail() {
                 </label>
                 <label>
                   Application / Industry
-                  <input value={contactData.application} onChange={(e) => setContactData({ ...contactData, application: e.target.value })} placeholder="Agriculture, industrial, municipal..." />
+                  <input value={contactData.application} onChange={(e) => setContactData({ ...contactData, application: e.target.value })} placeholder={product.technology || product.category || ''} />
                 </label>
                 <label>
                   Water Source / Requirement
@@ -695,17 +767,19 @@ export default function ProductDetail() {
 
           <div className="product-contact-map">
             <div>
-              <span className="eyebrow">Find Us</span>
-              <h2>{countryDetails?.name ? `Water-treatment support in ${countryDetails.name}` : 'Water-treatment support from Water Filter Africa'}</h2>
-              <p>{countryDetails?.address || 'Contact our team for local office and water-treatment support.'}</p>
+              <span className="eyebrow">{productCopy.mapLabel}</span>
+              <h2>{productCopy.mapHeading}</h2>
+              <p>{countryDetails?.address || ''}</p>
             </div>
-            <iframe
-              title={`${countryDetails?.name || 'Water Filter Africa'} office map`}
-              src={getEmbedMapUrl(countryDetails?.map_link || countryDetails?.address) || 'https://www.google.com/maps?q=Lusaka%2C%20Zambia&output=embed'}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
+            {(countryDetails?.map_link || countryDetails?.address) && (
+              <iframe
+                title={`${countryDetails?.name || product.name} office map`}
+                src={getEmbedMapUrl(countryDetails.map_link || countryDetails.address)}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            )}
           </div>
         </div>
       </section>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BLOG_POSTS } from '../../data/blog-data';
-import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, getBanners, getSiteSettings, submitEnquiry } from '../../api';
+import { getBlogs, getProducts, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, getBanners, getTestimonials, getSiteSettings, submitEnquiry } from '../../api';
 import './Home.css';
 import FormattedContent from '../../components/FormattedContent';
 
@@ -35,28 +35,28 @@ const INDUSTRIES_DATA = [
 const TESTIMONIALS_DATA = [
   {
     badge: "Mining Application",
-    quote: '"The high-capacity sediment filters installed by Water Filter Africa solved our pipeline clog issues. Their systems handle extremely high flow rates without drop in pressure."',
+    quote: 'The high-capacity sediment filters installed by Water Filter Africa solved our pipeline clog issues. Their systems handle extremely high flow rates without drop in pressure.',
     author: "Mark Thompson",
     role: "Operations Director, Zambian Copper Corp",
     initials: "MT"
   },
   {
     badge: "Agriculture Infrastructure",
-    quote: '"Our greenhouse crop yields increased by 20% after implementing their sand filtration and UV control systems. The water purity is highly consistent."',
+    quote: 'Our greenhouse crop yields increased by 20% after implementing their sand filtration and UV control systems. The water purity is highly consistent.',
     author: "Elena Nkosi",
     role: "Lead Agronomist, African Green Farms",
     initials: "EN"
   },
   {
     badge: "Municipal Utility",
-    quote: '"Reliability and scale were our primary concerns for the city intake project. Water Filter Africa delivered robust demineralization plants within budget."',
+    quote: 'Reliability and scale were our primary concerns for the city intake project. Water Filter Africa delivered robust demineralization plants within budget.',
     author: "David Olatunji",
     role: "Infrastructure Manager, Metropolitan Water Board",
     initials: "DO"
   },
   {
     badge: "Hospitality & Resorts",
-    quote: '"Protecting our hotel boiler feeds and offering spot-free guest rinsing water was critical. Their multi-stage softening filters are exceptional."',
+    quote: 'Protecting our hotel boiler feeds and offering spot-free guest rinsing water was critical. Their multi-stage softening filters are exceptional.',
     author: "Sophie Dubois",
     role: "General Manager, Blue Horizon Resort",
     initials: "SD"
@@ -130,6 +130,7 @@ export default function Home() {
   // Testimonials Carousel state
   const [activeTestimonial, setActiveTestimonial] = useState(1);
   const [isHoveringTestimonials, setIsHoveringTestimonials] = useState(false);
+  const [testimonials, setTestimonials] = useState(TESTIMONIALS_DATA);
 
   // Blogs state
   const [recentBlogs, setRecentBlogs] = useState(BLOG_POSTS.slice(0, 3));
@@ -152,6 +153,11 @@ export default function Home() {
     getBanners().then(data => {
       if (active && Array.isArray(data) && data.length > 0) {
         setBanners(data);
+      }
+    });
+    getTestimonials().then(data => {
+      if (active && Array.isArray(data)) {
+        setTestimonials(data);
       }
     });
     return () => { active = false; };
@@ -751,30 +757,38 @@ export default function Home() {
         ease: "power4.out"
       });
     }
-  }, [activeTestimonial]);
+  }, [activeTestimonial, testimonials.length]);
+
+  useEffect(() => {
+    setActiveTestimonial((current) => testimonials.length > 0
+      ? Math.min(current, testimonials.length - 1)
+      : 0);
+  }, [testimonials.length]);
 
   // Testimonials autoplay
   useEffect(() => {
     let interval = null;
-    if (!isHoveringTestimonials) {
+    if (!isHoveringTestimonials && testimonials.length > 1) {
       interval = setInterval(() => {
-        setActiveTestimonial((prev) => (prev + 1) % TESTIMONIALS_DATA.length);
+        setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
       }, 6000);
     }
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isHoveringTestimonials]);
+  }, [isHoveringTestimonials, testimonials.length]);
 
   const handlePrevTestimonial = () => {
+    if (testimonials.length === 0) return;
     setActiveTestimonial((prev) => {
       let nextIdx = prev - 1;
-      return nextIdx < 0 ? TESTIMONIALS_DATA.length - 1 : nextIdx;
+      return nextIdx < 0 ? testimonials.length - 1 : nextIdx;
     });
   };
 
   const handleNextTestimonial = () => {
-    setActiveTestimonial((prev) => (prev + 1) % TESTIMONIALS_DATA.length);
+    if (testimonials.length === 0) return;
+    setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
   };
 
   // Touch Swipe on testimonials
@@ -970,7 +984,7 @@ export default function Home() {
 
             <Link className="category-card" data-grid="boiler-chemicals" to="/boiler-chemicals">
               <div className="category-card-bg">
-                <img src="/images/new boiler chemcials.png" alt="Boiler Chemicals" />
+                <img src="/images/home service 2.jpeg" alt="Boiler Chemicals" />
               </div>
               <div className="category-card-overlay"></div>
               <div className="category-card-content">
@@ -989,7 +1003,7 @@ export default function Home() {
 
             <Link className="category-card" data-grid="acidic-cleaner" to="/acidic-cleaner">
               <div className="category-card-bg">
-                <img src="/images/acidic cleaner.png" alt="Acidic Cleaner" />
+                <img src="/images/home service 1.png" alt="Acidic Cleaner" />
               </div>
               <div className="category-card-overlay"></div>
               <div className="category-card-content">
@@ -1151,8 +1165,8 @@ export default function Home() {
               const exploreLink = p.productUrl && p.productUrl.startsWith('http') && !p.productUrl.includes(window.location.host)
                 ? p.productUrl
                 : (getActiveCountryCode()
-                  ? '/country/' + getActiveCountryCode() + '/product/' + p.slug
-                  : '/product/' + p.slug);
+                  ? '/country/' + getActiveCountryCode() + '/products/' + p.slug
+                  : '/products/' + p.slug);
 
               return (
                 <React.Fragment key={p.id || index}>
@@ -1347,9 +1361,9 @@ export default function Home() {
             onTouchEnd={handleTouchEnd}
           >
             <div className="carousel-cards-wrapper">
-              {TESTIMONIALS_DATA.map((t, index) => {
+              {testimonials.map((t, index) => {
                 let cardClass = 'hidden';
-                const total = TESTIMONIALS_DATA.length;
+                const total = testimonials.length;
                 let prevIndex = activeTestimonial - 1;
                 if (prevIndex < 0) prevIndex = total - 1;
                 let rightNextIndex = (activeTestimonial + 1) % total;
@@ -1366,7 +1380,7 @@ export default function Home() {
                   <article key={index} className={`testimonial-card ${cardClass}`} data-index={index}>
                     <div className="testimonial-quote-mark">“</div>
                     <span className="testimonial-badge">{t.badge}</span>
-                    <p className="testimonial-quote">{t.quote}</p>
+                    <p className="testimonial-quote">“{t.quote}”</p>
                     <div className="testimonial-author">
                       <div className="testimonial-client-image" aria-hidden="true">{t.initials}</div>
                       <div className="testimonial-author-copy">
@@ -1389,9 +1403,9 @@ export default function Home() {
               <div className="carousel-pagination">
                 <span className="page-num current-page">0{activeTestimonial + 1}</span>
                 <div className="pagination-track">
-                  <div className="pagination-progress-bar" style={{ width: `${((activeTestimonial + 1) / TESTIMONIALS_DATA.length) * 100}%` }}></div>
+                  <div className="pagination-progress-bar" style={{ width: `${testimonials.length ? ((activeTestimonial + 1) / testimonials.length) * 100 : 0}%` }}></div>
                 </div>
-                <span className="page-num total-pages">04</span>
+                <span className="page-num total-pages">{String(testimonials.length).padStart(2, '0')}</span>
               </div>
 
               <button className="carousel-btn btn-next" aria-label="Next Testimonial" onClick={handleNextTestimonial}>

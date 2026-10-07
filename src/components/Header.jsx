@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { WFA_PRODUCTS } from '../data/products-data';
-import { getCategories, getActiveCountryCode, getCountryDetails } from '../api';
+import { CONTACT_PHONE, getCategories, getActiveCountryCode, getCountryDetails } from '../api';
+
+const HEADER_SEO_TICKER = 'Water Purification System Lusaka Zambia - Hard Water Filter & Softener in Kitwe Ndola Kabwe - Magnetic Water Treatment & Filtration Solution Price In Zambia, South Africa, Botswana, Namibia, Congo, Malawi, Angola, Zimbabwe, Lusaka, Kitwe, Ndola, Kabwe, Chingola, Mufulira, Luanshya, Livingstone, Kasama, Chipata, Kalulushi, Mazabuka, Chililabombwe, Mongu, Kafue, Choma, Mansa, Kansanshi, Kapiri Mposhi, Monze, Mpika, Nchelenge, Kawambwa, Mbala';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -80,11 +82,11 @@ export default function Header() {
       <div className="contact-strip">
         <div className="contact-strip-inner">
           <div className="contact-strip-left">
-            <a href={`tel:${(countryDetails && countryDetails.phone) || '+260969113323'}`} aria-label="Call Water Filter Africa">
+            <a href={`tel:${CONTACT_PHONE}`} aria-label="Call Water Filter Africa">
               <span className="strip-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.05 9.91a16 16 0 0 0 6.04 6.04l1.27-1.27a2 2 0 0 1 2.11-.45c.91.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92Z"/></svg>
               </span>
-              {(countryDetails && countryDetails.phone) || '+260969113323'}
+              {CONTACT_PHONE}
             </a>
             <a href={`mailto:${(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}`} aria-label="Email Water Filter Africa">
               <span className="strip-icon" aria-hidden="true">
@@ -112,6 +114,12 @@ export default function Header() {
               </a>
             </span>
           </div>
+        </div>
+      </div>
+      <div className="header-seo-ticker" aria-label="Water treatment services">
+        <div className="header-seo-ticker-track">
+          <span>{HEADER_SEO_TICKER}</span>
+          <span aria-hidden="true">{HEADER_SEO_TICKER}</span>
         </div>
       </div>
       <div className="topbar">

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home/Home';
@@ -34,6 +34,15 @@ function AdminRedirect() {
     window.location.href = '/admin';
   }, []);
   return null;
+}
+
+function LegacyProductRedirect() {
+  const { slug, countryCode } = useParams();
+  const target = countryCode
+    ? `/country/${countryCode}/products/${slug}`
+    : `/products/${slug}`;
+
+  return <Navigate to={target} replace />;
 }
 
 export default function App() {
@@ -71,8 +80,10 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/about.html" element={<About />} />
         <Route path="/product" element={<Navigate to="/" replace />} />
+        <Route path="/products" element={<Category />} />
         <Route path="/product.html" element={<Navigate to="/" replace />} />
-        <Route path="/product/:slug" element={<ProductDetail />} />
+        <Route path="/products/:slug" element={<ProductDetail />} />
+        <Route path="/product/:slug" element={<LegacyProductRedirect />} />
         <Route path="/category" element={<Category />} />
         <Route path="/category.html" element={<Category />} />
         <Route path="/blog" element={<Blog />} />
@@ -84,7 +95,8 @@ export default function App() {
         <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/terms-conditions.html" element={<TermsConditions />} />
-        <Route path="/country/:countryCode/product/:slug" element={<ProductDetail />} />
+        <Route path="/country/:countryCode/products/:slug" element={<ProductDetail />} />
+        <Route path="/country/:countryCode/product/:slug" element={<LegacyProductRedirect />} />
         <Route path="/country/:countryCode" element={<CountryPage />} />
         <Route path="/admin" element={<AdminRedirect />} />
         <Route path="/admin/*" element={<AdminRedirect />} />

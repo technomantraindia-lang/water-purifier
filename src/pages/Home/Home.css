@@ -3564,6 +3564,13 @@
   #home .hero-carousel {
     height: clamp(185px, 44vw, 280px) !important;
     min-height: 185px;
+    background: #fff !important;
+  }
+
+  #home .hero-carousel img,
+  #home .hero-banner img {
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 
   #home .hero-carousel-dots {
@@ -3674,6 +3681,13 @@
   #home .hero-carousel {
     height: 168px !important;
     min-height: 168px;
+    background: #fff !important;
+  }
+
+  #home .hero-carousel img,
+  #home .hero-banner img {
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 
   #home .container {
@@ -3703,6 +3717,20 @@
   #home .product-content-panel .product-card-category {
     align-items: flex-start;
     line-height: 1.35;
+  }
+}
+
+/* Keep the second desktop hero banner's wide artwork fully visible. */
+@media (min-width: 769px) {
+  #home .hero-carousel.banner-aspect-1 {
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 2322 / 677 !important;
+  }
+
+  #home .hero-carousel.banner-aspect-1 img {
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 }
 

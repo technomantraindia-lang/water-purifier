@@ -1,6 +1,7 @@
 import { WFA_PRODUCTS } from './data/products-data';
 import { BLOG_POSTS } from './data/blog-data';
 
+export const CONTACT_PHONE = '+260969113323';
 const BASE_URL = '/api';
 
 export function getActiveCountryCode() {
@@ -164,6 +165,18 @@ export async function getBanners() {
       { image: '/images/short banner 1.png', alt: 'Water Filter Africa banner 1' },
       { image: '/images/image.png', alt: 'Water Filter Africa banner 2' }
     ];
+  }
+}
+
+export async function getTestimonials() {
+  try {
+    const res = await fetch(`${BASE_URL}/v1/testimonials`);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    return data.testimonials ? data.testimonials : data;
+  } catch (error) {
+    console.warn('Failed to fetch testimonials from backend:', error);
+    return null;
   }
 }
 

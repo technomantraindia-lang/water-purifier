@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { getActiveCountryCode, getCountryDetails, getEmbedMapUrl, submitEnquiry } from '../../api';
+import { CONTACT_PHONE, getActiveCountryCode, getCountryDetails, getEmbedMapUrl, submitEnquiry } from '../../api';
 import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -199,7 +199,7 @@ export default function Contact() {
                   <span className="contact-icon">☎</span>
                   <div>
                     <small>Phone</small>
-                    <a href={`tel:${(countryDetails && countryDetails.phone) || '+260969113323'}`}>{(countryDetails && countryDetails.phone) || '+260969113323'}</a>
+                    <a href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE}</a>
                   </div>
                 </div>
               </div>
@@ -374,7 +374,7 @@ export default function Contact() {
       <section className="trust-strip">
         <div className="container">
           <strong>Need to discuss your requirement directly?</strong>
-          <span>Call <a href={`tel:${(countryDetails && countryDetails.phone) || '+260969113323'}`}>{(countryDetails && countryDetails.phone) || '+260969113323'}</a></span>
+          <span>Call <a href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE}</a></span>
           <span>or email <a href={`mailto:${(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}`}>{(countryDetails && countryDetails.email) || 'office@waterfilterafrica.com'}</a></span>
         </div>
       </section>

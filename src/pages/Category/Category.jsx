@@ -125,7 +125,7 @@ export default function Category() {
                 <Link 
                   key={p.id}
                   className="product-card reveal" 
-                  to={activeCountryCode ? '/country/' + activeCountryCode + '/product/' + p.slug : '/product/' + p.slug}
+                  to={activeCountryCode ? '/country/' + activeCountryCode + '/products/' + p.slug : '/products/' + p.slug}
                 >
                   <div className="product-stage">
                     <img src={p.image || '/storage/products/1787224154_FeTzsn2enx.png'} alt={p.name} />

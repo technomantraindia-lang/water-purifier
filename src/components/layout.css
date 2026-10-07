@@ -50,6 +50,53 @@ html, body {
   color: #4DD8F5;
 }
 
+.header-seo-ticker {
+  width: 100%;
+  overflow: hidden;
+  background: #031D31;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(77, 216, 245, 0.2);
+  white-space: nowrap;
+}
+
+.header-seo-ticker-track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  animation: header-seo-ticker-scroll 58s linear infinite;
+  will-change: transform;
+}
+
+.header-seo-ticker-track span {
+  flex: 0 0 auto;
+  padding: 7px 72px;
+  font-size: 0.74rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.header-seo-ticker:hover .header-seo-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes header-seo-ticker-scroll {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-seo-ticker-track {
+    animation: none;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .header-seo-ticker-track span:nth-child(2) {
+    display: none;
+  }
+}
+
 .strip-icon {
   width: 16px;
   height: 16px;
