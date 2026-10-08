@@ -318,8 +318,11 @@ export default function ProductDetail() {
         name: dataToSend.name,
         email: dataToSend.email,
         phone: dataToSend.phone,
+        country: countryDetails?.name || countryCode || getActiveCountryCode(),
+        type: 'brochure',
+        source: 'Brochure Download',
         product_name: product ? product.name : '',
-        message: `Product brochure & details download request for: ${product ? product.name : 'Water Filter System'}`
+        message: `Brochure download request for: ${product ? product.name : 'Water Filter System'}`
       });
     } catch (e) {
       console.warn('Could not store brochure request:', e);

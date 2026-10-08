@@ -430,18 +430,28 @@
 
 .description-images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+  max-width: 100%;
+  justify-items: center;
 }
 
 .description-images img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  max-width: 500px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border: 1px solid rgba(6, 46, 82, .1);
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: 0 10px 26px rgba(3, 29, 49, .08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  background: #fff;
+}
+
+.description-images img:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 38px rgba(3, 29, 49, .14);
 }
 
 .highlight-grid {
@@ -632,7 +642,8 @@
 .detail-image-frame {
   position: relative;
   display: grid;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
+  max-width: 500px;
   min-height: 0;
   place-items: center;
   overflow: hidden;
